@@ -1,0 +1,43 @@
+
+{
+    "start": "Welcome! Use /help to see available commands.",
+    "help": "Here are the available commands:\n/start - Start the bot\n/help - Show this help message\n/register - Set your city\n/set_language - Change language\n/set_settings - Update your preferences\n/stop - Pause notifications\n/delete_account - Remove your account",
+    "registration": {
+        "already_registered": "You are already registered.",
+        "success": "Registration successful! Please set your city using /register [city name]",
+        "city_prompt": "Please enter your city name:",
+        "distance_prompt": "How far would you like to search? (in km)"
+    },
+    "settings": {
+        "updated": "Your settings have been updated.",
+        "language_changed": "Your language has been changed to English.",
+        "city_set": "Your city has been set to {city}.",
+        "distance_set": "Your search distance has been set to {distance} km.",
+        "notifications_enabled": "Notifications have been enabled.",
+        "notifications_disabled": "Notifications have been disabled.",
+        "choose_language": "Please choose your preferred language:"
+    },
+    "errors": {
+        "unknown_command": "Sorry, I didn't understand that command.",
+        "invalid_city": "Sorry, I couldn't find that city. Please try again.",
+        "invalid_distance": "Please enter a valid distance (1-100 km).",
+        "missing_parameters": "Missing required information. Please try again.",
+        "service_unavailable": "Service temporarily unavailable. Please try again later."
+    },
+    "account": {
+        "stopped": "Your account has been paused. Use /start to resume.",
+        "deleted": "Your account has been deleted. All your data has been removed.",
+        "reactivated": "Welcome back! Your account has been reactivated."
+    },
+    "proposals": {
+        "new_match": "New match found!\n\nTitle: {title}\nLocation: {location}\nDistance: {distance}km\nPrice: {price}",
+        "no_matches": "No new matches found. We'll notify you when something comes up!",
+        "daily_summary": "Daily Summary:\nNew matches: {count}\nUse /view to see them all"
+    },
+    "navigation": {
+        "next": "Next →",
+        "previous": "← Previous",
+        "back": "← Back",
+        "done": "Done ✓"
+    }
+}
