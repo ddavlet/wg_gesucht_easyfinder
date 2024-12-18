@@ -4,9 +4,9 @@ from typing import Dict, Any
 
 def create_database():
     """Create and initialize the database"""
-    MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+    MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://admin:your_mongodb_password@localhost:27017')
     client = MongoClient(MONGODB_URI)
-    db = client[os.getenv('MONGO_DB_NAME', 'real_estate')]
+    db = client[os.getenv('MONGO_DB_NAME', 'app_db')]
 
     # Create collections if they don't exist
     if 'flat_offers' not in db.list_collection_names():
@@ -55,28 +55,24 @@ def validate_user_data(user_data: Dict[str, Any]) -> bool:
 def get_flat_offer_fields() -> Dict[str, Any]:
     """Return the fields for the flat_offers table"""
     return {
-        'data_id': str,
-        'link': str,
-        'is_active': bool,
+        'data_id': '',
+        'link': '',
+        'is_active': True,
+        'name': '',
+        'area': '',
+        'images': [],
         'costs': {
-            'rent': str,
-            'additional_costs': str,
-            'other_costs': str,
-            'deposit': str,
-            'transfer_agreement': str,
-            'credit_check': str
+            'rent': '0',
+            'additional_costs': '0',
+            'other_costs': '0',
+            'deposit': '0',
+            'transfer_agreement': '0',
+            'credit_check': '0'
         },
-        'address': str,
-        'availability': {
-            'available_from': str,
-            'online': str
-        },
-        'object_details': {
-            'energy_efficiency_class': str,
-            'floor': str,
-            'furnished': str
-        },
-        'description': str
+        'address': '',
+        'availability': {},
+        'object_details': [],
+        'description': []
     }
 
 def get_user_fields() -> Dict[str, Any]:

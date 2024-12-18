@@ -5,9 +5,9 @@ from decimal import Decimal
 from pymongo import MongoClient
 import os
 
-MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://admin:your_mongodb_password@localhost:27017')
 client = MongoClient(MONGODB_URI)
-db = client['real_estate']
+db = client[os.getenv('MONGO_DB_NAME', 'app_db')]
 
 class FlatOffersManager:
     def __init__(self):
@@ -39,20 +39,23 @@ class FlatOffersManager:
         return None
 
     def save_offer(self, offer_data: dict):
-        """Save or update a flat offer"""
-        data_id = offer_data['data-id']
-        current_time = time.time()
+        """Save a new flat offer if it doesn't already exist"""
+        data_id: str = offer_data['data-id']
+
+        # Check if the offer already exists
+        existing_offer = self.get_offer(data_id)
+        if existing_offer:
+            return False # Exit if the offer already exists
 
         # Ensure required fields
         offer_data['is_active'] = True
         if 'availability' not in offer_data:
             offer_data['availability'] = {
-                'listed_at': datetime.utcnow()
+                'listed_at': datetime.now()
             }
-
         # Update cache
         self.cached_offers[data_id] = offer_data
-        self.last_access[data_id] = current_time
+        self.last_access[data_id] = time.time()
 
         # Update database
         self.offers_collection.update_one(
@@ -60,7 +63,7 @@ class FlatOffersManager:
             {'$set': offer_data},
             upsert=True
         )
-
+        return True # Return True if the offer was saved
     def deactivate_offer(self, data_id: str):
         """Mark an offer as inactive"""
         offer = self.get_offer(data_id)
@@ -139,5 +142,10 @@ class FlatOffersManager:
                 '$lte': Decimal(str(max_price))
             }
         }
-
-        return list(self.offers_collection.find(query))
+    def update_offer_data(self, data_id: str, updated_data: dict) -> bool:
+        """Update offer data by data_id"""
+        result = self.offers_collection.update_one(
+            {'data-id': data_id},
+            {'$set': updated_data}
+        )
+        return result.modified_count > 0

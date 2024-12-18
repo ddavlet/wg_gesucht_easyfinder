@@ -1,39 +1,24 @@
 import os
-import threading
-from tg_bot.main import start_telegram_bot
+import asyncio
+# from database.tg_bot.main import application
 from parser.main import start_parser
 from database.database import create_database
 from dotenv import load_dotenv
-# import schedule
-import time
+import threading
 
 def run_parser():
-    """Run the parser function and schedule it to run periodically"""
-    print("Starting parser thread")
-    while True:
-        try:
-            start_parser()
-        except Exception as e:
-            print(f"Parser error: {e}")
+    start_parser()
 
-        # Wait for 5 minutes before next run
-        time.sleep(300)
+# def load_environment():
+#     load_dotenv()
+#     print("Initializing application...")
 
-def run_telegram():
-    """Run the Telegram bot"""
-    print("Starting Telegram bot thread")
-    try:
-        start_telegram_bot()
-    except Exception as e:
-        print(f"Telegram bot error: {e}")
-
-def main():
+async def main():
     # Load environment variables
-    load_dotenv()
+    # load_environment()
 
-    print("Initializing application...")
-
-    # Initialize database
+    # Initialize database (if needed)
+    # Uncomment and configure the following lines if you wish to initialize your database
     try:
         print("Setting up database...")
         create_database()
@@ -41,23 +26,18 @@ def main():
     except Exception as e:
         print(f"Database initialization error: {e}")
         return
-
     # Create and start parser thread
-    parser_thread = threading.Thread(target=run_parser)
-    parser_thread.daemon = True
-    parser_thread.start()
-
-    # Create and start telegram thread
-    # telegram_thread = threading.Thread(target=run_telegram)
-    # telegram_thread.daemon = True
-    # telegram_thread.start()
-
-    # Keep the main thread alive
+    # parser_thread = threading.Thread(target=run_parser)
+    # parser_thread.daemon = True
+    # parser_thread.start()
+    run_parser()
+    # Start the Telegram bot directly in the main thread
+    # try:
+    #     await application.run_polling()  # Await the coroutine
+    # except Exception as e:
+    #     print(f"Telegram bot error: {e}")
+if __name__ == "__main__":
     try:
-        while True:
-            time.sleep(1)
+        asyncio.run(main())
     except KeyboardInterrupt:
         print("\nShutting down application...")
-
-if __name__ == "__main__":
-    main()

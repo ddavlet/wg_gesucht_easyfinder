@@ -11,6 +11,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_ADMIN_PASSWORD}
     networks:
       - app_network
+    ports:
+      - 27017:27017
 
   mongo-express:
     container_name: db_admin
@@ -28,24 +30,24 @@ services:
     networks:
       - app_network
 
-  app:
-    container_name: app
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    env_file: .env
-    volumes:
-      - ./app:/app
-    depends_on:
-      - mongodb
-    environment:
-      - MONGODB_URI=mongodb://${MONGO_DB_ADMIN_USERNAME}:${MONGO_DB_ADMIN_PASSWORD}@mongodb:27017
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - LANGUAGE_FILE_EN=${LANGUAGE_FILE_EN}
-      - LANGUAGE_FILE_DE=${LANGUAGE_FILE_DE}
-      - LANGUAGE_FILE_RU=${LANGUAGE_FILE_RU}
-    networks:
-      - app_network
+  # app:
+  #   container_name: app
+  #   build:
+  #     context: ./app
+  #     dockerfile: Dockerfile
+  #   env_file: .env
+  #   volumes:
+  #     - ./app:/app
+  #   depends_on:
+  #     - mongodb
+  #   environment:
+  #     - MONGODB_URI=mongodb://${MONGO_DB_ADMIN_USERNAME}:${MONGO_DB_ADMIN_PASSWORD}@mongodb:27017
+  #     - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+  #     - LANGUAGE_FILE_EN=${LANGUAGE_FILE_EN}
+  #     - LANGUAGE_FILE_DE=${LANGUAGE_FILE_DE}
+  #     - LANGUAGE_FILE_RU=${LANGUAGE_FILE_RU}
+  #   networks:
+  #     - app_network
 
   # parser:
   #   container_name: parser
@@ -65,11 +67,11 @@ services:
   # telegram_bot:
   #   container_name: tg_bot
   #   build:
-  #     context: ./telegram
+  #     context: ./app/tg_bot
   #     dockerfile: Dockerfile
   #   env_file: .env
   #   volumes:
-  #     - ./telegram:/app
+  #     - ./app/tg_bot:/app
   #   depends_on:
   #     - mongodb
   #   environment:
