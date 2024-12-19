@@ -1,11 +1,14 @@
 from typing import Dict, Optional
 import time
 from pymongo import MongoClient
-import os
+from database.database import validate_user_data, create_database
 
-MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
-client = MongoClient(MONGODB_URI)
-db = client[os.getenv('MONGO_DB_NAME', 'app_db')]
+
+db = create_database()
+
+if db is None:
+    print("Database not initialized")
+    exit(1)
 
 class UserManager:
     def __init__(self):
@@ -38,7 +41,9 @@ class UserManager:
 
     def save_user(self, chat_id: int, user_data: dict):
         current_time = time.time()
-
+        if not validate_user_data(user_data):
+            print("Invalid user data")
+            return
         # Ensure active status is set
         user_data['is_active'] = True
 

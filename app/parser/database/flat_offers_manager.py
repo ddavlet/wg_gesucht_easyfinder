@@ -4,10 +4,14 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from pymongo import MongoClient
 import os
+from database.database import create_database, validate_flat_offer
 
-MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://admin:your_mongodb_password@localhost:27017')
-client = MongoClient(MONGODB_URI)
-db = client[os.getenv('MONGO_DB_NAME', 'app_db')]
+
+db = create_database()
+
+if db is None:
+    print("Database not initialized")
+    exit(1)
 
 class FlatOffersManager:
     def __init__(self):
@@ -41,7 +45,9 @@ class FlatOffersManager:
     def save_offer(self, offer_data: dict):
         """Save a new flat offer if it doesn't already exist"""
         data_id: str = offer_data['data-id']
-
+        if not validate_flat_offer(offer_data):
+            print("Invalid offer data")
+            return False
         # Check if the offer already exists
         existing_offer = self.get_offer(data_id)
         if existing_offer:

@@ -30,7 +30,11 @@ async def main():
     # parser_thread = threading.Thread(target=run_parser)
     # parser_thread.daemon = True
     # parser_thread.start()
-    run_parser()
+    try:
+        run_parser()
+    except Exception as e:
+        print(f"Parser error: {e}")
+
     # Start the Telegram bot directly in the main thread
     # try:
     #     await application.run_polling()  # Await the coroutine

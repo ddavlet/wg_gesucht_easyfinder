@@ -127,7 +127,7 @@ class Parser:
 
     def parse_ads(self):
         # ads = self.get_ads()
-        for i in range(10):
+        for i in range(2):
             sleep(5)
             print("Parsing page: ", i)
             offers = self.driver.eles('@class:truncate_title noprint')
@@ -153,10 +153,10 @@ class Parser:
                         sleep(3)
                     else:
                         print("Offer with id: ", offer_data['data-id'], " already exists")
-
                 except Exception as e:
                     print('skipped')
                     print(e)
+                    raise e
                 print("new_tab closing")
                 print('--------------------------------')
                 new_tab.close()

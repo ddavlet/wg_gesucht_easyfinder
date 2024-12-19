@@ -70,8 +70,6 @@ services:
   #     context: ./app/tg_bot
   #     dockerfile: Dockerfile
   #   env_file: .env
-  #   volumes:
-  #     - ./app/tg_bot:/app
   #   depends_on:
   #     - mongodb
   #   environment:

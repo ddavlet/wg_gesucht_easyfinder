@@ -1,43 +1,42 @@
-
 {
-    "start": "Welcome! Use /help to see available commands.",
-    "help": "Here are the available commands:\n/start - Start the bot\n/help - Show this help message\n/register - Set your city\n/set_language - Change language\n/set_settings - Update your preferences\n/stop - Pause notifications\n/delete_account - Remove your account",
+    "start": "Willkommen! Verwenden Sie /help, um die verfügbaren Befehle zu sehen.",
+    "help": "Hier sind die verfügbaren Befehle:\n/start - Starten Sie den Bot\n/help - Diese Hilfenachricht anzeigen\n/register - Ihre Stadt festlegen\n/set_language - Sprache ändern\n/set_settings - Ihre Einstellungen aktualisieren\n/stop - Benachrichtigungen pausieren\n/delete_account - Ihr Konto löschen",
     "registration": {
-        "already_registered": "You are already registered.",
-        "success": "Registration successful! Please set your city using /register [city name]",
-        "city_prompt": "Please enter your city name:",
-        "distance_prompt": "How far would you like to search? (in km)"
+        "already_registered": "Sie sind bereits registriert.",
+        "success": "Registrierung erfolgreich! Bitte legen Sie Ihre Stadt mit /register [Stadtname] fest.",
+        "city_prompt": "Bitte geben Sie den Namen Ihrer Stadt ein:",
+        "distance_prompt": "Wie weit möchten Sie suchen? (in km)"
     },
     "settings": {
-        "updated": "Your settings have been updated.",
-        "language_changed": "Your language has been changed to English.",
-        "city_set": "Your city has been set to {city}.",
-        "distance_set": "Your search distance has been set to {distance} km.",
-        "notifications_enabled": "Notifications have been enabled.",
-        "notifications_disabled": "Notifications have been disabled.",
-        "choose_language": "Please choose your preferred language:"
+        "updated": "Ihre Einstellungen wurden aktualisiert.",
+        "language_changed": "Ihre Sprache wurde auf Deutsch geändert.",
+        "city_set": "Ihre Stadt wurde auf {city} festgelegt.",
+        "distance_set": "Ihr Suchradius wurde auf {distance} km festgelegt.",
+        "notifications_enabled": "Benachrichtigungen wurden aktiviert.",
+        "notifications_disabled": "Benachrichtigungen wurden deaktiviert.",
+        "choose_language": "Bitte wählen Sie Ihre bevorzugte Sprache:"
     },
     "errors": {
-        "unknown_command": "Sorry, I didn't understand that command.",
-        "invalid_city": "Sorry, I couldn't find that city. Please try again.",
-        "invalid_distance": "Please enter a valid distance (1-100 km).",
-        "missing_parameters": "Missing required information. Please try again.",
-        "service_unavailable": "Service temporarily unavailable. Please try again later."
+        "unknown_command": "Entschuldigung, ich habe diesen Befehl nicht verstanden.",
+        "invalid_city": "Entschuldigung, ich konnte diese Stadt nicht finden. Bitte versuchen Sie es erneut.",
+        "invalid_distance": "Bitte geben Sie eine gültige Entfernung (1-100 km) ein.",
+        "missing_parameters": "Fehlende erforderliche Informationen. Bitte versuchen Sie es erneut.",
+        "service_unavailable": "Dienst vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut."
     },
     "account": {
-        "stopped": "Your account has been paused. Use /start to resume.",
-        "deleted": "Your account has been deleted. All your data has been removed.",
-        "reactivated": "Welcome back! Your account has been reactivated."
+        "stopped": "Ihr Konto wurde pausiert. Verwenden Sie /start, um fortzufahren.",
+        "deleted": "Ihr Konto wurde gelöscht. Alle Ihre Daten wurden entfernt.",
+        "reactivated": "Willkommen zurück! Ihr Konto wurde reaktiviert."
     },
     "proposals": {
-        "new_match": "New match found!\n\nTitle: {title}\nLocation: {location}\nDistance: {distance}km\nPrice: {price}",
-        "no_matches": "No new matches found. We'll notify you when something comes up!",
-        "daily_summary": "Daily Summary:\nNew matches: {count}\nUse /view to see them all"
+        "new_match": "Neues Übereinstimmung gefunden!\n\nTitel: {title}\nStandort: {location}\nEntfernung: {distance} km\nPreis: {price}",
+        "no_matches": "Keine neuen Übereinstimmungen gefunden. Wir benachrichtigen Sie, wenn etwas verfügbar ist!",
+        "daily_summary": "Tägliche Zusammenfassung:\nNeue Übereinstimmungen: {count}\nVerwenden Sie /view, um alle zu sehen."
     },
     "navigation": {
-        "next": "Next →",
-        "previous": "← Previous",
-        "back": "← Back",
-        "done": "Done ✓"
+        "next": "Nächste →",
+        "previous": "← Vorherige",
+        "back": "← Zurück",
+        "done": "Fertig ✓"
     }
 }

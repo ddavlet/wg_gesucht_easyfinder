@@ -5,38 +5,57 @@
     "registration": {
         "already_registered": "You are already registered.",
         "success": "Registration successful! Please set your city using /register [city name]",
-        "city_prompt": "Please enter your city name:",
+        "address_prompt": "Please enter your full address (Street (house number), zip code city):",
         "distance_prompt": "How far would you like to search? (in km)"
     },
 
     "settings": {
         "updated": "Your settings have been updated.",
         "language_changed": "Your language has been changed to English.",
-        "city_set": "Your city has been set to {city}.",
-        "distance_set": "Your search distance has been set to {distance} km.",
+        "address_set": {
+            "title": "Address is saved successfully:\n",
+            "commands": "\n\nTo see all available commands type /help"
+        },
+        "distance_set": {
+            "title": "Your search distance has been set to:\n",
+            "commands": "\n\nTo see all available commands type /help"
+        },
         "notifications_enabled": "Notifications have been enabled.",
         "notifications_disabled": "Notifications have been disabled.",
         "choose_language": "Please choose your preferred language:"
     },
 
     "errors": {
-        "unknown_command": "Sorry, I didn't understand that command.",
-        "invalid_city": "Sorry, I couldn't find that city. Please try again.",
+        "unknown_command": "Sorry, I didn't understand that command. Use /help to see available commands.",
+        "invalid_address": {
+            "title": "Address is not valid, check:",
+            "commands": "\n\nTo set address type /set_address. To see all available commands type /help"
+        },
+        "wrong_address": "Address cannot be validated.",
         "invalid_distance": "Please enter a valid distance (1-100 km).",
         "missing_parameters": "Missing required information. Please try again.",
-        "service_unavailable": "Service temporarily unavailable. Please try again later."
+        "service_unavailable": "Service temporarily unavailable. Please try again later.",
+        "not_registered": "Please send /start to register and use the bot."
     },
 
     "account": {
-        "stopped": "Your account has been paused. Use /start to resume.",
+        "stopped": "Your account has been paused. Use /start to resume. Use /delete_account to delete your account.",
         "deleted": "Your account has been deleted. All your data has been removed.",
         "reactivated": "Welcome back! Your account has been reactivated."
     },
 
     "proposals": {
-        "new_match": "New match found!\n\nTitle: {title}\nLocation: {location}\nDistance: {distance}km\nPrice: {price}",
+        "new_match": {
+            "title": "New match found!\n\nTitle:",
+            "location": "\nLocation:",
+            "distance": "\nDistance:",
+            "price": "\nPrice:"
+        },
         "no_matches": "No new matches found. We'll notify you when something comes up!",
-        "daily_summary": "Daily Summary:\nNew matches: {count}\nUse /view to see them all"
+        "daily_summary": {
+            "title": "Daily Summary:\nNew matches:\n",
+            "view": "\n\nUse /view to see them all"
+        }
     },
 
     "navigation": {

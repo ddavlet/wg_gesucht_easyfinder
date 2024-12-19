@@ -1,0 +1,574 @@
+{
+    "geocoded_waypoints": [
+        {
+            "geocoder_status": "OK",
+            "place_id": "ChIJwQjZA8_enUcRdV6HOS_Sfqo",
+            "types": [
+                "premise"
+            ]
+        },
+        {
+            "geocoder_status": "OK",
+            "place_id": "ChIJLSSQXxF1nkcRalYrWKkvVgk",
+            "types": [
+                "street_address"
+            ]
+        }
+    ],
+    "routes": [
+        {
+            "bounds": {
+                "northeast": {
+                    "lat": 48.19877460000001,
+                    "lng": 11.6156984
+                },
+                "southwest": {
+                    "lat": 48.0853244,
+                    "lng": 11.5342856
+                }
+            },
+            "copyrights": "Map data \u00a92024 GeoBasis-DE/BKG (\u00a92009)",
+            "legs": [
+                {
+                    "arrival_time": {
+                        "text": "2:18\u202fPM",
+                        "time_zone": "Europe/Berlin",
+                        "value": 1734614337
+                    },
+                    "departure_time": {
+                        "text": "1:19\u202fPM",
+                        "time_zone": "Europe/Berlin",
+                        "value": 1734610747
+                    },
+                    "distance": {
+                        "text": "16.5 km",
+                        "value": 16518
+                    },
+                    "duration": {
+                        "text": "1 hour 0 mins",
+                        "value": 3590
+                    },
+                    "end_address": "Heidemannstra\u00dfe 220, 80939 M\u00fcnchen, Germany",
+                    "end_location": {
+                        "lat": 48.19877460000001,
+                        "lng": 11.6156984
+                    },
+                    "start_address": "Ludwigsh\u00f6her Str. 42, 81479 M\u00fcnchen, Germany",
+                    "start_location": {
+                        "lat": 48.0853244,
+                        "lng": 11.5378483
+                    },
+                    "steps": [
+                        {
+                            "distance": {
+                                "text": "0.4 km",
+                                "value": 388
+                            },
+                            "duration": {
+                                "text": "5 mins",
+                                "value": 326
+                            },
+                            "end_location": {
+                                "lat": 48.0863543,
+                                "lng": 11.5343937
+                            },
+                            "html_instructions": "Walk to Krankenhaus Martha Maria",
+                            "polyline": {
+                                "points": "gtndHqnleAUIKEe@UKEEEIXCNABCNAHEh@AFAVCRC`@Gr@Mp@?BCLI^ADCJOn@I\\EPG\\CFAJI\\On@GTGXEPA@I\\DDVHh@`@"
+                            },
+                            "start_location": {
+                                "lat": 48.0853244,
+                                "lng": 11.5378483
+                            },
+                            "steps": [
+                                {
+                                    "distance": {
+                                        "text": "52 m",
+                                        "value": 52
+                                    },
+                                    "duration": {
+                                        "text": "1 min",
+                                        "value": 40
+                                    },
+                                    "end_location": {
+                                        "lat": 48.0857702,
+                                        "lng": 11.5380964
+                                    },
+                                    "html_instructions": "Head <b>north</b> on <b>Ludwigsh\u00f6her Str.</b> toward <b>Gerblweg</b>",
+                                    "polyline": {
+                                        "points": "gtndHqnleAUIKEe@UKEEE"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.0853244,
+                                        "lng": 11.5378483
+                                    },
+                                    "travel_mode": "WALKING"
+                                },
+                                {
+                                    "distance": {
+                                        "text": "0.3 km",
+                                        "value": 290
+                                    },
+                                    "duration": {
+                                        "text": "4 mins",
+                                        "value": 248
+                                    },
+                                    "end_location": {
+                                        "lat": 48.08671229999999,
+                                        "lng": 11.5346404
+                                    },
+                                    "html_instructions": "Turn <b>left</b>",
+                                    "maneuver": "turn-left",
+                                    "polyline": {
+                                        "points": "awndHcpleAIXCNABCNAHEh@AFAVCRC`@Gr@Mp@?BCLI^ADCJOn@I\\EPG\\CFAJI\\On@GTGXEPA@I\\"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.0857702,
+                                        "lng": 11.5380964
+                                    },
+                                    "travel_mode": "WALKING"
+                                },
+                                {
+                                    "distance": {
+                                        "text": "46 m",
+                                        "value": 46
+                                    },
+                                    "duration": {
+                                        "text": "1 min",
+                                        "value": 38
+                                    },
+                                    "end_location": {
+                                        "lat": 48.0863543,
+                                        "lng": 11.5343937
+                                    },
+                                    "html_instructions": "Turn <b>left</b> onto <b>Wolfratshauser Str.</b>/<wbr/><b>B11</b>",
+                                    "maneuver": "turn-left",
+                                    "polyline": {
+                                        "points": "}|ndHozkeADDVHh@`@"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.08671229999999,
+                                        "lng": 11.5346404
+                                    },
+                                    "travel_mode": "WALKING"
+                                }
+                            ],
+                            "travel_mode": "WALKING"
+                        },
+                        {
+                            "distance": {
+                                "text": "4.1 km",
+                                "value": 4071
+                            },
+                            "duration": {
+                                "text": "14 mins",
+                                "value": 810
+                            },
+                            "end_location": {
+                                "lat": 48.1169245,
+                                "lng": 11.5392641
+                            },
+                            "html_instructions": "Bus towards Theresienh\u00f6he",
+                            "polyline": {
+                                "points": "yzndH{xkeAEPm@e@YUYQUO[SWO_@SOKIGMIIGMKOMIIKMKKKMQW]c@_@k@m@y@SWOSOOEEIIMK[YKKQOOKGEUOUQKGSOSSIGMMCC_@]e@i@e@i@WYKKUUUSEEGGk@a@MKMIUQ{@i@KGk@a@GCEEu@e@AA_@U[S[UMICCA?AAECIIGEQQOQ]]YYIEIIKGMIWMAAACKESIQKWGQGWGQCEAc@CGAQ?U@[Bs@DI?O?SAA?UAm@Gm@GAp@?D?BAn@?d@?rB@hADjB@P?JH|A@XDj@Dp@F~@]EG?oBSuAMA?GAc@CGAOAkBQYCIAOA]EQC[CwAMQCQ?c@AWAO?E?E?_@AY?k@AGAC?EAA?E?M?K@]?[?M@iA@_A?i@Bs@?s@@]@A?C?K?A?C?E@E?G@iBVOBE?I@E?E?C?CAGA?WC_@Cm@Cg@EaACs@CYCc@C[CQCYIaAA_@C?C?A?C?O@G@]BE?e@Di@DYBk@F}@H_BLi@DO@I@a@BI?gCJE?G@W@A?Q?cDLmBFQ@C?C?M@a@@o@BY@I?I@O?I@K?C?U@a@@_@@M@[Bs@B_@@e@BQ?cBFkADi@@Y@{@DQ@S@Q@AAG?I@a@BaBDE@M?Q@K?E?E?E?A?A?M?MAE@GAE?GAGAIAA?OCQE]IqBm@IAIAEAEAQASGIAIEC?IEICIECACAEAGAIAEAC?KAG?K?G?E?K?W@U?@V?X?D?DAD?FIZI\\Qt@EC"
+                            },
+                            "start_location": {
+                                "lat": 48.0863654,
+                                "lng": 11.5343772
+                            },
+                            "transit_details": {
+                                "arrival_stop": {
+                                    "location": {
+                                        "lat": 48.1169245,
+                                        "lng": 11.5392641
+                                    },
+                                    "name": "Am Harras"
+                                },
+                                "arrival_time": {
+                                    "text": "1:38\u202fPM",
+                                    "time_zone": "Europe/Berlin",
+                                    "value": 1734611910
+                                },
+                                "departure_stop": {
+                                    "location": {
+                                        "lat": 48.0863654,
+                                        "lng": 11.5343772
+                                    },
+                                    "name": "Krankenhaus Martha Maria"
+                                },
+                                "departure_time": {
+                                    "text": "1:25\u202fPM",
+                                    "time_zone": "Europe/Berlin",
+                                    "value": 1734611100
+                                },
+                                "headsign": "Theresienh\u00f6he",
+                                "line": {
+                                    "agencies": [
+                                        {
+                                            "name": "M\u00fcnchner Verkehrsgesellschaft",
+                                            "phone": "011 49 800 344226600",
+                                            "url": "https://www.mvg.de/"
+                                        }
+                                    ],
+                                    "color": "#00465a",
+                                    "name": "Theresienh\u00f6he - Schwanthalerh\u00f6he - Harras - Obersendling - Solln Bf. - F\u00fcrstenried West",
+                                    "short_name": "134",
+                                    "text_color": "#ffffff",
+                                    "url": "https://efa.mvv-muenchen.de/ttb2/mvv_3_134-G-014-1.pdf",
+                                    "vehicle": {
+                                        "icon": "//maps.gstatic.com/mapfiles/transit/iw2/6/bus2.png",
+                                        "name": "Bus",
+                                        "type": "BUS"
+                                    }
+                                },
+                                "num_stops": 10
+                            },
+                            "travel_mode": "TRANSIT"
+                        },
+                        {
+                            "distance": {
+                                "text": "0.1 km",
+                                "value": 103
+                            },
+                            "duration": {
+                                "text": "3 mins",
+                                "value": 159
+                            },
+                            "end_location": {
+                                "lat": 48.11686,
+                                "lng": 11.53791
+                            },
+                            "html_instructions": "Walk to Harras",
+                            "polyline": {
+                                "points": "}ytdHowleAHjGFD"
+                            },
+                            "start_location": {
+                                "lat": 48.1169454,
+                                "lng": 11.5392795
+                            },
+                            "steps": [
+                                {
+                                    "distance": {
+                                        "text": "0.1 km",
+                                        "value": 99
+                                    },
+                                    "duration": {
+                                        "text": "2 mins",
+                                        "value": 99
+                                    },
+                                    "end_location": {
+                                        "lat": 48.1169,
+                                        "lng": 11.53794
+                                    },
+                                    "polyline": {
+                                        "points": "}ytdHowleAHjG"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.1169454,
+                                        "lng": 11.5392795
+                                    },
+                                    "travel_mode": "WALKING"
+                                },
+                                {
+                                    "distance": {
+                                        "text": "4 m",
+                                        "value": 4
+                                    },
+                                    "duration": {
+                                        "text": "1 min",
+                                        "value": 60
+                                    },
+                                    "end_location": {
+                                        "lat": 48.11686,
+                                        "lng": 11.53791
+                                    },
+                                    "html_instructions": "Take entrance <span class=\"location\">Harras</span>",
+                                    "polyline": {
+                                        "points": "sytdHcoleAFD"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.1169,
+                                        "lng": 11.53794
+                                    },
+                                    "travel_mode": "WALKING"
+                                }
+                            ],
+                            "travel_mode": "WALKING"
+                        },
+                        {
+                            "distance": {
+                                "text": "11.1 km",
+                                "value": 11069
+                            },
+                            "duration": {
+                                "text": "20 mins",
+                                "value": 1200
+                            },
+                            "end_location": {
+                                "lat": 48.19194,
+                                "lng": 11.61435
+                            },
+                            "html_instructions": "Subway towards Garching, Forschungszentrum",
+                            "polyline": {
+                                "points": "kytdH}nleAC??U?o@?YAm@?GAu@?AD}A?K@OFu@Hs@Fa@L{@TsA\\gAXq@^y@NYFMJ[Le@H[BMJs@H}@FcA@aA?E@o@@cB@}@@o@Cw@CyAASEo@K_ACSg@iASW[a@[_@UYaAaAy@m@YOIEGAIEyERcE@uCGI?mCKoAEaCQy@GSAsAGkCMy@Ce@@_@Hc@BA?A?A?A?AAA?AAMWMSEIMYaAaBKQQ[MQgA{BYk@Wg@OWq@mBIUuB}FaDeGuAmDMYGO}@cCgDsIa@gA_@aAcAuCuA{Dq@iB_DqIYy@o@iBmC}Gy@sBq@sBgAkDACAEAGCGCQCQc@oCOkAIw@Cs@BoBAe@CQASIm@Ic@Me@CKQg@I[s@aAu@{@[_@S]EG_@}@EIYaAAKGk@OaA]eASm@IWEMo@wBk@oB}@qBEI]s@OQY]Qa@CGACACCECCu@}@u@o@qAs@o@[q@WmA]aAWkAYA?eA?aBBW?w@Cu@GG?SCy@Go@EK?yBG_@@E?iA[OEc@Q]MSGaA]e@Qi@SUIe@QCACAOGs@Wk@SCAA?AAICCA]Oa@Oc@Oa@Oa@OyCaAwAi@a@OcA_@cBm@AAeA_@{@[mAc@a@OgBq@KCkAe@mBw@YKYKi@S]KCCa@Ou@W_Bm@UIeA_@WKICa@OWKmAg@i@Ss@Wk@SSIMEa@MeC}@_C}@s@WMGkCcAcBm@a@Oy@[sCeAu@YsAe@a@OIEi@Ss@OeBa@C?aCScAKSE_@KWIs@Wm@U_@Sa@S_@SeBuAw@q@][GGq@u@y@_AwAcBy@y@s@s@oDsDKMMOoAyACC[_@]_@EEg@i@KMsC{CCEYYwAyA]]]]AAeBiBKKMMo@q@y@{@]]IKiCoC]][]cBiBMM{Bu@k@o@m@q@MOMMwA}AsB_Cg@k@uFiGe@o@e@m@eFmFEGII_BaBcAeAg@g@aAcAKKq@q@g@g@a@c@CAmCoCsA}AOQgAkA_@a@EGs@s@k@o@e@g@aAcAq@m@i@c@MIm@i@QSu@s@?AQS{@aAW[W]EGW[a@i@Y_@u@y@k@m@cAiAo@w@_@g@]g@GIGKYa@g@u@OSU[_@c@KKk@o@AA{@_AIKYWo@m@OOGISSIIKKQQCCSKGE_@QAAYM_@KMCUEIAQC[AA?IAC?I?]Am@?m@CO?a@GWESE]Ko@WMEMEcAa@SIMG}Ay@DQ"
+                            },
+                            "start_location": {
+                                "lat": 48.11686,
+                                "lng": 11.53791
+                            },
+                            "transit_details": {
+                                "arrival_stop": {
+                                    "location": {
+                                        "lat": 48.19194,
+                                        "lng": 11.61435
+                                    },
+                                    "name": "Freimann"
+                                },
+                                "arrival_time": {
+                                    "text": "2:06\u202fPM",
+                                    "time_zone": "Europe/Berlin",
+                                    "value": 1734613560
+                                },
+                                "departure_stop": {
+                                    "location": {
+                                        "lat": 48.11686,
+                                        "lng": 11.53791
+                                    },
+                                    "name": "Harras"
+                                },
+                                "departure_time": {
+                                    "text": "1:46\u202fPM",
+                                    "time_zone": "Europe/Berlin",
+                                    "value": 1734612360
+                                },
+                                "headsign": "Garching, Forschungszentrum",
+                                "line": {
+                                    "agencies": [
+                                        {
+                                            "name": "M\u00fcnchner Verkehrsgesellschaft",
+                                            "phone": "011 49 800 344226600",
+                                            "url": "https://www.mvg.de/"
+                                        }
+                                    ],
+                                    "color": "#0065ae",
+                                    "name": "Garching-Forschungszentrum - Fr\u00f6ttmaning - M\u00fcnchner Freiheit - Odeonsplatz - Sendlinger Tor - Harras - Klinikum Gro\u00dfhadern",
+                                    "short_name": "U6",
+                                    "text_color": "#ffffff",
+                                    "url": "https://efa.mvv-muenchen.de/ttb2/mvv_1-U6-G-014_10.pdf",
+                                    "vehicle": {
+                                        "icon": "//maps.gstatic.com/mapfiles/transit/iw2/6/subway2.png",
+                                        "local_icon": "//maps.gstatic.com/mapfiles/transit/iw2/6/de-metro.png",
+                                        "name": "Subway",
+                                        "type": "SUBWAY"
+                                    }
+                                },
+                                "num_stops": 14
+                            },
+                            "travel_mode": "TRANSIT"
+                        },
+                        {
+                            "distance": {
+                                "text": "0.9 km",
+                                "value": 887
+                            },
+                            "duration": {
+                                "text": "13 mins",
+                                "value": 776
+                            },
+                            "end_location": {
+                                "lat": 48.19877460000001,
+                                "lng": 11.6156984
+                            },
+                            "html_instructions": "Walk to Heidemannstra\u00dfe 220, 80939 M\u00fcnchen, Germany",
+                            "polyline": {
+                                "points": "snceHul{eAuDgAAFGECC@EAAAAGCIEICy@]IJODCDGHCHWfACJe@xBEPAFAFEAKG]KMEQIUKECC?C?A?E@CBADADAFCLAD_@OOAECMGMEEAg@SIEg@QMG[OSG}Am@UKCAKM{@_@OEWKQEKE_A_@MGiAc@KEGEQIQGUMMOCAQEi@OMG"
+                            },
+                            "start_location": {
+                                "lat": 48.19194,
+                                "lng": 11.61435
+                            },
+                            "steps": [
+                                {
+                                    "distance": {
+                                        "text": "1 m",
+                                        "value": 0
+                                    },
+                                    "duration": {
+                                        "text": "2 mins",
+                                        "value": 90
+                                    },
+                                    "end_location": {
+                                        "lat": 48.19194,
+                                        "lng": 11.61435
+                                    },
+                                    "polyline": {
+                                        "points": "snceHul{eA"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.19194,
+                                        "lng": 11.61435
+                                    },
+                                    "travel_mode": "WALKING"
+                                },
+                                {
+                                    "distance": {
+                                        "text": "0.1 km",
+                                        "value": 104
+                                    },
+                                    "duration": {
+                                        "text": "1 min",
+                                        "value": 48
+                                    },
+                                    "end_location": {
+                                        "lat": 48.19285,
+                                        "lng": 11.61471
+                                    },
+                                    "html_instructions": "Take exit <span class=\"location\">Freimann</span>",
+                                    "polyline": {
+                                        "points": "snceHul{eAuDgA"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.19194,
+                                        "lng": 11.61435
+                                    },
+                                    "travel_mode": "WALKING"
+                                },
+                                {
+                                    "distance": {
+                                        "text": "63 m",
+                                        "value": 63
+                                    },
+                                    "duration": {
+                                        "text": "1 min",
+                                        "value": 48
+                                    },
+                                    "end_location": {
+                                        "lat": 48.1933571,
+                                        "lng": 11.6149912
+                                    },
+                                    "html_instructions": "Head <b>northeast</b>",
+                                    "polyline": {
+                                        "points": "ktceHun{eAGECC@EAAAAGCIEICy@]"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.19286109999999,
+                                        "lng": 11.6146717
+                                    },
+                                    "travel_mode": "WALKING"
+                                },
+                                {
+                                    "distance": {
+                                        "text": "0.1 km",
+                                        "value": 128
+                                    },
+                                    "duration": {
+                                        "text": "2 mins",
+                                        "value": 109
+                                    },
+                                    "end_location": {
+                                        "lat": 48.1939518,
+                                        "lng": 11.6135728
+                                    },
+                                    "html_instructions": "Turn <b>left</b> onto <b>Harnierpl.</b>",
+                                    "maneuver": "turn-left",
+                                    "polyline": {
+                                        "points": "owceHup{eAIJODCDGHCHWfACJe@xBEPAFAF"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.1933571,
+                                        "lng": 11.6149912
+                                    },
+                                    "travel_mode": "WALKING"
+                                },
+                                {
+                                    "distance": {
+                                        "text": "93 m",
+                                        "value": 93
+                                    },
+                                    "duration": {
+                                        "text": "1 min",
+                                        "value": 76
+                                    },
+                                    "end_location": {
+                                        "lat": 48.19464809999999,
+                                        "lng": 11.6136081
+                                    },
+                                    "html_instructions": "Turn <b>right</b> onto <b>Frankpl.</b>",
+                                    "maneuver": "turn-right",
+                                    "polyline": {
+                                        "points": "e{ceHyg{eAEAKG]KMEQIUKECC?C?A?E@CBADADAFCLAD"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.1939518,
+                                        "lng": 11.6135728
+                                    },
+                                    "travel_mode": "WALKING"
+                                },
+                                {
+                                    "distance": {
+                                        "text": "0.5 km",
+                                        "value": 492
+                                    },
+                                    "duration": {
+                                        "text": "7 mins",
+                                        "value": 400
+                                    },
+                                    "end_location": {
+                                        "lat": 48.19877460000001,
+                                        "lng": 11.6156984
+                                    },
+                                    "html_instructions": "Turn <b>right</b> onto <b>L\u00fctzelsteiner Str.</b>",
+                                    "maneuver": "turn-right",
+                                    "polyline": {
+                                        "points": "q_deHah{eA_@OOAECMGMEEAg@SIEg@QMG[OSG}Am@UKCAKM{@_@OEWKQEKE_A_@MGiAc@KEGEQIQGUMMOCAQEi@OMG"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.19464809999999,
+                                        "lng": 11.6136081
+                                    },
+                                    "travel_mode": "WALKING"
+                                },
+                                {
+                                    "distance": {
+                                        "text": "7 m",
+                                        "value": 7
+                                    },
+                                    "duration": {
+                                        "text": "1 min",
+                                        "value": 5
+                                    },
+                                    "end_location": {
+                                        "lat": 48.19877460000001,
+                                        "lng": 11.6156984
+                                    },
+                                    "html_instructions": "Turn <b>right</b> onto <b>Heidemannstra\u00dfe</b><div style=\"font-size:0.9em\">Destination will be on the right</div>",
+                                    "maneuver": "turn-right",
+                                    "polyline": {
+                                        "points": "iydeHcu{eA"
+                                    },
+                                    "start_location": {
+                                        "lat": 48.19877460000001,
+                                        "lng": 11.6156984
+                                    },
+                                    "travel_mode": "WALKING"
+                                }
+                            ],
+                            "travel_mode": "WALKING"
+                        }
+                    ],
+                    "traffic_speed_entry": [],
+                    "via_waypoint": []
+                }
+            ],
+            "overview_polyline": {
+                "points": "gtndHqnleAsAk@EEIXERMjAQ`C{@bE}@`EGRI\\DDVHh@`@IRgA{@o@a@cBcAo@e@q@q@{AuBaBuB][iAaA_Ao@_Ay@iDqDc@a@}AiAyE{C}AgAgAgAy@q@i@]iAc@aAUk@Eg@@iBHyAKm@GAp@?H?rGPfFTvDaHo@{Fi@iBQu@As@A_CGoLLaD`@SAGA?WGmAQwDOkBKaBG?]BwIr@eBL_DLwIXgDLgAB}BJgK\\y@BuCJeABaAEm@KoCw@SCq@MWGa@Q[Gw@Cc@@U?@V?^AJe@vBKGHjGFDC??U?iACmBDiBHeAPuAb@oCv@yBn@sARi@VaANaAPaCD{EBmBGqCGcAOsAg@iASWw@aAwA{AsA}@QGIEyERcE@uCGwCKoAEaCQmAI_FUy@Ce@@cALC?GAqCaFgCaFOWq@mB_CsGaDeGuAmDUi@gHaRkJmWiAcDgEqK}BiHMs@s@{EMkB@uCEe@SqAQq@[cAs@aAu@{@o@}@e@eA_@kAIw@OaA]eA]eAu@eCk@oB}@qBc@}@i@o@Yq@GIu@}@u@o@aCoA_Cu@mCq@gA?yBBmBKeCQkDEyAa@aA_@eDkAwDuAwCgAsG{BkE_BqFoBmHsCwHqCoHqCaC{@{IaDwRkHk@Ui@Ss@OiBa@eE_@_Cs@mAi@aAg@cEkDkBuBqC}C}FeGmC}CmEyEsCwCgHoHmEwEqBwB{Bu@k@o@m@q@[]iNsOkA}AkFuFuEyEgDiDe@e@mCoCsA}AwA}Ae@i@gEoEwCeCyA}A{FcHoBwBoA_BgA_Bw@iAu@_AuB}BcBaBq@s@UU[Qa@Sy@Y_AOk@CcCEq@Gk@KiBo@wAk@kBaADQuDgAAFKI?GSKcAa@IJODKN[pAq@~CAFEAi@S{@_@I?IDCJETAD_@OUE[M_Bm@{CmAYMKM{@_@g@Q]KcDqAaAe@QQ{@UMG"
+            },
+            "summary": "",
+            "warnings": [
+                "Walking directions are in beta. Use caution \u2013 This route may be missing sidewalks or pedestrian paths."
+            ],
+            "waypoint_order": []
+        }
+    ],
+    "status": "OK"
+}

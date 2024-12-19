@@ -1,42 +1,42 @@
 {
-    "start": "Welcome! Use /help to see available commands.",
-    "help": "Here are the available commands:\n/start - Start the bot\n/help - Show this help message\n/register - Set your city\n/set_language - Change language\n/set_settings - Update your preferences\n/stop - Pause notifications\n/delete_account - Remove your account",
+    "start": "Добро пожаловать! Используйте /help, чтобы увидеть доступные команды.",
+    "help": "Вот доступные команды:\n/start - Запустить бота\n/help - Показать это сообщение помощи\n/register - Установить ваш город\n/set_language - Изменить язык\n/set_settings - Обновить ваши предпочтения\n/stop - Приостановить уведомления\n/delete_account - Удалить вашу учетную запись",
     "registration": {
-        "already_registered": "You are already registered.",
-        "success": "Registration successful! Please set your city using /register [city name]",
-        "city_prompt": "Please enter your city name:",
-        "distance_prompt": "How far would you like to search? (in km)"
+        "already_registered": "Вы уже зарегистрированы.",
+        "success": "Регистрация успешна! Пожалуйста, установите ваш город с помощью /register [название города]",
+        "city_prompt": "Пожалуйста, введите название вашего города:",
+        "distance_prompt": "Как далеко вы хотите искать? (в км)"
     },
     "settings": {
-        "updated": "Your settings have been updated.",
-        "language_changed": "Your language has been changed to English.",
-        "city_set": "Your city has been set to {city}.",
-        "distance_set": "Your search distance has been set to {distance} km.",
-        "notifications_enabled": "Notifications have been enabled.",
-        "notifications_disabled": "Notifications have been disabled.",
-        "choose_language": "Please choose your preferred language:"
+        "updated": "Ваши настройки были обновлены.",
+        "language_changed": "Ваш язык был изменен на русский.",
+        "city_set": "Ваш город установлен на {city}.",
+        "distance_set": "Ваш радиус поиска установлен на {distance} км.",
+        "notifications_enabled": "Уведомления были включены.",
+        "notifications_disabled": "Уведомления были отключены.",
+        "choose_language": "Пожалуйста, выберите ваш предпочтительный язык:"
     },
     "errors": {
-        "unknown_command": "Sorry, I didn't understand that command.",
-        "invalid_city": "Sorry, I couldn't find that city. Please try again.",
-        "invalid_distance": "Please enter a valid distance (1-100 km).",
-        "missing_parameters": "Missing required information. Please try again.",
-        "service_unavailable": "Service temporarily unavailable. Please try again later."
+        "unknown_command": "Извините, я не понял эту команду.",
+        "invalid_city": "Извините, я не смог найти этот город. Пожалуйста, попробуйте снова.",
+        "invalid_distance": "Пожалуйста, введите допустимое расстояние (1-100 км).",
+        "missing_parameters": "Отсутствует необходимая информация. Пожалуйста, попробуйте снова.",
+        "service_unavailable": "Служба временно недоступна. Пожалуйста, попробуйте позже."
     },
     "account": {
-        "stopped": "Your account has been paused. Use /start to resume.",
-        "deleted": "Your account has been deleted. All your data has been removed.",
-        "reactivated": "Welcome back! Your account has been reactivated."
+        "stopped": "Ваша учетная запись была приостановлена. Используйте /start, чтобы возобновить.",
+        "deleted": "Ваша учетная запись была удалена. Все ваши данные были удалены.",
+        "reactivated": "С возвращением! Ваша учетная запись была реактивирована."
     },
     "proposals": {
-        "new_match": "New match found!\n\nTitle: {title}\nLocation: {location}\nDistance: {distance}km\nPrice: {price}",
-        "no_matches": "No new matches found. We'll notify you when something comes up!",
-        "daily_summary": "Daily Summary:\nNew matches: {count}\nUse /view to see them all"
+        "new_match": "Новая совпадение найдено!\n\nНазвание: {title}\nМестоположение: {location}\nРасстояние: {distance} км\nЦена: {price}",
+        "no_matches": "Новых совпадений не найдено. Мы уведомим вас, когда что-то появится!",
+        "daily_summary": "Ежедневный отчет:\nНовые совпадения: {count}\nИспользуйте /view, чтобы увидеть их все."
     },
     "navigation": {
-        "next": "Next →",
-        "previous": "← Previous",
-        "back": "← Back",
-        "done": "Done ✓"
+        "next": "Далее →",
+        "previous": "← Предыдущий",
+        "back": "← Назад",
+        "done": "Готово ✓"
     }
 }

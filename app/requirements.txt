@@ -1,8 +1,9 @@
-python-dotenv==1.0.0
-schedule==1.2.0
 python-telegram-bot==21.9
-beautifulsoup4==4.12.2
-requests==2.31.0
 pymongo==4.5.0
-DrissionPage
+requests==2.31.0
+googlemaps==4.1.0
+# python-dotenv==1.0.0
+# schedule==1.2.0
+# beautifulsoup4==4.12.2
+# DrissionPage
 # lxml==4.9.3
