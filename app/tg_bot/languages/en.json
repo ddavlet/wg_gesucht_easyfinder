@@ -1,6 +1,6 @@
 {
     "start": "Welcome! Use /help to see available commands.",
-    "help": "Here are the available commands:\n/start - Start the bot\n/help - Show this help message\n/register - Set your city\n/set_language - Change language\n/set_settings - Update your preferences\n/stop - Pause notifications\n/delete_account - Remove your account",
+    "help": "Here are the available commands:\n/start - Start the bot\n/help - Show this help message\n/set_language - Change your language\n/set_settings - Update your preferences\n/stop - Pause notifications\n/delete_account - Remove your account\n/about - Learn more about this bot\n/set_address - Set your address\n/set_distance - Set your search distance\n/set_new_finder - Create a new finder",
 
     "registration": {
         "already_registered": "You are already registered.",
@@ -8,7 +8,15 @@
         "address_prompt": "Please enter your full address (Street (house number), zip code city):",
         "distance_prompt": "How far would you like to search? (in km)"
     },
-
+    "new_finder": {
+        "new_finder_prompt": "Choose the type of travel you want to use:",
+        "walking": "Walking",
+        "biking": "Biking",
+        "driving": "Driving",
+        "public_transport": "Public transport",
+        "duration_prompt": "How long would you like to travel to the destination? (in minutes)",
+        "new_finder_success": "New finder created successfully!\n You will start receiving notifications soon."
+    },
     "settings": {
         "updated": "Your settings have been updated.",
         "language_changed": "Your language has been changed to English.",
@@ -35,13 +43,16 @@
         "invalid_distance": "Please enter a valid distance (1-100 km).",
         "missing_parameters": "Missing required information. Please try again.",
         "service_unavailable": "Service temporarily unavailable. Please try again later.",
-        "not_registered": "Please send /start to register and use the bot."
+        "not_registered": "Please send /start to register and use the bot.",
+        "wrong_duration": "Please enter a valid duration (1-100 minutes)."
     },
 
     "account": {
         "stopped": "Your account has been paused. Use /start to resume. Use /delete_account to delete your account.",
         "deleted": "Your account has been deleted. All your data has been removed.",
-        "reactivated": "Welcome back! Your account has been reactivated."
+        "reactivated": "Welcome back! Your account has been reactivated.",
+        "delete_confirmation": "Are you sure you want to delete your account? This action is irreversible.",
+        "delete_cancel": "Your account has not been deleted."
     },
 
     "proposals": {

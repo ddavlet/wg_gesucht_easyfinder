@@ -2,6 +2,7 @@ from typing import Dict, Optional
 import time
 from pymongo import MongoClient
 from database.database import validate_user_data, create_database
+from database.finder_manager import FinderManager
 
 
 db = create_database()
@@ -76,6 +77,19 @@ class UserManager:
         if chat_id in self.cached_users:
             del self.cached_users[chat_id]
             del self.last_access[chat_id]
-
+        # Delete all finders
+        finder_manager = FinderManager()
+        user_finders = finder_manager.get_finders(chat_id)
+        for finder in user_finders:
+            finder_manager.delete_finder(finder['finder_id'])
         # Remove from database
         self.users_collection.delete_one({'chat_id': chat_id})
+
+    def clean_expired_cache(self):
+        current_time = time.time()
+        expired_users = [chat_id for chat_id, last_access in self.last_access.items()
+                         if current_time - last_access >= self.cache_duration]
+
+        for chat_id in expired_users:
+            del self.cached_users[chat_id]
+            del self.last_access[chat_id]

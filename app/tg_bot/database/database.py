@@ -17,24 +17,16 @@ def create_database():
         db.create_collection('users')
         print("Created 'users' collection")
 
+    if 'finders' not in db.list_collection_names():
+        db.create_collection('finders')
+        print("Created 'finders' collection")
+
     print("Database initialized successfully")
     return db
 
-def validate_flat_offer(offer_data: Dict[str, Any]) -> bool:
-    """Validate flat offer data"""
-    required_fields = ['data_id', 'link', 'is_active', 'costs', 'address', 'availability', 'object_details', 'description']
-    for field in required_fields:
-        if field not in offer_data:
-            print(f"Validation error: Missing field {field}")
-            return False
-    if not isinstance(offer_data['is_active'], bool):
-        print("Validation error: 'is_active' must be a boolean")
-        return False
-    return True
-
 def validate_user_data(user_data: Dict[str, Any]) -> bool:
     """Validate user data"""
-    required_fields = ['chat_id', 'is_active', 'notification_settings', 'premium_subscription']
+    required_fields = ['chat_id', 'is_active', 'notifications', 'premium_subscription']
     for field in required_fields:
         if field not in user_data:
             print(f"Validation error: Missing field {field}")
@@ -45,13 +37,23 @@ def validate_user_data(user_data: Dict[str, Any]) -> bool:
     if not isinstance(user_data['is_active'], bool):
         print("Validation error: 'is_active' must be a boolean")
         return False
-    if not isinstance(user_data['notification_settings'], dict):
-        print("Validation error: 'notification_settings' must be a dictionary")
+    if not isinstance(user_data['notifications'], bool):
+        print("Validation error: 'notifications' must be a boolean")
         return False
     if not isinstance(user_data['premium_subscription'], bool):
         print("Validation error: 'premium_subscription' must be a boolean")
         return False
     return True
+
+def validate_finder_data(finder_data: Dict[str, Any]) -> bool:
+    """Validate finder data"""
+    required_fields = ['finder_id', 'type', 'duration', 'user_id']
+    for field in required_fields:
+        if field not in finder_data:
+            print(f"Validation error: Missing field {field}")
+            return False
+    return True
+
 
 def get_user_fields() -> Dict[str, Any]:
     """Return the fields for the users table"""
@@ -59,6 +61,7 @@ def get_user_fields() -> Dict[str, Any]:
         'chat_id': '',
         'is_active': True,
         'name': '',
+        'notifications': True,
         'preferences': {
             'address': '',
             'address_id': '',
@@ -70,8 +73,14 @@ def get_user_fields() -> Dict[str, Any]:
         'state': 'main'
     }
 
-
-
+def get_finder_fields() -> Dict[str, Any]:
+    """Return the fields for the finders table"""
+    return {
+        'finder_id': '',
+        'type': '',
+        'duration': -1,
+        'user_id': 0
+    }
 
 
 
