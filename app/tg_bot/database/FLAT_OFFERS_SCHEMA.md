@@ -6,28 +6,28 @@ This document describes the structure of documents in the `flat_offers` collecti
 
 ```json
 {
-"data_id": "string", // Unique identifier for the offer
-"link": "string", // URL to the original listing
-"is_active": "boolean", // Whether the offer is currently active
-"costs": {
-"rent": "string", // Base rent amount
-"additional_costs": "string", // Additional costs (Nebenkosten)
-"other_costs": "string", // Any other costs
-"deposit": "string", // Required deposit amount
-"transfer_agreement": "string", // Transfer agreement details
-"credit_check": "string" // Credit check requirements
-},
-"address": "string", // Property address
-"availability": {
-"available_from": "string", // Date when property becomes available
-"online": "string" // When the offer was posted online
-},
-"object_details": {
-"energy_efficiency_class": "string", // Energy rating
-"floor": "string", // Floor level
-"furnished": "string" // Furnishing status
-},
-"description": "string" // Full property description
+    "data_id": "string", // Unique identifier for the offer
+    "link": "string", // URL to the original listing
+    "is_active": "boolean", // Whether the offer is currently active
+    "costs": {
+    "rent": "string", // Base rent amount
+    "additional_costs": "string", // Additional costs (Nebenkosten)
+    "other_costs": "string", // Any other costs
+    "deposit": "string", // Required deposit amount
+    "transfer_agreement": "string", // Transfer agreement details
+    "credit_check": "string" // Credit check requirements
+    },
+    "address": "string", // Property address
+    "availability": {
+    "available_from": "string", // Date when property becomes available
+    "online": "string" // When the offer was posted online
+    },
+    "object_details": {
+    "energy_efficiency_class": "string", // Energy rating
+    "floor": "string", // Floor level
+    "furnished": "string" // Furnishing status
+    },
+    "description": "string" // Full property description
 }
 ```
 ## Field Descriptions

@@ -1,42 +1,103 @@
 {
-    "start": "Willkommen! Verwenden Sie /help, um die verfügbaren Befehle zu sehen.",
-    "help": "Hier sind die verfügbaren Befehle:\n/start - Starten Sie den Bot\n/help - Diese Hilfenachricht anzeigen\n/register - Ihre Stadt festlegen\n/set_language - Sprache ändern\n/set_settings - Ihre Einstellungen aktualisieren\n/stop - Benachrichtigungen pausieren\n/delete_account - Ihr Konto löschen",
-    "registration": {
-        "already_registered": "Sie sind bereits registriert.",
-        "success": "Registrierung erfolgreich! Bitte legen Sie Ihre Stadt mit /register [Stadtname] fest.",
-        "city_prompt": "Bitte geben Sie den Namen Ihrer Stadt ein:",
-        "distance_prompt": "Wie weit möchten Sie suchen? (in km)"
+    "account": {
+        "start": "Willkommen! Verwenden Sie /help, um die verfügbaren Befehle zu sehen.",
+        "stopped": "Ihr Konto wurde pausiert. Verwenden Sie /start, um fortzufahren. Verwenden Sie /delete_account, um Ihr Konto zu löschen.",
+        "deleted": "Ihr Konto wurde gelöscht. Alle Ihre Daten wurden entfernt.",
+        "reactivated": "Willkommen zurück! Ihr Konto wurde reaktiviert.",
+        "delete_confirmation": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion ist unwiderruflich.",
+        "delete_cancel": "Ihr Konto wurde nicht gelöscht."
+    },
+    "new_finder": {
+        "new_finder_prompt": "Wählen Sie den Typ der Reise, den Sie verwenden möchten:",
+        "walking": "Zu Fuß",
+        "bicycling": "Mit dem Fahrrad",
+        "driving": "Mit dem Auto",
+        "transit": "Öffentliche Verkehrsmittel",
+        "duration_prompt": "Wie lange möchten Sie zum Ziel reisen? (in Minuten)",
+        "new_finder_success": "Neuer Finder erfolgreich erstellt!\nSie werden bald Benachrichtigungen erhalten.",
+        "offer_type_prompt": "Wählen Sie den Typ des Angebots, den Sie verwenden möchten:"
     },
     "settings": {
         "updated": "Ihre Einstellungen wurden aktualisiert.",
         "language_changed": "Ihre Sprache wurde auf Deutsch geändert.",
-        "city_set": "Ihre Stadt wurde auf {city} festgelegt.",
-        "distance_set": "Ihr Suchradius wurde auf {distance} km festgelegt.",
-        "notifications_enabled": "Benachrichtigungen wurden aktiviert.",
-        "notifications_disabled": "Benachrichtigungen wurden deaktiviert.",
+        "address_prompt": "Bitte geben Sie Ihre Adresse im Format: 'Straße, Hausnummer, Postleitzahl' (nur für die Stadt München) ein:",
+        "address_set": {
+            "title": "Adresse erfolgreich gespeichert:\n",
+            "commands": "\n\nUm alle verfügbaren Befehle anzuzeigen, geben Sie /help ein."
+        },
+        "distance_set": {
+            "title": "Ihr Suchradius wurde auf:\n",
+            "commands": "\n\nUm alle verfügbaren Befehle anzuzeigen, geben Sie /help ein."
+        },
+        "notifications_set": {
+            "enabled": "Benachrichtigungen wurden aktiviert.",
+            "disabled": "Benachrichtigungen wurden deaktiviert."
+        },
         "choose_language": "Bitte wählen Sie Ihre bevorzugte Sprache:"
     },
     "errors": {
-        "unknown_command": "Entschuldigung, ich habe diesen Befehl nicht verstanden.",
-        "invalid_city": "Entschuldigung, ich konnte diese Stadt nicht finden. Bitte versuchen Sie es erneut.",
+        "unknown_command": "Entschuldigung, ich habe diesen Befehl nicht verstanden. Verwenden Sie /help, um die verfügbaren Befehle zu sehen.",
+        "invalid_address": {
+            "title": "Adresse ist ungültig, überprüfen Sie:",
+            "commands": "\n\nUm die Adresse festzulegen, geben Sie /set_address ein. Um alle verfügbaren Befehle anzuzeigen, geben Sie /help ein."
+        },
+        "wrong_address": "Die Adresse kann nicht validiert werden.",
         "invalid_distance": "Bitte geben Sie eine gültige Entfernung (1-100 km) ein.",
         "missing_parameters": "Fehlende erforderliche Informationen. Bitte versuchen Sie es erneut.",
-        "service_unavailable": "Dienst vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut."
-    },
-    "account": {
-        "stopped": "Ihr Konto wurde pausiert. Verwenden Sie /start, um fortzufahren.",
-        "deleted": "Ihr Konto wurde gelöscht. Alle Ihre Daten wurden entfernt.",
-        "reactivated": "Willkommen zurück! Ihr Konto wurde reaktiviert."
+        "service_unavailable": "Dienst vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
+        "not_registered": "Bitte senden Sie /start, um sich zu registrieren und den Bot zu verwenden.",
+        "wrong_duration": "Bitte geben Sie eine gültige Dauer (1-100 Minuten) ein.",
+        "no_offer": "Fehler beim Finden des Angebots.",
+        "no_offers_found": "Keine Angebote gefunden.",
+        "no_address_set": "Bitte setzen Sie zuerst Ihre Adresse. Verwenden Sie /set_address, um Ihre Adresse festzulegen."
     },
     "proposals": {
-        "new_match": "Neues Übereinstimmung gefunden!\n\nTitel: {title}\nStandort: {location}\nEntfernung: {distance} km\nPreis: {price}",
+        "new_match": {
+            "title": "Neues Übereinstimmung gefunden!\n\nTitel:",
+            "location": "\nStandort:",
+            "distance": "\nEntfernung:",
+            "price": "\nPreis:"
+        },
         "no_matches": "Keine neuen Übereinstimmungen gefunden. Wir benachrichtigen Sie, wenn etwas verfügbar ist!",
-        "daily_summary": "Tägliche Zusammenfassung:\nNeue Übereinstimmungen: {count}\nVerwenden Sie /view, um alle zu sehen."
+        "daily_summary": {
+            "title": "Tägliche Zusammenfassung:\nNeue Übereinstimmungen:\n",
+            "view": "\n\nVerwenden Sie /view, um alle zu sehen."
+        }
     },
     "navigation": {
         "next": "Nächste →",
         "previous": "← Vorherige",
         "back": "← Zurück",
         "done": "Fertig ✓"
+    },
+    "user_data": {
+        "start": "Benutzerdaten:\n",
+        "name": "\nName: ",
+        "address": "\nAdresse: ",
+        "distance": "\nEntfernung: ",
+        "notifications": "\nBenachrichtigungen: ",
+        "language": "\nSprache: ",
+        "finders": "\nFinder: ",
+        "next_finder": "\n\nFinder: ",
+        "end": "\n\nEnde der Daten."
+    },
+    "finder_data": {
+        "type": "\nTyp: ",
+        "duration": "\nDauer: ",
+        "id": "\nID: "
+    },
+    "offer_data": {
+        "start": "Angebot gefunden:\n",
+        "title": "\nTitel: ",
+        "location": "\n\nStandort: ",
+        "distance": "\n\nEntfernung: ",
+        "travel_type": "\n\nReiseart: ",
+        "rent": "\n\nMiete: ",
+        "link": "\n\nLink: "
+    },
+    "info_messages": {
+        "update": "Die Datenbank wird täglich aktualisiert.",
+        "no_offers": "Keine Angebote gemäß Ihren Suchkriterien gefunden.",
+        "help": "Verfügbare Befehle:\n\n/start - Bot starten\n/stop - Bot stoppen\n/delete_account - Ihr Konto löschen\n/set_language - Ihre Sprache festlegen\n/set_address - Ihre Adresse festlegen\n/set_new_finder - Neuen Finder festlegen\n/set_notifications - Benachrichtigungen festlegen\n/my_data - Ihre Benutzerdaten anzeigen\n/my_offers - Ihre Angebote anzeigen"
     }
 }

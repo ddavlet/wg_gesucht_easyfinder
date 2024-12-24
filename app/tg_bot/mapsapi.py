@@ -2,14 +2,20 @@ from datetime import datetime
 import requests
 import os
 import json
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class MapsAPI:
     def __init__(self):
         self.api_key = os.getenv('GOOGLE_MAPS_API_KEY')
         self.base_link = 'https://addressvalidation.googleapis.com/v1:validateAddress?key='
         self.full_link = self.base_link + self.api_key
+        logging.info("MapsAPI initialized with API key.")
 
-    def validate_address(self, address: str):
+    async def validate_address(self, address: str):
+        logging.info(f"Validating address: {address}")
         address_data = {
             "address": {
                 "regionCode": "DE",
@@ -23,24 +29,26 @@ class MapsAPI:
             to_check = result['result']['address']['addressComponents']
             for component in to_check:
                 if component['confirmationLevel'] != 'CONFIRMED':
+                    logging.warning(f"Address component not confirmed: {component}")
                     return component, False
+            logging.info("Address validation successful.")
             return result, True
         else:
+            logging.error(f"Address validation failed with status code: {addressvalidation_result.status_code}")
             return None, False
 
-
-    def directions(self, origin_id: str, dest):
-        dest, result_destination = self.validate_address(dest)
-        if not result_destination:
-            return dest, False
-        destination_id = dest['result']['geocode']['placeId']
-        query = f"?origin=place_id:{origin_id}&destination=place_id:{destination_id}&mode=transit&key={self.api_key}"
+    async def directions(self, origin: str, dest: str, mode: str = 'transit'):
+        logging.info(f"Fetching directions from {origin} to {dest} with mode {mode}.")
+        query = f"?origin={origin}&destination={dest}&mode={mode}&key={self.api_key}"
         directions_result = requests.get(f'https://maps.googleapis.com/maps/api/directions/json{query}')
         if directions_result.status_code == 200:
-            return directions_result.json(), True
+            logging.info("Directions fetched successfully.")
+            return directions_result.json()
         else:
-            return None, False
+            logging.error(f"Failed to fetch directions with status code: {directions_result.status_code}")
+            return None
 
+maps_api = MapsAPI()
 
 # # Test validation
 # result, is_valid = maps_api.validate_address('Ludwigshöher 42 81479')
@@ -54,6 +62,7 @@ class MapsAPI:
 
 # # Test directions
 # orig_id = result['result']['geocode']['placeId']
+
 
 # result, is_valid = maps_api.directions(orig_id, 'Heidemannstraße 220, 80939')
 # if is_valid and result:

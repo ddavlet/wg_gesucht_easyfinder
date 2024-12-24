@@ -2,8 +2,6 @@ from typing import Dict, Optional, List
 import time
 from datetime import datetime, timedelta
 from decimal import Decimal
-from pymongo import MongoClient
-import os
 from database.database import create_database, validate_flat_offer
 
 
@@ -35,7 +33,7 @@ class FlatOffersManager:
                 del self.last_access[data_id]
 
         # Get from database
-        offer = self.offers_collection.find_one({'data-id': data_id})
+        offer = self.offers_collection.find_one({'data_id': data_id})
         if offer:
             self.cached_offers[data_id] = offer
             self.last_access[data_id] = current_time
@@ -44,7 +42,7 @@ class FlatOffersManager:
 
     def save_offer(self, offer_data: dict):
         """Save a new flat offer if it doesn't already exist"""
-        data_id: str = offer_data['data-id']
+        data_id: str = offer_data['data_id']
         if not validate_flat_offer(offer_data):
             print("Invalid offer data")
             return False
@@ -65,7 +63,7 @@ class FlatOffersManager:
 
         # Update database
         self.offers_collection.update_one(
-            {'data-id': data_id},
+            {'data_id': data_id},
             {'$set': offer_data},
             upsert=True
         )
@@ -76,7 +74,7 @@ class FlatOffersManager:
         if offer:
             offer['is_active'] = False
             self.offers_collection.update_one(
-                {'data-id': data_id},
+                {'data_id': data_id},
                 {'$set': {'is_active': False}}
             )
             # Remove from cache
@@ -92,7 +90,7 @@ class FlatOffersManager:
             del self.last_access[data_id]
 
         # Remove from database
-        self.offers_collection.delete_one({'data-id': data_id})
+        self.offers_collection.delete_one({'data_id': data_id})
 
     def find_matching_offers(self, user_settings: dict) -> List[dict]:
         """Find offers matching user preferences"""
@@ -137,7 +135,7 @@ class FlatOffersManager:
         })
 
         for offer in old_offers:
-            self.deactivate_offer(offer['data-id'])
+            self.deactivate_offer(offer['data_id'])
 
     def get_offers_by_price_range(self, min_price: float, max_price: float) -> List[dict]:
         """Get active offers within price range"""
@@ -151,7 +149,7 @@ class FlatOffersManager:
     def update_offer_data(self, data_id: str, updated_data: dict) -> bool:
         """Update offer data by data_id"""
         result = self.offers_collection.update_one(
-            {'data-id': data_id},
+            {'data_id': data_id},
             {'$set': updated_data}
         )
         return result.modified_count > 0

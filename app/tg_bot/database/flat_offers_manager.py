@@ -2,10 +2,11 @@ from typing import Dict, Optional, List
 import time
 from datetime import datetime, timedelta
 from decimal import Decimal
-from pymongo import MongoClient
-import os
 from database.database import create_database, validate_flat_offer
+import logging  # Import logging module
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 db = create_database()
 
@@ -20,8 +21,9 @@ class FlatOffersManager:
         self.cached_offers: Dict[str, dict] = {}
         self.last_access: Dict[str, float] = {}
         self.cache_duration = 600  # 10 minutes in seconds
+        logging.info("FlatOffersManager initialized")  # Log initialization
 
-    def get_offer(self, data_id: str) -> Optional[dict]:
+    async def get_offer(self, data_id: str) -> Optional[dict]:
         current_time = time.time()
 
         # Check if offer is in cache and still fresh
@@ -35,18 +37,18 @@ class FlatOffersManager:
                 del self.last_access[data_id]
 
         # Get from database
-        offer = self.offers_collection.find_one({'data-id': data_id})
+        offer = self.offers_collection.find_one({'data_id': data_id})
         if offer:
             self.cached_offers[data_id] = offer
             self.last_access[data_id] = current_time
             return offer
         return None
 
-    def save_offer(self, offer_data: dict):
+    async def save_offer(self, offer_data: dict):
         """Save a new flat offer if it doesn't already exist"""
-        data_id: str = offer_data['data-id']
+        data_id: str = offer_data['data_id']
         if not validate_flat_offer(offer_data):
-            print("Invalid offer data")
+            logging.warning("Invalid offer data")  # Log warning for invalid data
             return False
         # Check if the offer already exists
         existing_offer = self.get_offer(data_id)
@@ -65,18 +67,18 @@ class FlatOffersManager:
 
         # Update database
         self.offers_collection.update_one(
-            {'data-id': data_id},
+            {'data_id': data_id},
             {'$set': offer_data},
             upsert=True
         )
         return True # Return True if the offer was saved
-    def deactivate_offer(self, data_id: str):
+    async def deactivate_offer(self, data_id: str):
         """Mark an offer as inactive"""
-        offer = self.get_offer(data_id)
+        offer = await self.get_offer(data_id)
         if offer:
             offer['is_active'] = False
             self.offers_collection.update_one(
-                {'data-id': data_id},
+                {'data_id': data_id},
                 {'$set': {'is_active': False}}
             )
             # Remove from cache
@@ -84,7 +86,7 @@ class FlatOffersManager:
                 del self.cached_offers[data_id]
                 del self.last_access[data_id]
 
-    def delete_offer(self, data_id: str):
+    async def delete_offer(self, data_id: str):
         """Permanently delete an offer"""
         # Remove from cache
         if data_id in self.cached_offers:
@@ -92,9 +94,9 @@ class FlatOffersManager:
             del self.last_access[data_id]
 
         # Remove from database
-        self.offers_collection.delete_one({'data-id': data_id})
+        self.offers_collection.delete_one({'data_id': data_id})
 
-    def find_matching_offers(self, user_settings: dict) -> List[dict]:
+    async def find_matching_offers(self, user_settings: dict) -> List[dict]:
         """Find offers matching user preferences"""
         query = {'is_active': True}
 
@@ -122,11 +124,11 @@ class FlatOffersManager:
 
         return list(offers)
 
-    def get_active_offers_count(self) -> int:
+    async def get_active_offers_count(self) -> int:
         """Get count of active offers"""
-        return self.offers_collection.count_documents({'is_active': True})
+        return await self.offers_collection.count_documents({'is_active': True})
 
-    def cleanup_old_offers(self, days: int = 30):
+    async def cleanup_old_offers(self, days: int = 30):
         """Deactivate offers older than specified days"""
         cutoff_date = datetime.utcnow() - timedelta(days=days)
 
@@ -137,9 +139,9 @@ class FlatOffersManager:
         })
 
         for offer in old_offers:
-            self.deactivate_offer(offer['data-id'])
+            self.deactivate_offer(offer['data_id'])
 
-    def get_offers_by_price_range(self, min_price: float, max_price: float) -> List[dict]:
+    async def get_offers_by_price_range(self, min_price: float, max_price: float) -> List[dict]:
         """Get active offers within price range"""
         query = {
             'is_active': True,
@@ -148,10 +150,14 @@ class FlatOffersManager:
                 '$lte': Decimal(str(max_price))
             }
         }
-    def update_offer_data(self, data_id: str, updated_data: dict) -> bool:
+    async def update_offer_data(self, data_id: str, updated_data: dict) -> bool:
         """Update offer data by data_id"""
         result = self.offers_collection.update_one(
-            {'data-id': data_id},
+            {'data_id': data_id},
             {'$set': updated_data}
         )
         return result.modified_count > 0
+
+    async def get_active_offers(self) -> List[dict]:
+        """Get active offers"""
+        return list(self.offers_collection.find({'is_active': True}))

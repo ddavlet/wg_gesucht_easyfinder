@@ -4,9 +4,10 @@ from typing import Dict, Any
 
 def create_database():
     """Create and initialize the database"""
-    MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://admin:your_mongodb_password@localhost:27017')
+    MONGODB_URI = os.getenv('MONGODB_URI')
+    MONGO_DB_NAME = os.getenv('MONGO_DB_NAME')
     client = MongoClient(MONGODB_URI)
-    db = client[os.getenv('MONGO_DB_NAME', 'app_db')]
+    db = client[MONGO_DB_NAME]
 
     # Create collections if they don't exist
     if 'flat_offers' not in db.list_collection_names():
@@ -14,6 +15,8 @@ def create_database():
         print("Created 'flat_offers' collection")
 
     print("Database initialized successfully")
+
+    return db
 
 def validate_flat_offer(offer_data: Dict[str, Any]) -> bool:
     """Validate flat offer data"""
@@ -36,6 +39,7 @@ def get_flat_offer_fields() -> Dict[str, Any]:
         'name': '',
         'area': '',
         'images': [],
+        'type': '',
         'costs': {
             'rent': '0',
             'additional_costs': '0',

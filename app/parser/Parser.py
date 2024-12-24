@@ -3,11 +3,16 @@ from time import sleep
 from DrissionPage import ChromiumPage
 from database.flat_offers_manager import FlatOffersManager
 from database.database import get_flat_offer_fields
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Parser:
-    def __init__(self, driver: ChromiumPage, flat_offers_manager: FlatOffersManager):
+    def __init__(self, driver: ChromiumPage, flat_offers_manager: FlatOffersManager, type: str):
         self.driver = driver
         self.flat_offers_manager = flat_offers_manager
+        self.type = type
         self.driver.ele('tag:input@id:search_button').click()
 
     def get_page(self, url):
@@ -23,8 +28,8 @@ class Parser:
         id = id.split(' ')[1]
         link = page.url
         offer_fields = get_flat_offer_fields()
-
-        offer_fields['data-id'] = id
+        offer_fields['type'] = self.type
+        offer_fields['data_id'] = id
         offer_fields['link'] = link
         offer_fields['is_active'] = True
 
@@ -32,14 +37,13 @@ class Parser:
 
     def get_offer_details(self, page, offer_data):
         sleep(3)
-        # print(self.driver)
         data = offer_data
-        # print(new_tab.html)
+        logging.info('Fetching offer details...')
         main_column = page.ele('tag:div@id=main_column')
         row_main_column = main_column.ele('tag:div@class=row')
 
         # First row
-        print('First row')
+        logging.info('First row')
         data['name'] = row_main_column.ele('tag:h1', timeout=3).text
         image_elements = row_main_column.eles('tag:img@class=sp-image')
         for image_element in image_elements:
@@ -49,11 +53,10 @@ class Parser:
         data['area'] = section_footer_dark.ele('tag:b@text():m²').text
         data['costs']['rent'] = section_footer_dark.ele('tag:b@text():€').text
 
-
         row_main_column = row_main_column.next()
 
         # Second row
-        print('Second row')
+        logging.info('Second row')
         try:
             row = row_main_column.ele('tag:div@class=row')
             rows = row.eles('tag:div@class=row')
@@ -66,16 +69,14 @@ class Parser:
                 if count == 5:
                     break
         except Exception as e:
-            print("Error getting costs: ", e)
-            print("Error in: ")
-            print(row.html)
+            logging.error("Error getting costs: %s", e)
+            logging.error("Error in: %s", row.html)
             raise e
-
 
         row_main_column = row_main_column.next()
 
         # Third row
-        print('Third row')
+        logging.info('Third row')
         row = row_main_column.ele('tag:div@class=row')
         rows = row.eles('tag:div@class=row')
         data['address'] = rows[0].ele('tag:span@class=section_panel_detail').text
@@ -89,33 +90,28 @@ class Parser:
                     name = row.ele('tag:span@class=noprint section_panel_detail')
                     data['availability'][name.text] = row.ele('tag:b@class=noprint').text
                 except Exception as e:
-                    print("Error getting availability: ", e)
-                    print("Error in: ")
-                    print(row.html)
-                    print("Continuing...")
-
+                    logging.error("Error getting availability: %s", e)
+                    logging.error("Error in: %s", row.html)
+                    logging.info("Continuing...")
 
         row_main_column = row_main_column.next().next()
 
         # Fifth row
-        print('Fifth row')
+        logging.info('Fifth row')
         try:
             row = row_main_column.ele('tag:div@class=row')
             details = row.eles('tag:div@class=text-center')
             for detail in details:
                 data['object_details'].append(detail.text)
         except Exception as e:
-            print("Error getting object details: ", e)
-            print("Error in: ")
-            print(row.html)
+            logging.error("Error getting object details: %s", e)
+            logging.error("Error in: %s", row.html)
             raise e
-
 
         row_main_column = row_main_column.next().next()
 
         # Sixth row
-        print('Sixth row')
-        # print(row_main_column.html)
+        logging.info('Sixth row')
         row = row_main_column.ele('tag:div@class=row')
         descriptions = row.eles('tag:div@id:freitext_')
         for description in descriptions:
@@ -123,44 +119,41 @@ class Parser:
 
         # Save offer
         self.flat_offers_manager.save_offer(data)
-        print("New offer saved, id: ", data['data-id'])
+        logging.info("New offer saved, id: %s", data['data_id'])
 
     def parse_ads(self):
-        # ads = self.get_ads()
         for i in range(2):
             sleep(5)
-            print("Parsing page: ", i)
+            logging.info("Parsing page: %d", i)
             offers = self.driver.eles('@class:truncate_title noprint')
-            print("offers received, number of offers on page: ", len(offers))
-            print('--------------------------------')
+            logging.info("Offers received, number of offers on page: %d", len(offers))
+            logging.info('--------------------------------')
             for offer in offers:
                 offer = offer.ele('tag:a')
-                print("offer clicked")
+                logging.info("Offer clicked")
                 new_tab = self.driver.new_tab(offer.attr('href'))
                 sleep(5)
                 try:
                     offer_data = self.get_ad_data(new_tab)
-                    print("offer_data_received")
+                    logging.info("Offer data received")
                     sleep(3)
-                    if not self.flat_offers_manager.get_offer(offer_data['data-id']):
-                        print("Offer with id: ", offer_data['data-id'], " does not exist")
+                    if not self.flat_offers_manager.get_offer(offer_data['data_id']):
+                        logging.info("Offer with id: %s does not exist", offer_data['data_id'])
                         try:
                             self.get_offer_details(new_tab, offer_data)
-                            print("Offer with id: ", offer_data['data-id'], " created")
+                            logging.info("Offer with id: %s created", offer_data['data_id'])
                         except Exception as e:
-                            print("Error getting offer details: ", e)
-                            print("Skipping offer with id: ", offer_data['data-id'])
+                            logging.error("Error getting offer details: %s", e)
+                            logging.info("Skipping offer with id: %s", offer_data['data_id'])
                         sleep(3)
                     else:
-                        print("Offer with id: ", offer_data['data-id'], " already exists")
+                        logging.info("Offer with id: %s already exists", offer_data['data_id'])
                 except Exception as e:
-                    print('skipped')
-                    print(e)
+                    logging.error('Skipped: %s', e)
                     raise e
-                print("new_tab closing")
-                print('--------------------------------')
+                logging.info("New tab closing")
+                logging.info('--------------------------------')
                 new_tab.close()
 
-            print(self.driver.url)
+            logging.info(self.driver.url)
             self.driver.ele('tag:a@class:page-link next').click()
-        # print(element)

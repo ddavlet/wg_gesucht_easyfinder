@@ -1,42 +1,129 @@
 {
-    "start": "Добро пожаловать! Используйте /help, чтобы увидеть доступные команды.",
-    "help": "Вот доступные команды:\n/start - Запустить бота\n/help - Показать это сообщение помощи\n/register - Установить ваш город\n/set_language - Изменить язык\n/set_settings - Обновить ваши предпочтения\n/stop - Приостановить уведомления\n/delete_account - Удалить вашу учетную запись",
-    "registration": {
-        "already_registered": "Вы уже зарегистрированы.",
-        "success": "Регистрация успешна! Пожалуйста, установите ваш город с помощью /register [название города]",
-        "city_prompt": "Пожалуйста, введите название вашего города:",
-        "distance_prompt": "Как далеко вы хотите искать? (в км)"
+    "start": {
+        "text_new_profile": "New profile created.",
+        "text_reactivated_profile": "Welcome back! Your account has been reactivated."
     },
-    "settings": {
-        "updated": "Ваши настройки были обновлены.",
-        "language_changed": "Ваш язык был изменен на русский.",
-        "city_set": "Ваш город установлен на {city}.",
-        "distance_set": "Ваш радиус поиска установлен на {distance} км.",
-        "notifications_enabled": "Уведомления были включены.",
-        "notifications_disabled": "Уведомления были отключены.",
-        "choose_language": "Пожалуйста, выберите ваш предпочтительный язык:"
+    "main": {
+        "text": "This bot is designed to help you find the perfect flat or house for rent or purchase in Munich. It uses the ImmoScout24 API to search for properties based on your search criteria and sends you notifications when new offers match your search criteria. You can also set up multiple finders to search for different types of properties or different areas. You can also set up multiple finders to search for different types of properties or different areas.",
+        "keyboard": {
+            "my_data": "My profile information",
+            "my_finders": "List my finders",
+            "my_offers": "Find my offers",
+            "settings": "Settings",
+            "help": "Help",
+            "stop": "Stop",
+            "delete_account": "Delete account"
+        }
     },
-    "errors": {
-        "unknown_command": "Извините, я не понял эту команду.",
-        "invalid_city": "Извините, я не смог найти этот город. Пожалуйста, попробуйте снова.",
-        "invalid_distance": "Пожалуйста, введите допустимое расстояние (1-100 км).",
-        "missing_parameters": "Отсутствует необходимая информация. Пожалуйста, попробуйте снова.",
-        "service_unavailable": "Служба временно недоступна. Пожалуйста, попробуйте позже."
+    "settings_new": {
+        "text": "Here you can set your preferences for the bot. You can set your address, distance, notifications, language, and more.",
+        "keyboard": {
+            "set_language": "Set language",
+            "set_address": "Set address",
+            "set_new_finder": "Set new finder",
+            "set_notifications": "Set notifications",
+            "delete_finder": "Delete finder"
+        }
     },
     "account": {
-        "stopped": "Ваша учетная запись была приостановлена. Используйте /start, чтобы возобновить.",
-        "deleted": "Ваша учетная запись была удалена. Все ваши данные были удалены.",
-        "reactivated": "С возвращением! Ваша учетная запись была реактивирована."
+        "start": "Welcome! Use /help to see available commands.",
+        "stopped": "Your account has been paused. Use /start to resume. Use /delete_account to delete your account.",
+        "deleted": "Your account has been deleted. All your data has been removed.",
+        "reactivated": "Welcome back! Your account has been reactivated.",
+        "delete_confirmation": "Are you sure you want to delete your account? This action is irreversible.",
+        "delete_cancel": "Your account has not been deleted."
+    },
+    "new_finder": {
+        "new_finder_prompt": "Choose the type of travel you want to use:",
+        "walking": "Walking",
+        "bicycling": "Bicycling",
+        "driving": "Driving",
+        "transit": "Public transport",
+        "duration_prompt": "How long would you like to travel to the destination? (in minutes)",
+        "new_finder_success": "New finder created successfully!\n You will start receiving notifications soon.",
+        "offer_type_prompt": "Choose the type of offer you want to use:"
+    },
+    "settings": {
+        "updated": "Your settings have been updated.",
+        "language_changed": "Your language has been changed to English.",
+        "address_prompt": "Please enter your address in the format: 'Street, House Number, Postal Code' (Munich city only):",
+        "address_set": {
+            "title": "Address is saved successfully:\n",
+            "commands": "\n\nTo see all available commands type /help"
+        },
+        "distance_set": {
+            "title": "Your search distance has been set to:\n",
+            "commands": "\n\nTo see all available commands type /help"
+        },
+        "notifications_set": {
+            "enabled": "Notifications have been enabled.",
+            "disabled": "Notifications have been disabled."
+        },
+        "choose_language": "Please choose your preferred language:"
+    },
+    "errors": {
+        "unknown_command": "Sorry, I didn't understand that command. Use /help to see available commands.",
+        "invalid_address": {
+            "title": "Address is not valid, check:",
+            "commands": "\n\nTo set address type /set_address. To see all available commands type /help"
+        },
+        "wrong_address": "Address cannot be validated.",
+        "invalid_distance": "Please enter a valid distance (1-100 km).",
+        "missing_parameters": "Missing required information. Please try again.",
+        "service_unavailable": "Service temporarily unavailable. Please try again later.",
+        "not_registered": "Please send /start to register and use the bot.",
+        "wrong_duration": "Please enter a valid duration (1-100 minutes).",
+        "no_offer": "Error finding offer.",
+        "no_offers_found": "No offers found.",
+        "no_address_set": "Please set your address first. Use /set_address to set your address."
     },
     "proposals": {
-        "new_match": "Новая совпадение найдено!\n\nНазвание: {title}\nМестоположение: {location}\nРасстояние: {distance} км\nЦена: {price}",
-        "no_matches": "Новых совпадений не найдено. Мы уведомим вас, когда что-то появится!",
-        "daily_summary": "Ежедневный отчет:\nНовые совпадения: {count}\nИспользуйте /view, чтобы увидеть их все."
+        "new_match": {
+            "title": "New match found!\n\nTitle:",
+            "location": "\nLocation:",
+            "distance": "\nDistance:",
+            "price": "\nPrice:"
+        },
+        "no_matches": "No new matches found. We'll notify you when something comes up!",
+        "daily_summary": {
+            "title": "Daily Summary:\nNew matches:\n",
+            "view": "\n\nUse /view to see them all"
+        }
     },
     "navigation": {
-        "next": "Далее →",
-        "previous": "← Предыдущий",
-        "back": "← Назад",
-        "done": "Готово ✓"
+        "next": "Next →",
+        "previous": "← Previous",
+        "back": "← Back",
+        "done": "Done ✓"
+    },
+    "user_data": {
+        "start": "User data:\n",
+        "name": "\nName: ",
+        "address": "\nAddress: ",
+        "distance": "\nDistance: ",
+        "notifications": "\nNotifications: ",
+        "language": "\nLanguage: ",
+        "finders": "\nFinders: ",
+        "next_finder": "\n\nfinder: ",
+        "end": "\n\nEnd of data."
+    },
+    "finder_data": {
+        "type": "\nType: ",
+        "duration": "\nDuration: ",
+        "id": "\nID: "
+    },
+    "offer_data": {
+        "start": "Offer found:\n",
+        "title": "\nTitle: ",
+        "location": "\n\nLocation: ",
+        "distance": "\n\nDistance: ",
+        "travel_type": "\n\nTravel type: ",
+        "rent": "\n\nRent: ",
+        "link": "\n\nLink: "
+    },
+    "info_messages": {
+        "update": "Database is updated every day.",
+        "no_offers": "No offers according to your search criteria found.",
+        "help": "Available commands:\n\n/start - Start the bot\n/stop - Stop the bot\n/delete_account - Delete your account\n/set_language - Set your language\n/set_address - Set your address\n/set_new_finder - Set a new finder\n/set_notifications - Set notifications\n/my_data - View your user data\n/my_offers - View your offers\n/delete_finder - Delete a finder"
     }
 }

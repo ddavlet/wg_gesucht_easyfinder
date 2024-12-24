@@ -1,3 +1,7 @@
 __pycache__
 *.pyc
 .env
+dat.txt
+to-do.md
+to-do*
+FLAT_OFFERS_SCHEMA.md
