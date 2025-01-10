@@ -73,7 +73,7 @@ async def send_message(bot: Bot, update: Update, user_data: dict, state: str = N
         keyboard_texts = {'main': 'Main menu'}
     keyboard = await create_keyboard(keyboard_texts)
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await bot.edit_message_text(chat_id=user_data['chat_id'], message_id=message_id, text=text, reply_markup=reply_markup)
+    await bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=message_id, text=text, reply_markup=reply_markup)
     logging.info("Message edited with new text and reply markup.")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -122,24 +122,20 @@ async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text=text_lang['account']['stopped']
     )
     return None, None
-async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+async def set_language(user_data):
     logging.info("Set language command received.")
-    chat_id = update.effective_chat.id
+    chat_id = user_data.get('chat_id', 0)
     logging.info(f"Chat ID: {chat_id}")
-    user_data = await user_manager.get_user(chat_id)
     logging.info(f"User data: {user_data}")
     if not user_data:
         logging.warning(f"No user data found for chat ID: {chat_id}")
         return
     text_lang = eval(f"{user_data['language']}_texts")
-    keyboard = [
-        [InlineKeyboardButton("English", callback_data='lang_en')],
-        [InlineKeyboardButton("Deutsch", callback_data='lang_de')],
-        [InlineKeyboardButton("Русский", callback_data='lang_ru')]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    await context.bot.send_message(chat_id=chat_id, text=text_lang['settings']['choose_language'], reply_markup=reply_markup)
+    text = text_lang['language_choose_menu'].get('text')
+    keyboard = text_lang['language_choose_menu'].get('keyboard')
     logging.info("Language selection keyboard sent.")
+    return text, keyboard
 
 async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info("Callback handler triggered.")
@@ -168,7 +164,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logging.info("Finder type selection requested.")
         new_finder = get_finder_fields()
         new_finder['type'] = query.data.split('_')[2]
-        new_finder['user_id'] = user_data['chat_id']
+        new_finder['user_id'] = user_data.get('chat_id', 0)
         new_finder['finder_id'] = await finder_manager.generate_finder_id()
         await finder_manager.save_finder(chat_id, new_finder['finder_id'], new_finder)
         user_data['finder_id'] = new_finder['finder_id']
@@ -363,7 +359,7 @@ async def set_notifications_command(update: Update, context: ContextTypes.DEFAUL
     await context.bot.send_message(chat_id=chat_id, text=text_lang['settings']['notifications_set']['enabled'] if user_data['preferences']['notifications'] else text_lang['settings']['notifications_set']['disabled'])
 
 async def get_user_data(user_data):
-    chat_id = user_data['chat_id']
+    chat_id = user_data.get('chat_id', 0)
     logging.info(f"Getting user data for chat ID: {chat_id}")
     user_data = await user_manager.get_user(chat_id)
     if not user_data:
@@ -381,8 +377,8 @@ async def get_user_data(user_data):
         text_lang['user_data']['finders']
     )
 
-    finders = await finder_manager.get_finders_by_user(user_data['chat_id'])
-    logging.info(f"Found {len(finders)} finders for user ID: {user_data['chat_id']}")
+    finders = await finder_manager.get_finders_by_user(user_data.get('chat_id', 0))
+    logging.info(f"Found {len(finders)} finders for user ID: {user_data.get('chat_id', 0)}")
     for finder in finders:
         response += text_lang['user_data']['next_finder']
         response += text_lang['finder_data']['type'] + finder['type']
@@ -393,9 +389,9 @@ async def get_user_data(user_data):
     logging.info(f"User data sent to chat ID: {chat_id}")
     return response, None
 
-async def get_my_offers(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def get_my_offers(user_data):
     logging.info("Get my offers command received.")
-    chat_id = update.effective_chat.id
+    chat_id = user_data.get('chat_id', 0)
     logging.info(f"Chat ID: {chat_id}")
     user_data = await user_manager.get_user(chat_id)
     logging.info(f"User data: {user_data}")
@@ -405,24 +401,22 @@ async def get_my_offers(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text_lang = eval(f"{user_data['language']}_texts")
     if user_data['preferences']['address'] == '':
         logging.info("No address set, sending error message.")
-        await context.bot.send_message(chat_id=chat_id, text=text_lang['errors']['no_address_set'])
-        return
+        return text_lang['errors']['no_address_set'], None
     logging.info("Retrieving offers for finders.")
-    finders = await finder_manager.get_finders_by_user(user_data['chat_id'])
+    finders = await finder_manager.get_finders_by_user(user_data.get('chat_id', 0))
     for finder in finders:
         await finder_manager.find_offers(finder, user_data['preferences']['address'])
     logging.info("Retrieving offers for user.")
-    offers_ids = await finder_manager.get_findings_by_user(user_data['chat_id'])
+    offers_ids = await finder_manager.get_findings_by_user(user_data.get('chat_id', 0))
     logging.info(f"Offers IDs: {offers_ids}")
     if not offers_ids:
-        await context.bot.send_message(chat_id=chat_id, text=text_lang['errors']['no_offers_found'])
         logging.info(f"No offers found for user {chat_id}.")
-        return
+        return text_lang['errors']['no_offers_found'], None
 
     for offer_id in offers_ids:
         offer = await flat_offers_manager.get_offer(offer_id)
         if offer is None:
-            logging.warning(f"Offer not found for ID {offer_id}, user: {user_data['chat_id']}")
+            logging.warning(f"Offer not found for ID {offer_id}, user: {user_data.get('chat_id', 0)}")
             continue
         response = (
             text_lang['offer_data']['start'] +
@@ -461,16 +455,22 @@ async def main_menu_callback_handler(update: Update, context: ContextTypes.DEFAU
     command_type = query.data.split('_')[2]
     logging.info(f"Command type: {command_type}")
     if command_type == 'mydata':
+        logging.info('get_my_data mathced')
         await send_message(context.bot, update, user_data, 'get_user_data')
     elif command_type == 'myfinders':
-        await send_message(context.bot, update, user_data, 'my_finders')
+        logging.info('get_my_finders mathced')
+        await send_message(context.bot, update, user_data, 'get_my_finders')
     elif command_type == 'myoffers':
-        await send_message(context.bot, update, user_data, 'my_offers')
+        logging.info('get_my_offers mathced')
+        await send_message(context.bot, update, user_data, 'get_my_offers')
     elif command_type == 'settings':
-        await send_message(context.bot, update, user_data, 'settings')
+        logging.info('settings_menu mathced')
+        await send_message(context.bot, update, user_data, 'settings_menu')
     elif command_type == 'help':
+        logging.info('help mathced')
         await send_message(context.bot, update, user_data, 'help')
     elif command_type == 'stop':
+        logging.info('stop mathced')
         await send_message(context.bot, update, user_data, 'stop')
 
 async def return_to_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -480,32 +480,74 @@ async def return_to_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
         logging.warning(f"No user data found for chat ID: {update.effective_chat.id}")
         return
     text_lang = eval(f"{user_data['language']}_texts")
-    await context.bot.edit_message_text(chat_id=user_data['chat_id'], message_id=update.callback_query.message.message_id, text=text_lang['main']['text'], reply_markup=InlineKeyboardMarkup(await create_keyboard(text_lang['main']['keyboard'])))
+    await context.bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=update.callback_query.message.message_id, text=text_lang['main']['text'], reply_markup=InlineKeyboardMarkup(await create_keyboard(text_lang['main']['keyboard'])))
 
+async def settings_menu(user_data):
+    logging.info('Settings menu command recieved.')
+    chat_id = user_data.get('chat_id', 0)
+    logging.info(f"Chat ID: {chat_id}")
+    user_data = await user_manager.get_user(chat_id)
+    logging.info(f"User data: {user_data}")
+    if not user_data:
+        logging.warning(f"No user data found for chat ID: {chat_id}")
+        return
+    text_lang = eval(f"{user_data['language']}_texts")
+    response = text_lang['settings_menu']['text']
+    keyboard = text_lang['settings_menu'].get('keyboard', None)
+    return response, keyboard
+
+async def settings_menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logging.info("Callback handler triggered.")
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    logging.info(f"Chat ID: {chat_id}, Query data: {query.data}")
+    await query.answer()
+    user_data = await user_manager.get_user(chat_id)
+    if not user_data:
+        logging.warning(f"No user data found for chat ID: {chat_id}")
+        return
+    command_type = query.data.split('_')[1]
+    logging.info(f"Command type: {command_type}")
+    if command_type == 'setlanguage':
+        logging.info('set_language matched')
+        await send_message(context.bot, update, user_data, 'set_language')
+    elif command_type == 'setaddress':
+        pass
+    elif command_type == 'setnewfinder':
+        pass
+    elif command_type == 'setnotifications':
+        pass
+    elif command_type == 'deletefinder':
+        pass
+    elif command_type == 'deleteaccount':
+        pass
+    elif command_type == 'back':
+        pass
 # Initialize bot with application builder
 application = ApplicationBuilder().token(TOKEN).build()
-
 # Account handlers
 application.add_handler(CommandHandler("start", start))
 application.add_handler(CommandHandler("stop", stop))
 application.add_handler(CommandHandler("delete_account", delete_account))
 
 # Settings handlers
-application.add_handler(CommandHandler("set_language", set_language))
+# application.add_handler(CommandHandler("set_language", set_language))
 application.add_handler(CommandHandler("set_address", set_address_command))
 application.add_handler(CommandHandler("set_new_finder", set_new_finder_command))
 application.add_handler(CommandHandler("help", help_command))
 application.add_handler(CommandHandler("set_notifications", set_notifications_command))
-application.add_handler(CommandHandler("my_data", get_user_data))
-application.add_handler(CommandHandler("my_offers", get_my_offers))
+# application.add_handler(CommandHandler("my_data", get_user_data))
+# application.add_handler(CommandHandler("my_offers", get_my_offers))
 application.add_handler(CommandHandler("delete_finder", delete_finder))
 
 # Callback handlers
 application.add_handler(CallbackQueryHandler(callback_handler, pattern='^lang_'))
 application.add_handler(CallbackQueryHandler(callback_handler, pattern='^finder_type_'))
 application.add_handler(CallbackQueryHandler(callback_handler, pattern='^offer_type_'))
-application.add_handler(CallbackQueryHandler(callback_handler, pattern='^delete_account_'))
+# application.add_handler(CallbackQueryHandler(callback_handler, pattern='^delete_account_'))
 application.add_handler(CallbackQueryHandler(main_menu_callback_handler, pattern='^main_menu_'))
+application.add_handler(CallbackQueryHandler(settings_menu_callback_handler, pattern='^settings_'))
+
 application.add_handler(CallbackQueryHandler(return_to_main_menu, pattern='main'))
 
 # Add a handler for any other messages

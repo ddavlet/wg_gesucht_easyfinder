@@ -20,16 +20,24 @@
             "main": "Main menu"
         }
     },
-    "settings_new":{
+    "settings_menu": {
         "text": "Here you can set your preferences for the bot. You can set your address, distance, notifications, language, and more.",
         "keyboard": {
-            "set_language": "Set language",
-            "set_address": "Set address",
-            "set_new_finder": "Set new finder",
-            "set_notifications": "Set notifications",
-            "delete_finder": "Delete finder",
-            "main_menu_delete_account": "Delete account",
-            "back": "Back"
+            "settings_setlanguage": "Set language",
+            "settings_setaddress": "Set address",
+            "settings_setnewfinder": "Set new finder",
+            "settings_setnotifications": "Set notifications",
+            "settings_deletefinder": "Delete finder",
+            "settings_deleteaccount": "Delete account",
+            "settings_back": "Back"
+        }
+    },
+    "language_choose_menu": {
+        "text":"Please choose your preferred language.",
+        "keyboard": {
+            "lang_en": "English",
+            "lang_ru": "Русский",
+            "lang_de": "Deutsch"
         }
     },
     "account": {

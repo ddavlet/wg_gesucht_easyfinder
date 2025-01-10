@@ -15,7 +15,7 @@
             "delete_account": "Delete account"
         }
     },
-    "settings_new": {
+    "settings_menu": {
         "text": "Here you can set your preferences for the bot. You can set your address, distance, notifications, language, and more.",
         "keyboard": {
             "set_language": "Set language",
