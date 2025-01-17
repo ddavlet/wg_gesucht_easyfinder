@@ -1,148 +1,166 @@
 {
     "start": {
-        "text_new_profile": "New profile created.",
-        "text_reactivated_profile": "Welcome back! Your account has been reactivated."
+        "text_new_profile": "✨ <b>New profile created!</b>",
+        "text_reactivated_profile": "👋 <b>Welcome back!</b> Your account has been reactivated."
+    },
+    "stop_bot": {
+        "text": "⏸️ Your account has been paused. Use /start to resume. Use delete account in settings if you want to delete all your data."
     },
     "main":{
-        "text": "This bot is designed to help you find the perfect flat or house for rent or purchase in Munich. It uses the ImmoScout24 API to search for properties based on your search criteria and sends you notifications when new offers match your search criteria. You can also set up multiple finders to search for different types of properties or different areas. You can also set up multiple finders to search for different types of properties or different areas.",
+        "text": "🏠 <b>Welcome to Munich Property Finder!</b>This bot is designed to help you find the perfect flat or house for rent or purchase in Munich. It uses the ImmoScout24 API to search for properties based on your search criteria and sends you notifications when new offers match your preferences.📌 You can set up multiple finders to search for different types of properties or different areas.",
         "keyboard": {
-            "main_menu_mydata": "My profile information",
-            "main_menu_myfinders": "List my finders",
-            "main_menu_myoffers": "Find my offers",
-            "main_menu_settings": "Settings",
-            "main_menu_help": "Help",
-            "main_menu_stop": "Stop"
+            "main_menu_mydata": "👤 My profile information",
+            "main_menu_myfinders": "🔍 List my finders",
+            "main_menu_myoffers": "🏘️ Find my offers",
+            "main_menu_settings": "⚙️ Settings",
+            "main_menu_help": "❓ Help",
+            "main_menu_stop": "⏹️ Stop"
         }
     },
     "my_data": {
-        "text": "You can change your profile information here in settings.",
+        "text": "👤 <b>Profile Information</b>You can change your profile information here in settings.",
         "keyboard": {
-            "main": "Main menu"
+            "main": "🏠 Main menu"
         }
     },
     "settings_menu": {
-        "text": "Here you can set your preferences for the bot. You can set your address, distance, notifications, language, and more.",
+        "text": "⚙️ <b>Settings</b>Here you can set your preferences for the bot. You can set your address, distance, notifications, language, and more.",
         "keyboard": {
-            "settings_setlanguage": "Set language",
-            "settings_setaddress": "Set address",
-            "settings_setnewfinder": "Set new finder",
-            "settings_setnotifications": "Set notifications",
-            "settings_deletefinder": "Delete finder",
-            "settings_deleteaccount": "Delete account",
-            "settings_back": "Back"
+            "settings_setlanguage": "🌍 Set language",
+            "settings_setaddress": "📍 Set address",
+            "settings_setnewfinder": "➕ Set new finder",
+            "settings_setnotifications": "🔔 Notifications",
+            "settings_deletefinder": "🗑️ Delete finder",
+            "settings_deleteaccount": "❌ Delete account",
+            "settings_back": "⬅️ Back"
         }
     },
     "language_choose_menu": {
-        "text":"Please choose your preferred language.",
+        "text": "🌍 <b>Language Selection</b>Please choose your preferred language.",
         "keyboard": {
-            "lang_en": "English",
-            "lang_ru": "Русский",
-            "lang_de": "Deutsch"
+            "lang_en": "🇬🇧 English",
+            "lang_ru": "🇷🇺 Русский",
+            "lang_de": "🇩🇪 Deutsch"
         }
     },
     "account": {
-        "start": "Welcome! Use /help to see available commands.",
-        "stopped": "Your account has been paused. Use /start to resume. Use /delete_account to delete your account.",
-        "deleted": "Your account has been deleted. All your data has been removed.",
-        "reactivated": "Welcome back! Your account has been reactivated.",
-        "delete_confirmation": "Are you sure you want to delete your account? This action is irreversible.",
-        "delete_cancel": "Your account has not been deleted."
+        "start": "👋 <b>Welcome!</b> Use /help to see available commands.",
+        "stopped": "⏸️ Your account has been paused. Use /start to resume. Use /delete_account to delete your account.",
+        "reactivated": "✨ <b>Welcome back!</b> Your account has been reactivated."
     },
     "new_finder": {
-        "new_finder_prompt": "Choose the type of travel you want to use:",
-        "walking": "Walking",
-        "bicycling": "Bicycling",
-        "driving": "Driving",
-        "transit": "Public transport",
-        "duration_prompt": "How long would you like to travel to the destination? (in minutes)",
-        "new_finder_success": "New finder created successfully!\n You will start receiving notifications soon.",
-        "offer_type_prompt": "Choose the type of offer you want to use:"
+        "new_finder_prompt": "🚗 <b>Travel Mode</b>Choose the type of travel you want to use:",
+        "keyboard": {
+            "finder_type_walking": "🚶 Walking",
+            "finder_type_bicycling": "🚲 Bicycling",
+            "finder_type_driving": "🚗 Driving",
+            "finder_type_transit": "🚌 Public transport",
+            "main": "❌ Cancel"
+        },
+        "duration_prompt": "⏱️ How long would you like to travel to the destination? (in minutes)",
+        "new_finder_success": "✅ <b>New finder created successfully!</b>You will start receiving notifications soon.",
+        "new_finder_failure": "❌ New finder creation failed. Please try again.",
+        "offer_type_prompt": "🎯 You chose the type of travel for your finder: ",
+        "main_menu": {"main": "❌ Cancel"}
     },
     "settings": {
-        "updated": "Your settings have been updated.",
-        "language_changed": "Your language has been changed to English.",
-        "address_prompt": "Please enter your address in the format: 'Street, House Number, Postal Code' (Munich city only):",
-        "address_set": {
-            "title": "Address is saved successfully:\n",
-            "commands": "\n\nTo see all available commands type /help"
-        },
+        "updated": "✅ Your settings have been updated.",
+        "language_changed": "🌍 Your language has been changed to English.",
+        "address_prompt": "📍 Please enter your address in the format: 'Street, House Number, Postal Code' (Munich city only):",
+        "address_set_success": "✅ <b>Address is saved successfully:</b>",
         "distance_set": {
-            "title": "Your search distance has been set to:\n",
-            "commands": "\n\nTo see all available commands type /help"
+            "title": "📏 <b>Your search distance has been set to:</b>",
+            "commands": "💡 To see all available commands type /help"
         },
         "notifications_set": {
-            "enabled": "Notifications have been enabled.",
-            "disabled": "Notifications have been disabled."
+            "enabled": "🔔 Notifications have been enabled.",
+            "disabled": "🔕 Notifications have been disabled."
         },
-        "choose_language": "Please choose your preferred language:"
+        "choose_language": "🌍 Please choose your preferred language:"
     },
-
+    "address": {
+        "invalid_address": "⚠️ Address is not valid, check:",
+        "wrong_address": "❌ Address cannot be validated."
+    },
     "errors": {
-        "unknown_command": "Sorry, I didn't understand that command. Use /help to see available commands.",
-        "invalid_address": {
-            "title": "Address is not valid, check:",
-            "commands": "\n\nTo set address type /set_address. To see all available commands type /help"
-        },
-        "wrong_address": "Address cannot be validated.",
-        "invalid_distance": "Please enter a valid distance (1-100 km).",
-        "missing_parameters": "Missing required information. Please try again.",
-        "service_unavailable": "Service temporarily unavailable. Please try again later.",
-        "not_registered": "Please send /start to register and use the bot.",
-        "wrong_duration": "Please enter a valid duration (1-100 minutes).",
-        "no_offer": "Error finding offer.",
-        "no_offers_found": "No offers found.",
-        "no_address_set": "Please set your address first. Use /set_address to set your address."
+        "unknown_command": "❓ Sorry, I didn't understand that command. Use /help to see available commands.",
+        "invalid_address": "⚠️ Address is not valid, check:",
+        "wrong_address": "❌ Address cannot be validated.",
+        "invalid_distance": "⚠️ Please enter a valid distance (1-100 km).",
+        "missing_parameters": "⚠️ Missing required information. Please try again.",
+        "service_unavailable": "🔧 Service temporarily unavailable. Please try again later.",
+        "not_registered": "👋 Please send /start to register and use the bot.",
+        "wrong_duration": "⚠️ Please enter a valid duration (1-100 minutes).",
+        "no_offer": "❌ Error finding offer.",
+        "no_offers_found": "📭 No offers found.",
+        "no_address_set": "📍 Please set your address in settings first."
     },
-
     "proposals": {
         "new_match": {
-            "title": "New match found!\n\nTitle:",
-            "location": "\nLocation:",
-            "distance": "\nDistance:",
-            "price": "\nPrice:"
+            "title": "🎯 <b>New match found!</b>📑 <b>Title:</b>",
+            "location": "📍 <b>Location:</b>",
+            "distance": "📏 <b>Distance:</b>",
+            "price": "💰 <b>Price:</b>"
         },
-        "no_matches": "No new matches found. We'll notify you when something comes up!",
+        "no_matches": "🔍 No new matches found. We'll notify you when something comes up!",
         "daily_summary": {
-            "title": "Daily Summary:\nNew matches:\n",
-            "view": "\n\nUse /view to see them all"
+            "title": "📊 <b>Daily Summary:</b><b>New matches:</b>",
+            "view": "👀 Use /view to see them all"
         }
     },
-
     "navigation": {
-        "next": "Next →",
-        "previous": "← Previous",
-        "back": "← Back",
-        "done": "Done ✓"
+        "next": "Next ➡️",
+        "previous": "⬅️ Previous",
+        "back": "⬅️ Back",
+        "done": "✅ Done",
+        "main": {"main": "🏠 Main menu"}
     },
     "user_data": {
-        "start": "User data:\n",
-        "name": "\nName: ",
-        "address": "\nAddress: ",
-        "distance": "\nDistance: ",
-        "notifications": "\nNotifications: ",
-        "language": "\nLanguage: ",
-        "finders": "\nFinders: ",
-        "next_finder": "\n\nfinder: ",
-        "end": "\n\nEnd of data."
+        "start": "👤 <b>User data:</b>",
+        "name": "📝 <b>Name:</b> ",
+        "address": "📍 <b>Address:</b> ",
+        "distance": "📏 <b>Distance:</b> ",
+        "notifications": "🔔 <b>Notifications:</b> ",
+        "language": "🌍 <b>Language:</b> ",
+        "finders": "🔍 <b>Finders:</b> ",
+        "next_finder": "🎯 <b>finder:</b> ",
+        "end": "✨ End of data."
     },
     "finder_data": {
-        "type": "\nType: ",
-        "duration": "\nDuration: ",
-        "id": "\nID: "
+        "all": "🔍 <b>All finders:</b>",
+        "end": "🗑️ Choose a finder id to delete:",
+        "id": "🔢 <b>ID:</b> ",
+        "type": "🚦 <b>Type:</b> ",
+        "duration": "⏱️ <b>Duration:</b> ",
+        "delete_success": "✅ Finder deleted successfully!"
     },
     "offer_data": {
-        "start": "Offer found:\n",
-        "title": "\nTitle: ",
-        "location": "\n\nLocation: ",
-        "distance": "\n\nDistance: ",
-        "travel_type": "\n\nTravel type: ",
-        "rent": "\n\nRent: ",
-        "link": "\n\nLink: "
-
+        "first": "🏘️ <b>Here are your offers:</b>",
+        "start": "🏠 <b>Offer found:</b>",
+        "title": "📑 <b>Title:</b> ",
+        "location": "📍 <b>Location:</b> ",
+        "distance": "📏 <b>Distance:</b> ",
+        "travel_type": "🚗 <b>Travel type:</b> ",
+        "rent": "💰 <b>Rent:</b> ",
+        "link": "🔗 <b>Link:</b> "
     },
     "info_messages": {
-        "update": "Database is updated every day.",
-        "no_offers": "No offers according to your search criteria found.",
-        "help": "Available commands:\n\n/start - Start the bot\n/stop - Stop the bot\n/delete_account - Delete your account\n/set_language - Set your language\n/set_address - Set your address\n/set_new_finder - Set a new finder\n/set_notifications - Set notifications\n/my_data - View your user data\n/my_offers - View your offers\n/delete_finder - Delete a finder"
+        "update": "🔄 Database is updated every day.",
+        "no_offers": "📭 No offers according to your search criteria found."
+    },
+    "help_menu": {
+        "text": "📚 <b>Help Guide</b>🏠\n\n<b>Main Menu</b>\n• 👤 My Data - View your profile information\n• 🔍 My Finders - View your active search filters\n• 🏘️ My Offers - View matched apartment offers\n• ⚙️ Settings - Adjust your preferences\n\n⚙️ <b>Settings</b>\n• 🌍 Language - Change bot language\n• 📍 Address - Set your preferred location\n• ➕ New Finder - Create apartment search filter\n• 🔔 Notifications - Toggle offer notifications\n• 🗑️ Delete Finder - Remove search filters\n\n📱 <b>Commands</b>\n/start - Start/restart the bot\n/stop - Pause notifications\n❓ Need more help? Contact @support",
+        "keyboard": {
+            "main": "🏠 Return to Main Menu"
+        }
+    },
+    "delete_account": {
+        "text": "⚠️ <b>Are you sure you want to delete your account?</b> This action is irreversible.",
+        "keyboard": {
+            "delete_account_yes": "✅ Yes",
+            "delete_account_no": "❌ No"
+        },
+        "delete_success": "👋 Your account has been deleted. All your data has been removed.",
+        "delete_cancel": "✅ Your account has not been deleted."
     }
 }

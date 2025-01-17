@@ -22,6 +22,27 @@ class UserManager:
         current_time = time.time()
 
         # Check if user is in cache and still fresh
+        if chat_id in self.cached_users and self.cached_users[chat_id]['is_active']:
+            if current_time - self.last_access[chat_id] < self.cache_duration:
+                self.last_access[chat_id] = current_time
+                return self.cached_users[chat_id]
+            else:
+                # Remove expired cache
+                del self.cached_users[chat_id]
+                del self.last_access[chat_id]
+
+        # Get from database
+        user = self.users_collection.find_one({'chat_id': chat_id})
+        if user and user['is_active']:
+            self.cached_users[chat_id] = user
+            self.last_access[chat_id] = current_time
+            return user
+        return None
+
+    async def get_any_user(self, chat_id: int) -> dict:
+        current_time = time.time()
+
+        # Check if user is in cache and still fresh
         if chat_id in self.cached_users:
             if current_time - self.last_access[chat_id] < self.cache_duration:
                 self.last_access[chat_id] = current_time
@@ -33,7 +54,7 @@ class UserManager:
 
         # Get from database
         user = self.users_collection.find_one({'chat_id': chat_id})
-        if user:
+        if user and user['is_active']:
             self.cached_users[chat_id] = user
             self.last_access[chat_id] = current_time
             return user
@@ -44,8 +65,6 @@ class UserManager:
         if not validate_user_data(user_data):
             print("Invalid user data")
             return
-        # Ensure active status is set
-        user_data['is_active'] = True
 
         # Update cache
         self.cached_users[chat_id] = user_data

@@ -58,7 +58,7 @@ class FinderManager:
         finder_data['finder_id'] = finder_id
         finder_data['is_active'] = True
         finder_data['user_id'] = user_id  # Associate finder with user
-
+        finder_data['created_at'] = current_time
         # Update cache
         self.cached_findings[finder_id] = finder_data
         self.last_access[finder_id] = current_time

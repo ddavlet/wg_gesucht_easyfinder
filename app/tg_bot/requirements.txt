@@ -3,3 +3,4 @@ python-telegram-bot[job-queue]==21.9
 pymongo==4.5.0
 requests==2.31.0
 googlemaps==4.1.0
+python-dotenv==1.0.0

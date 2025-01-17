@@ -8,9 +8,8 @@ maps_api = MapsAPI()
 
 class Validators:
 
-    def __init__(self, user_data, texts):
+    def __init__(self, user_data):
         self.user_data = user_data
-        self.texts = texts
 
     async def validate_address(self, address: str):
         result, is_valid = await maps_api.validate_address(address)
@@ -18,13 +17,11 @@ class Validators:
         if is_valid and result:
             self.user_data['preferences']['address'] = result['result']['address']['formattedAddress']
             self.user_data['preferences']['address_id'] = result['result']['geocode']['placeId']
-            answer = self.texts['settings']['address_set']['title'] + \
-                result['result']['address']['formattedAddress'] + \
-                self.texts['settings']['address_set']['commands']
+            answer = result['result']['address']['formattedAddress']
+            return answer, True
         elif not is_valid and result:
-            answer = self.texts['errors']['invalid_address']['title'] + \
-                result['componentName']['text'] + \
-                self.texts['settings']['address_set']['commands']
+            answer = result['componentName']['text']
+            return answer, False
         else:
-            answer = self.texts['errors']['wrong_address']
-        return answer
+            answer = "Address cannot be validated."
+            return answer, False

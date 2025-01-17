@@ -1,129 +1,166 @@
 {
     "start": {
-        "text_new_profile": "New profile created.",
-        "text_reactivated_profile": "Welcome back! Your account has been reactivated."
+        "text_new_profile": "✨ <b>Создан новый профиль!</b>",
+        "text_reactivated_profile": "👋 <b>С возвращением!</b> Ваш аккаунт активирован."
     },
-    "main": {
-        "text": "This bot is designed to help you find the perfect flat or house for rent or purchase in Munich. It uses the ImmoScout24 API to search for properties based on your search criteria and sends you notifications when new offers match your search criteria. You can also set up multiple finders to search for different types of properties or different areas. You can also set up multiple finders to search for different types of properties or different areas.",
+    "stop_bot": {
+        "text": "⏸️ Ваш аккаунт приостановлен. Используйте /start для возобновления. Используйте удаление аккаунта в настройках, если хотите удалить все данные."
+    },
+    "main":{
+        "text": "🏠 <b>Добро пожаловать в Munich Property Finder!</b>\n\nЭтот бот поможет вам найти идеальную квартиру или дом для аренды или покупки в Мюнхене. Он использует API ImmoScout24 для поиска недвижимости на основе ваших критериев и отправляет уведомления о новых предложениях.\n\n📌 Вы можете настроить несколько поисков для разных типов недвижимости или районов.",
         "keyboard": {
-            "my_data": "My profile information",
-            "my_finders": "List my finders",
-            "my_offers": "Find my offers",
-            "settings": "Settings",
-            "help": "Help",
-            "stop": "Stop",
-            "delete_account": "Delete account"
+            "main_menu_mydata": "👤 Моя информация",
+            "main_menu_myfinders": "🔍 Мои поиски",
+            "main_menu_myoffers": "🏘️ Мои предложения",
+            "main_menu_settings": "⚙️ Настройки",
+            "main_menu_help": "❓ Помощь",
+            "main_menu_stop": "⏹️ Стоп"
+        }
+    },
+    "my_data": {
+        "text": "👤 <b>Информация профиля</b>\nВы можете изменить информацию профиля здесь в настройках.",
+        "keyboard": {
+            "main": "🏠 Главное меню"
         }
     },
     "settings_menu": {
-        "text": "Here you can set your preferences for the bot. You can set your address, distance, notifications, language, and more.",
+        "text": "⚙️ <b>Настройки</b>\n\nЗдесь вы можете настроить параметры бота. Вы можете указать адрес, расстояние, уведомления, язык и многое другое.",
         "keyboard": {
-            "set_language": "Set language",
-            "set_address": "Set address",
-            "set_new_finder": "Set new finder",
-            "set_notifications": "Set notifications",
-            "delete_finder": "Delete finder"
+            "settings_setlanguage": "🌍 Выбор языка",
+            "settings_setaddress": "📍 Указать адрес",
+            "settings_setnewfinder": "➕ Новый поиск",
+            "settings_setnotifications": "🔔 Уведомления",
+            "settings_deletefinder": "🗑️ Удалить поиск",
+            "settings_deleteaccount": "❌ Удалить аккаунт",
+            "settings_back": "⬅️ Назад"
+        }
+    },
+    "language_choose_menu": {
+        "text": "🌍 <b>Выбор языка</b>\n\nПожалуйста, выберите предпочитаемый язык.",
+        "keyboard": {
+            "lang_en": "🇬🇧 English",
+            "lang_ru": "🇷🇺 Русский",
+            "lang_de": "🇩🇪 Deutsch"
         }
     },
     "account": {
-        "start": "Welcome! Use /help to see available commands.",
-        "stopped": "Your account has been paused. Use /start to resume. Use /delete_account to delete your account.",
-        "deleted": "Your account has been deleted. All your data has been removed.",
-        "reactivated": "Welcome back! Your account has been reactivated.",
-        "delete_confirmation": "Are you sure you want to delete your account? This action is irreversible.",
-        "delete_cancel": "Your account has not been deleted."
+        "start": "👋 <b>Добро пожаловать!</b> Используйте /help для просмотра доступных команд.",
+        "stopped": "⏸️ Ваш аккаунт приостановлен. Используйте /start для возобновления. Используйте /delete_account для удаления аккаунта.",
+        "reactivated": "✨ <b>С возвращением!</b> Ваш аккаунт активирован."
     },
     "new_finder": {
-        "new_finder_prompt": "Choose the type of travel you want to use:",
-        "walking": "Walking",
-        "bicycling": "Bicycling",
-        "driving": "Driving",
-        "transit": "Public transport",
-        "duration_prompt": "How long would you like to travel to the destination? (in minutes)",
-        "new_finder_success": "New finder created successfully!\n You will start receiving notifications soon.",
-        "offer_type_prompt": "Choose the type of offer you want to use:"
+        "new_finder_prompt": "🚗 <b>Способ передвижения</b>\n\nВыберите тип передвижения:",
+        "keyboard": {
+            "finder_type_walking": "🚶 Пешком",
+            "finder_type_bicycling": "🚲 На велосипеде",
+            "finder_type_driving": "🚗 На машине",
+            "finder_type_transit": "🚌 Общественный транспорт",
+            "main": "❌ Отмена"
+        },
+        "duration_prompt": "⏱️ Сколько времени вы готовы тратить на дорогу? (в минутах)",
+        "new_finder_success": "✅ <b>Новый поиск успешно создан!</b>\nСкоро вы начнете получать уведомления.",
+        "new_finder_failure": "❌ Не удалось создать поиск. Пожалуйста, попробуйте снова.",
+        "offer_type_prompt": "🎯 Вы выбрали способ передвижения: "
     },
     "settings": {
-        "updated": "Your settings have been updated.",
-        "language_changed": "Your language has been changed to English.",
-        "address_prompt": "Please enter your address in the format: 'Street, House Number, Postal Code' (Munich city only):",
-        "address_set": {
-            "title": "Address is saved successfully:\n",
-            "commands": "\n\nTo see all available commands type /help"
-        },
+        "updated": "✅ Ваши настройки обновлены.",
+        "language_changed": "🌍 Язык изменен на русский.",
+        "address_prompt": "📍 Пожалуйста, введите адрес в формате: 'Улица, Номер дома, Индекс' (только город Мюнхен):",
+        "address_set_success": "✅ <b>Адрес успешно сохранен:</b>",
         "distance_set": {
-            "title": "Your search distance has been set to:\n",
-            "commands": "\n\nTo see all available commands type /help"
+            "title": "📏 <b>Ваше расстояние поиска установлено на:</b>",
+            "commands": "💡 Чтобы увидеть все доступные команды, введите /help"
         },
         "notifications_set": {
-            "enabled": "Notifications have been enabled.",
-            "disabled": "Notifications have been disabled."
+            "enabled": "🔔 Уведомления включены.",
+            "disabled": "🔕 Уведомления отключены."
         },
-        "choose_language": "Please choose your preferred language:"
+        "choose_language": "🌍 Пожалуйста, выберите предпочитаемый язык:"
+    },
+    "address": {
+        "invalid_address": "⚠️ Адрес недействителен, проверьте:",
+        "wrong_address": "❌ Адрес не может быть проверен."
     },
     "errors": {
-        "unknown_command": "Sorry, I didn't understand that command. Use /help to see available commands.",
-        "invalid_address": {
-            "title": "Address is not valid, check:",
-            "commands": "\n\nTo set address type /set_address. To see all available commands type /help"
-        },
-        "wrong_address": "Address cannot be validated.",
-        "invalid_distance": "Please enter a valid distance (1-100 km).",
-        "missing_parameters": "Missing required information. Please try again.",
-        "service_unavailable": "Service temporarily unavailable. Please try again later.",
-        "not_registered": "Please send /start to register and use the bot.",
-        "wrong_duration": "Please enter a valid duration (1-100 minutes).",
-        "no_offer": "Error finding offer.",
-        "no_offers_found": "No offers found.",
-        "no_address_set": "Please set your address first. Use /set_address to set your address."
+        "unknown_command": "❓ Извините, я не понимаю эту команду. Используйте /help для просмотра доступных команд.",
+        "invalid_address": "⚠️ Адрес недействителен, проверьте:",
+        "wrong_address": "❌ Адрес не может быть проверен.",
+        "invalid_distance": "⚠️ Пожалуйста, введите корректное расстояние (1-100 км).",
+        "missing_parameters": "⚠️ Отсутствует необходимая информация. Пожалуйста, попробуйте снова.",
+        "service_unavailable": "🔧 Сервис временно недоступен. Пожалуйста, попробуйте позже.",
+        "not_registered": "👋 Пожалуйста, отправьте /start для регистрации и использования бота.",
+        "wrong_duration": "⚠️ Пожалуйста, введите корректное время (1-100 минут).",
+        "no_offer": "❌ Ошибка при поиске предложения.",
+        "no_offers_found": "📭 Предложения не найдены.",
+        "no_address_set": "📍 Пожалуйста, сначала укажите адрес в настройках."
     },
     "proposals": {
         "new_match": {
-            "title": "New match found!\n\nTitle:",
-            "location": "\nLocation:",
-            "distance": "\nDistance:",
-            "price": "\nPrice:"
+            "title": "🎯 <b>Найдено новое совпадение!</b>\n\n📑 <b>Название:</b>",
+            "location": "📍 <b>Расположение:</b>",
+            "distance": "📏 <b>Расстояние:</b>",
+            "price": "💰 <b>Цена:</b>"
         },
-        "no_matches": "No new matches found. We'll notify you when something comes up!",
+        "no_matches": "🔍 Новых совпадений не найдено. Мы уведомим вас, когда что-то появится!",
         "daily_summary": {
-            "title": "Daily Summary:\nNew matches:\n",
-            "view": "\n\nUse /view to see them all"
+            "title": "📊 <b>Ежедневная сводка:</b>\n<b>Новые совпадения:</b>",
+            "view": "👀 Используйте /view чтобы увидеть все"
         }
     },
     "navigation": {
-        "next": "Next →",
-        "previous": "← Previous",
-        "back": "← Back",
-        "done": "Done ✓"
+        "next": "Далее ➡️",
+        "previous": "⬅️ Назад",
+        "back": "⬅️ Назад",
+        "done": "✅ Готово",
+        "main": {"main": "🏠 Главное меню"},
+        "cancel": {"cancel": "❌ Отмена"}
     },
     "user_data": {
-        "start": "User data:\n",
-        "name": "\nName: ",
-        "address": "\nAddress: ",
-        "distance": "\nDistance: ",
-        "notifications": "\nNotifications: ",
-        "language": "\nLanguage: ",
-        "finders": "\nFinders: ",
-        "next_finder": "\n\nfinder: ",
-        "end": "\n\nEnd of data."
+        "start": "👤 <b>Данные пользователя:</b>",
+        "name": "📝 <b>Имя:</b> ",
+        "address": "📍 <b>Адрес:</b> ",
+        "distance": "📏 <b>Расстояние:</b> ",
+        "notifications": "🔔 <b>Уведомления:</b> ",
+        "language": "🌍 <b>Язык:</b> ",
+        "finders": "🔍 <b>Поиски:</b> ",
+        "next_finder": "🎯 <b>поиск:</b> ",
+        "end": "✨ Конец данных."
     },
     "finder_data": {
-        "type": "\nType: ",
-        "duration": "\nDuration: ",
-        "id": "\nID: "
+        "all": "🔍 <b>Все поиски:</b>",
+        "end": "🗑️ Выберите ID поиска для удаления:",
+        "id": "🔢 <b>ID:</b> ",
+        "type": "🚦 <b>Тип:</b> ",
+        "duration": "⏱️ <b>Длительность:</b> ",
+        "delete_success": "✅ Поиск успешно удален!"
     },
     "offer_data": {
-        "start": "Offer found:\n",
-        "title": "\nTitle: ",
-        "location": "\n\nLocation: ",
-        "distance": "\n\nDistance: ",
-        "travel_type": "\n\nTravel type: ",
-        "rent": "\n\nRent: ",
-        "link": "\n\nLink: "
+        "first": "🏘️ <b>Вот ваши предложения:</b>",
+        "start": "🏠 <b>Найдено предложение:</b>",
+        "title": "📑 <b>Название:</b> ",
+        "location": "📍 <b>Расположение:</b> ",
+        "distance": "📏 <b>Расстояние:</b> ",
+        "travel_type": "🚦 <b>Тип передвижения:</b> ",
+        "rent": "💰 <b>Аренда:</b> ",
+        "link": "🔗 <b>Ссылка:</b> "
     },
     "info_messages": {
-        "update": "Database is updated every day.",
-        "no_offers": "No offers according to your search criteria found.",
-        "help": "Available commands:\n\n/start - Start the bot\n/stop - Stop the bot\n/delete_account - Delete your account\n/set_language - Set your language\n/set_address - Set your address\n/set_new_finder - Set a new finder\n/set_notifications - Set notifications\n/my_data - View your user data\n/my_offers - View your offers\n/delete_finder - Delete a finder"
+        "update": "🔄 База данных обновляется каждый день.",
+        "no_offers": "📭 По вашим критериям поиска ничего не найдено."
+    },
+    "help_menu": {
+        "text": "📚 <b>Справочник</b>\n\n🏠 <b>Главное меню</b>\n• 👤 Мои данные - Просмотр информации профиля\n• 🔍 Мои поиски - Просмотр активных фильтров поиска\n• 🏘️ Мои предложения - Просмотр найденных квартир\n• ⚙️ Настройки - Изменение параметров\n\n⚙️ <b>Настройки</b>\n• 🌍 Язык - Изменить язык бота\n• 📍 Адрес - Указать предпочтительное местоположение\n• ➕ Новый поиск - Создать фильтр поиска квартир\n• 🔔 Уведомления - Включить/выключить уведомления\n• 🗑️ Удалить поиск - Удалить фильтры поиска\n\n📱 <b>Команды</b>\n/start - Запустить/перезапустить бота\n/stop - Приостановить уведомления\n\n❓ Нужна помощь? Пишите @support",
+        "keyboard": {
+            "main": "🏠 Вернуться в главное меню"
+        }
+    },
+    "delete_account": {
+        "text": "⚠️ <b>Вы уверены, что хотите удалить свой аккаунт?</b> Это действие необратимо.",
+        "keyboard": {
+            "delete_account_yes": "✅ Да",
+            "delete_account_no": "❌ Нет"
+        },
+        "delete_success": "👋 Ваш аккаунт удален. Все ваши данные были удалены.",
+        "delete_cancel": "✅ Ваш аккаунт не был удален."
     }
 }
