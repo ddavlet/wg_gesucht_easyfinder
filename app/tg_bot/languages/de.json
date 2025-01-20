@@ -49,18 +49,27 @@
         "reactivated": "✨ <b>Willkommen zurück!</b> Ihr Konto wurde reaktiviert."
     },
     "new_finder": {
-        "new_finder_prompt": "🚗 <b>Fortbewegungsart</b>\n\nWählen Sie die gewünschte Fortbewegungsart:",
-        "keyboard": {
-            "finder_type_walking": "🚶 Zu Fuß",
-            "finder_type_bicycling": "🚲 Mit dem Fahrrad",
-            "finder_type_driving": "🚗 Mit dem Auto",
-            "finder_type_transit": "🚌 Öffentliche Verkehrsmittel",
-            "main": "❌ Cancel"
+        "new_finder_housing_type_prompt": "🏠 <b>Wohnungstyp</b>\n\nWählen Sie den gewünschten Wohnungstyp:",
+        "new_finder_housing_type_keyboard": {
+            "finder_type_housing_shared": "Wohngemeinschaft",
+            "finder_type_housing_oneroom": "1-Zimmer-Wohnung",
+            "finder_type_housing_flat": "Wohnung",
+            "finder_type_housing_house": "Haus",
+            "main": "❌ Abbrechen"
+        },
+        "new_finder_travel_mode_prompt": "🚗 <b>Fortbewegungsart</b>\n\nWählen Sie die gewünschte Fortbewegungsart:",
+        "new_finder_travel_mode_keyboard": {
+            "finder_type_travel_walking": "🚶 Zu Fuß",
+            "finder_type_travel_bicycling": "🚲 Mit dem Fahrrad",
+            "finder_type_travel_driving": "🚗 Mit dem Auto",
+            "finder_type_travel_transit": "🚌 Öffentliche Verkehrsmittel",
+            "main": "❌ Abbrechen"
         },
         "duration_prompt": "⏱️ Wie lange möchten Sie zum Ziel unterwegs sein? (in Minuten)",
         "new_finder_success": "✅ <b>Neue Suche erfolgreich erstellt!</b>\nSie werden bald Benachrichtigungen erhalten.",
         "new_finder_failure": "❌ Neue Suche konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
-        "offer_type_prompt": "🎯 Sie haben folgende Fortbewegungsart gewählt: "
+        "offer_type_prompt": "🎯 Sie haben folgende Fortbewegungsart gewählt: ",
+        "main_menu": {"main": "❌ Abbrechen"}
     },
     "settings": {
         "updated": "✅ Ihre Einstellungen wurden aktualisiert.",
@@ -130,8 +139,11 @@
         "end": "🗑️ Wählen Sie eine Such-ID zum Löschen:",
         "id": "🔢 <b>ID:</b> ",
         "type": "🚦 <b>Typ:</b> ",
+        "offer_type": "🏠 <b>Wohnungstyp:</b> ",
         "duration": "⏱️ <b>Dauer:</b> ",
-        "delete_success": "✅ Suche erfolgreich gelöscht!"
+        "duration_param": "Minuten",
+        "delete_success": "✅ Suche erfolgreich gelöscht!",
+        "no_finders": "🔍 Keine Suchen nach Ihren Kriterien gefunden."
     },
     "offer_data": {
         "first": "🏘️ <b>Hier sind Ihre Angebote:</b>",
@@ -141,7 +153,11 @@
         "distance": "📏 <b>Entfernung:</b> ",
         "travel_type": "🚦 <b>Fortbewegungsart:</b> ",
         "rent": "💰 <b>Miete:</b> ",
-        "link": "🔗 <b>Link:</b> "
+        "link": "🔗 <b>Link:</b> ",
+        "keyboard": {
+            "offer_details": "🏠 Angebot Details"
+        },
+        "no_offers": "📭 Keine Angebote nach Ihren Suchkriterien gefunden."
     },
     "info_messages": {
         "update": "🔄 Die Datenbank wird täglich aktualisiert.",
@@ -161,5 +177,27 @@
         },
         "delete_success": "👋 Ihr Konto wurde gelöscht. Alle Ihre Daten wurden entfernt.",
         "delete_cancel": "✅ Ihr Konto wurde nicht gelöscht."
+    },
+    "offer_details": {
+        "text": "🏠 <b>Angebotsdetails:</b>",
+        "title": "📑 <b>Titel:</b> ",
+        "location": "📍 <b>Standort:</b> ",
+        "finder": "🔍 <b>Suchen:</b> ",
+        "costs": "💰 <b>Kosten:</b> ",
+        "total_rent": "💰 <b>Gesamtmiete:</b> ",
+        "rent": "💰 <b>Miete:</b> ",
+        "additional_costs": "💰 <b>Nebenkosten:</b> ",
+        "other_costs": "💰 <b>Sonstige Kosten:</b> ",
+        "deposit": "💰 <b>Kaution:</b> ",
+        "description": "📝 <b>Beschreibung:</b> ",
+        "duration": "weniger als ",
+        "duration_param": "Minuten",
+        "link": "<b>🔗 Link:</b> ",
+        "translation": "🔄 <b>Übersetzung:</b> ",
+        "keyboard": {
+            "link": "🔗 Link"
+        },
+        "object_details": "🏠 <b>Objektdetails:</b>",
+        "object_details_translation": "🔄 <b>Details Übersetzung:</b> "
     }
 }

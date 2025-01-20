@@ -312,23 +312,31 @@ async def return_to_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
     if not user_data:
         logging.warning(f"No user data found for chat ID: {update.effective_chat.id}")
         return
+    user_data['state'] = 'main'
+    user_data['finder_id'] = None
+    await user_manager.save_user(update.effective_chat.id, user_data)
     text_lang = eval(f"{user_data['language']}_texts")
     text = text_lang['main']['text']
     keyboard = text_lang['main']['keyboard']
-    await context.bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=update.callback_query.message.message_id, text=text, reply_markup=InlineKeyboardMarkup(await create_keyboard(keyboard)))
+    await context.bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=update.callback_query.message.message_id, text=text, reply_markup=InlineKeyboardMarkup(await create_keyboard(keyboard)), parse_mode='HTML')
 
 async def process_offers(bot, user_data):
+    bot.send_chat_action(chat_id=user_data.get('chat_id', 0), action="typing")
     logging.info("Processing offers.")
     chat_id = user_data.get('chat_id', 0)
     logging.info(f"Chat ID: {chat_id}")
     offers = await get_my_offers(user_data)
     text_lang = eval(f"{user_data['language']}_texts")
-    if not isinstance(offers, list):
+    if offers == None:
+        await bot.send_message(chat_id=chat_id, text=text_lang['offer_data']['no_offers'])
+    elif not isinstance(offers, list):
+        logging.info(f"Offers is not list: {offers}")
         await bot.send_message(chat_id=chat_id, text=offers, parse_mode='HTML')
     else:
+        logging.info(f"Offers separate: {offers}")
         await bot.send_message(chat_id=chat_id, text=text_lang['offer_data']['first'], parse_mode='HTML')
         for offer in offers:
-            await bot.send_message(chat_id=chat_id, text=offer, parse_mode='HTML')
+            await bot.send_message(chat_id=chat_id, text=offer.get('text'), reply_markup=InlineKeyboardMarkup(await create_keyboard({f"offer_details_{offer.get('id')}" : text_lang['offer_data']['keyboard']['offer_details']})), parse_mode='HTML')
     return user_data, None
 
 async def settings_menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -353,7 +361,6 @@ async def settings_menu_callback_handler(update: Update, context: ContextTypes.D
         await send_message(context.bot, update, user_data, 'set_address')
     elif command_type == 'setnewfinder':
         logging.info('set_new_finder matched')
-        await user_manager.save_user(chat_id, user_data)
         await send_message_with_keyboard(context.bot, update, user_data, 'set_new_finder', modify_message=True)
     elif command_type == 'setnotifications':
         logging.info('set_notifications matched')
@@ -381,15 +388,31 @@ async def new_finder_callback_handler(update: Update, context: ContextTypes.DEFA
         return
     text_lang = eval(f"{user_data['language']}_texts")
     command_type = query.data.split('_')[2]
-    new_finder = get_finder_fields()
-    new_finder['type'] = command_type
-    new_finder['user_id'] = user_data.get('chat_id', 0)
-    new_finder['finder_id'] = await finder_manager.generate_finder_id()
-    await finder_manager.save_finder(chat_id, new_finder['finder_id'], new_finder)
-    user_data['finder_id'] = new_finder['finder_id']
-    user_data['state'] = 'new_finder_duration'
-    await user_manager.save_user(chat_id, user_data)
-    await send_message_with_keyboard(context.bot, update, user_data, 'new_finder_duration', modify_message=True)
+    logging.info(f"Command type: {command_type}")
+    data_type = query.data.split('_')[3]
+    if command_type == "housing":
+        new_finder = get_finder_fields()
+        new_finder['offer_type'] = data_type
+        new_finder['user_id'] = user_data.get('chat_id', 0)
+        new_finder['finder_id'] = await finder_manager.generate_finder_id()
+        await finder_manager.save_finder(chat_id, new_finder['finder_id'], new_finder)
+        user_data['finder_id'] = new_finder['finder_id']
+        await user_manager.save_user(chat_id, user_data)
+        keyboard = await create_keyboard(text_lang['new_finder'].get('new_finder_travel_mode_keyboard'))
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        text = text_lang['new_finder'].get('new_finder_travel_mode_prompt')
+        await context.bot.edit_message_text(chat_id=chat_id, message_id=query.message.message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
+    elif command_type == "travel":
+        finder = await finder_manager.get_finder(user_data['finder_id'])
+        finder['type'] = data_type
+        await finder_manager.save_finder(chat_id, user_data['finder_id'], finder)
+        user_data['state'] = 'new_finder_duration'
+        await user_manager.save_user(chat_id, user_data)
+        keyboard = await create_keyboard(text_lang['new_finder'].get('main_menu'))
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        text = text_lang['new_finder'].get('duration_prompt')
+        await context.bot.edit_message_text(chat_id=chat_id, message_id=query.message.message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
+
 
 async def delete_finder_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info("Callback handler triggered.")
@@ -424,6 +447,25 @@ async def delete_account_callback_handler(update: Update, context: ContextTypes.
         await send_message(context.bot, update, user_data, 'delete_account_cancel')
     await send_message_with_keyboard(context.bot, update, user_data, modify_message=False)
 
+async def offer_details_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logging.info("Callback handler triggered.")
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
+    logging.info(f"Chat ID: {chat_id}, Query data: {query.data}")
+    user_data = await user_manager.get_user(chat_id)
+    if not user_data:
+        logging.warning(f"No user data found for chat ID: {chat_id}")
+        return
+    await query.answer()
+    offer_id = query.data.split('_')[2]
+    text_lang = eval(f"{user_data['language']}_texts")
+    text, link = await offer_details(user_data, offer_id)
+    logging.info(f"Offer details text and link formed")
+    keyboard: list[list[InlineKeyboardButton]] = [[InlineKeyboardButton(text_lang['offer_details']['keyboard']['link'], url=link)]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    logging.info(f"Reply markup: {reply_markup}")
+    await context.bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
 
 # Initialize bot with application builder
 application = ApplicationBuilder().token(TOKEN).build()
@@ -451,7 +493,7 @@ application.add_handler(CallbackQueryHandler(new_finder_callback_handler, patter
 application.add_handler(CallbackQueryHandler(delete_finder_callback_handler, pattern='^finder_delete_'))
 application.add_handler(CallbackQueryHandler(delete_account_callback_handler, pattern='^delete_account_'))
 application.add_handler(CallbackQueryHandler(return_to_main_menu, pattern='main'))
-
+application.add_handler(CallbackQueryHandler(offer_details_callback_handler, pattern='^offer_details_'))
 # Add a handler for any other messages
 application.add_handler(MessageHandler(filters.TEXT, handle_other_messages))
 

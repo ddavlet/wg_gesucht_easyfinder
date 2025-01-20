@@ -1,6 +1,9 @@
 from pymongo import MongoClient
 import os
 from typing import Dict, Any
+import dotenv
+
+dotenv.load_dotenv()
 
 def create_database():
     """Create and initialize the database"""

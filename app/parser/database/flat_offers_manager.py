@@ -53,6 +53,7 @@ class FlatOffersManager:
 
         # Ensure required fields
         offer_data['is_active'] = True
+        offer_data['created_at'] = datetime.now()
         if 'availability' not in offer_data:
             offer_data['availability'] = {
                 'listed_at': datetime.now()

@@ -9,11 +9,67 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Parser:
-    def __init__(self, driver: ChromiumPage, flat_offers_manager: FlatOffersManager, type: str):
+    def __init__(self, driver: ChromiumPage, flat_offers_manager: FlatOffersManager, type: int):
         self.driver = driver
         self.flat_offers_manager = flat_offers_manager
-        self.type = type
+        self.type_code = type
+        switch = {
+            0: "WG-Zimmer",
+            1: "1-Zimmer-Wohnung",
+            2: "Wohnung",
+            3: "Haus"
+        }
+        self.unselect_list_option('dropdown-menu inner')
+        self.type = switch[type]
+        self.select_list_option('dropdown-menu inner', type)
+        self.fill_input('form-control autocomplete wgg_input city_loader_bar', 'Munchen')
         self.driver.ele('tag:input@id:search_button').click()
+
+
+
+    def fill_input(self, class_name: str, value: str):
+        logging.info("Filling input: %s", class_name)
+        form_element = self.driver.ele(f'tag:form@id:formPortal')
+        form_element.ele(f'tag:input@class:{class_name}').input(value)
+        logging.info("Input filled")
+        sleep(0.01)
+        self.driver.ele(f'tag:div@class:autocomplete-suggestion').click()
+        logging.info("Suggestion clicked")
+    def select_list_option(self, list_class_name: str, option_index: int):
+        logging.info("Selecting option from list: %s", list_class_name)
+        form_element = self.driver.ele(f'tag:form@id:formPortal')
+        form_element.ele(f'tag:button@class:btn dropdown-toggle form-control wgg_select').click()
+        list_element = form_element.ele(f'tag:ul@class:{list_class_name}')  # Locate the list
+        logging.info("List element: %s", list_element)
+        options = list_element.eles('tag:li')  # Get all list items
+        logging.info("Options: %s", options)
+        if 0 <= option_index < len(options):
+            # Click the desired option
+            logging.info("Option: %s", options[option_index].html)
+            if options[option_index].attr('class') != 'selected':
+                options[option_index].click()
+                logging.info("Option clicked")
+        else:
+            logging.error("Option index out of range: %d", option_index)
+        form_element.ele(f'tag:button@class:btn dropdown-toggle form-control wgg_select').click()
+        sleep(1)
+
+    def unselect_list_option(self, list_class_name: str):
+        logging.info("Unselecting option from list: %s", list_class_name)
+        form_element = self.driver.ele(f'tag:form@id:formPortal')
+        form_element.ele(f'tag:button@class:btn dropdown-toggle form-control wgg_select').click()
+        list_element = form_element.ele(f'tag:ul@class:{list_class_name}')  # Locate the list
+        options = list_element.eles('tag:li')  # Get all list items
+        for option in options:
+            sleep(0.11)
+            if option.attr('class') == 'selected':
+                option.click()
+                logging.info("Option unselected")
+            else:
+                logging.info("Option already unselected")
+        form_element.ele(f'tag:button@class:btn dropdown-toggle form-control wgg_select').click()
+        sleep(0.11)
+        sleep(1)
 
     def get_page(self, url):
         self.driver.get(url)
@@ -51,7 +107,7 @@ class Parser:
 
         section_footer_dark = row_main_column.ele('tag:div@class=section_footer_dark')
         data['area'] = section_footer_dark.ele('tag:b@text():m²').text
-        data['costs']['rent'] = section_footer_dark.ele('tag:b@text():€').text
+        data['total_rent'] = section_footer_dark.ele('tag:b@text():€').text
 
         row_main_column = row_main_column.next()
 
@@ -150,7 +206,6 @@ class Parser:
                         logging.info("Offer with id: %s already exists", offer_data['data_id'])
                 except Exception as e:
                     logging.error('Skipped: %s', e)
-                    raise e
                 logging.info("New tab closing")
                 logging.info('--------------------------------')
                 new_tab.close()

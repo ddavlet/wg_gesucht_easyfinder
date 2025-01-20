@@ -2,6 +2,9 @@ from time import sleep
 from DrissionPage import ChromiumPage
 from database.flat_offers_manager import FlatOffersManager
 from Parser import Parser
+import dotenv
+
+dotenv.load_dotenv()
 
 # Connect to MongoDB
 # MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://mongodb:27017')
@@ -25,7 +28,7 @@ def start_parser():
         print("driver set")
         driver.get(base_url)
         sleep(5)
-        parser = Parser(driver, flat_offers_manager)
+        parser = Parser(driver, flat_offers_manager, 0)
         print("parser set")
         print("Got response")
         parser.parse_ads()

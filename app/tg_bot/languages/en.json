@@ -49,12 +49,20 @@
         "reactivated": "✨ <b>Welcome back!</b> Your account has been reactivated."
     },
     "new_finder": {
-        "new_finder_prompt": "🚗 <b>Travel Mode</b>Choose the type of travel you want to use:",
-        "keyboard": {
-            "finder_type_walking": "🚶 Walking",
-            "finder_type_bicycling": "🚲 Bicycling",
-            "finder_type_driving": "🚗 Driving",
-            "finder_type_transit": "🚌 Public transport",
+        "new_finder_housing_type_prompt": "🏠 <b>Housing type</b>Choose the type of housing you want to find:",
+        "new_finder_housing_type_keyboard": {
+            "finder_type_housing_shared": "Shared apartment",
+            "finder_type_housing_oneroom": "1 room flat",
+            "finder_type_housing_flat": "Flat",
+            "finder_type_housing_house": "House",
+            "main": "❌ Cancel"
+        },
+        "new_finder_travel_mode_prompt": "🚗 <b>Travel Mode</b>Choose the type of travel you want to use:",
+        "new_finder_travel_mode_keyboard": {
+            "finder_type_travel_walking": "🚶 Walking",
+            "finder_type_travel_bicycling": "🚲 Bicycling",
+            "finder_type_travel_driving": "🚗 Driving",
+            "finder_type_travel_transit": "🚌 Public transport",
             "main": "❌ Cancel"
         },
         "duration_prompt": "⏱️ How long would you like to travel to the destination? (in minutes)",
@@ -83,6 +91,7 @@
         "wrong_address": "❌ Address cannot be validated."
     },
     "errors": {
+        "finder_not_found": "❌ Finder not found.",
         "unknown_command": "❓ Sorry, I didn't understand that command. Use /help to see available commands.",
         "invalid_address": "⚠️ Address is not valid, check:",
         "wrong_address": "❌ Address cannot be validated.",
@@ -131,7 +140,9 @@
         "end": "🗑️ Choose a finder id to delete:",
         "id": "🔢 <b>ID:</b> ",
         "type": "🚦 <b>Type:</b> ",
+        "offer_type": "🏠 <b>Offer type:</b> ",
         "duration": "⏱️ <b>Duration:</b> ",
+        "duration_param": "minutes",
         "delete_success": "✅ Finder deleted successfully!"
     },
     "offer_data": {
@@ -142,7 +153,33 @@
         "distance": "📏 <b>Distance:</b> ",
         "travel_type": "🚗 <b>Travel type:</b> ",
         "rent": "💰 <b>Rent:</b> ",
-        "link": "🔗 <b>Link:</b> "
+        "link": "🔗 <b>Link:</b> ",
+        "no_offers": "📭 No offers according to your search criteria found.",
+        "keyboard": {
+            "offer_details": "🏠 Offer details"
+        }
+    },
+    "offer_details": {
+        "text": "🏠 <b>Offer details:</b>",
+        "title": "📑 <b>Title:</b> ",
+        "location": "📍 <b>Location:</b> ",
+        "finder": "🔍 <b>Finders:</b> ",
+        "costs": "💰 <b>Costs:</b> ",
+        "total_rent": "💰 <b>Total rent:</b> ",
+        "rent": "💰 <b>Rent:</b> ",
+        "additional_costs": "💰 <b>Additional costs:</b> ",
+        "other_costs": "💰 <b>Other costs:</b> ",
+        "deposit": "💰 <b>Deposit:</b> ",
+        "description": "📝 <b>Description:</b> ",
+        "duration": "less than ",
+        "duration_param": "minutes",
+        "link": "<b>🔗 Link:</b> ",
+        "translation": "🔄 <b>Translation:</b> ",
+        "keyboard": {
+            "link": "🔗 Link"
+        },
+        "object_details": "🏠 <b>Object details:</b>",
+        "object_details_translation": "🔄 <b>Details translation:</b> "
     },
     "info_messages": {
         "update": "🔄 Database is updated every day.",
