@@ -134,7 +134,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # keyboard = text_lang['main']['keyboard']
         text_lang = eval(f"{user_data['language']}_texts")
         await user_manager.save_user(chat_id, user_data)
-        await context.bot.send_message(chat_id=chat_id, text=text_lang['start']['text_new_profile'])
+        await context.bot.send_message(chat_id=chat_id, text=text_lang['start']['text_new_profile'], parse_mode='HTML')
     text_lang = eval(f"{user_data['language']}_texts")
     user_data['state'] = 'main'
     await user_manager.save_user(chat_id, user_data)
@@ -273,6 +273,8 @@ async def clean_cache(context: ContextTypes.DEFAULT_TYPE):
     user_manager.clean_expired_cache()
     finder_manager.clean_expired_cache()
     finder_manager.delete_expired_finders()
+    flat_offers_manager.clean_expired_cache()
+    flat_offers_manager.deactivate_expired_offers()
 
 async def main_menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info("Callback handler triggered.")
@@ -291,7 +293,7 @@ async def main_menu_callback_handler(update: Update, context: ContextTypes.DEFAU
         await send_message_with_keyboard(context.bot, update, user_data, 'get_user_data', modify_message=True)
     elif command_type == 'myfinders':
         logging.info('get_my_finders mathced')
-        await send_message_with_keyboard(context.bot, update, user_data, 'get_my_finders', modify_message=False)
+        await send_message_with_keyboard(context.bot, update, user_data, 'get_my_finders', modify_message=True)
     elif command_type == 'myoffers':
         logging.info('get_my_offers mathced')
         await process_offers(context.bot, user_data)
@@ -393,6 +395,10 @@ async def new_finder_callback_handler(update: Update, context: ContextTypes.DEFA
     if command_type == "housing":
         new_finder = get_finder_fields()
         new_finder['offer_type'] = data_type
+        offer_types = ['shared', 'oneroom', 'flat', 'house']
+        offer_type_id = offer_types.index(data_type) if data_type in offer_types else -1
+        new_finder['offer_type_id'] = offer_type_id
+        new_finder['type'] = 'housing'
         new_finder['user_id'] = user_data.get('chat_id', 0)
         new_finder['finder_id'] = await finder_manager.generate_finder_id()
         await finder_manager.save_finder(chat_id, new_finder['finder_id'], new_finder)
@@ -453,6 +459,7 @@ async def offer_details_callback_handler(update: Update, context: ContextTypes.D
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     logging.info(f"Chat ID: {chat_id}, Query data: {query.data}")
+    await context.bot.send_chat_action(chat_id=chat_id, action="typing")
     user_data = await user_manager.get_user(chat_id)
     if not user_data:
         logging.warning(f"No user data found for chat ID: {chat_id}")
@@ -462,10 +469,15 @@ async def offer_details_callback_handler(update: Update, context: ContextTypes.D
     text_lang = eval(f"{user_data['language']}_texts")
     text, link = await offer_details(user_data, offer_id)
     logging.info(f"Offer details text and link formed")
-    keyboard: list[list[InlineKeyboardButton]] = [[InlineKeyboardButton(text_lang['offer_details']['keyboard']['link'], url=link)]]
+    keyboard: list[list[InlineKeyboardButton]] = [[InlineKeyboardButton(text_lang['offer_details']['keyboard']['language_original'], url=link)]]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    logging.info(f"Reply markup: {reply_markup}")
-    await context.bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
+    if len(text) > 4000:
+        for i in range(0, len(text) - 4000, 4000):
+            await context.bot.send_message(chat_id=user_data.get('chat_id', 0), text=f"{text[i:i+4000]}\n\n{text_lang['offer_details']['text_more']}", parse_mode='HTML')
+        await context.bot.send_message(chat_id=user_data.get('chat_id', 0), text=f"{text[i+4000:]}", reply_markup=reply_markup, parse_mode='HTML')
+        await send_message_with_keyboard(context.bot, update, user_data, modify_message=False)
+    else:
+        await context.bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
 
 # Initialize bot with application builder
 application = ApplicationBuilder().token(TOKEN).build()

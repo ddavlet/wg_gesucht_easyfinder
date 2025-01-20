@@ -102,6 +102,7 @@ def get_finder_fields() -> Dict[str, Any]:
         'finder_id': '',
         'type': '',
         'offer_type': '',
+        'offer_type_id': -1,
         'duration': -1,
         'user_id': 0,
         'offers': [],

@@ -176,10 +176,11 @@
         "link": "<b>🔗 Link:</b> ",
         "translation": "🔄 <b>Translation:</b> ",
         "keyboard": {
-            "link": "🔗 Link"
+            "language_original": "🔗 See original"
         },
         "object_details": "🏠 <b>Object details:</b>",
-        "object_details_translation": "🔄 <b>Details translation:</b> "
+        "object_details_translation": "🔄 <b>Details translation:</b> ",
+        "text_more": "🔄 <b>More...</b>"
     },
     "info_messages": {
         "update": "🔄 Database is updated every day.",

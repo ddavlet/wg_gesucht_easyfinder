@@ -21,6 +21,7 @@ class FlatOffersManager:
         self.cached_offers: Dict[str, dict] = {}
         self.last_access: Dict[str, float] = {}
         self.cache_duration = 600  # 10 minutes in seconds
+        self.life_duration = 10*24*60*60  # 10 days in seconds
         logging.info("FlatOffersManager initialized")  # Log initialization
 
     async def get_offer(self, data_id: str) -> Optional[dict]:
@@ -38,7 +39,7 @@ class FlatOffersManager:
 
         # Get from database
         offer = self.offers_collection.find_one({'data_id': data_id})
-        if offer:
+        if offer and offer['is_active']:
             self.cached_offers[data_id] = offer
             self.last_access[data_id] = current_time
             return offer
@@ -57,6 +58,7 @@ class FlatOffersManager:
 
         # Ensure required fields
         offer_data['is_active'] = True
+        offer_data['created_at'] = datetime.now()
         if 'availability' not in offer_data:
             offer_data['availability'] = {
                 'listed_at': datetime.now()
@@ -161,3 +163,18 @@ class FlatOffersManager:
     async def get_active_offers(self) -> List[dict]:
         """Get active offers"""
         return list(self.offers_collection.find({'is_active': True}))
+
+    async def deactivate_expired_offers(self):
+        """Deactivate offers older than life duration"""
+        cutoff_date = time.time() - self.life_duration
+        self.offers_collection.update_many(
+            {'is_active': True, 'created_at': {'$lt': cutoff_date}},
+            {'$set': {'is_active': False}}
+        )
+
+    async def clean_expired_cache(self):
+        """Clean expired cache"""
+        for data_id in list(self.cached_offers):
+            if self.last_access[data_id] + self.cache_duration < time.time():
+                del self.cached_offers[data_id]
+                del self.last_access[data_id]

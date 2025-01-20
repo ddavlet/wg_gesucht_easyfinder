@@ -157,10 +157,9 @@ class FinderManager:
         )
         logging.info(f"Deleting offer ID: {offer_id} from finder ID: {finder_id}")
 
-    async def find_offers(self, finder, address: str) -> None:
+    async def find_offers(self, finder: dict, address: str) -> None:
         finder_id = finder['finder_id']
         flat_offers_manager = FlatOffersManager()
-        finder = await self.get_finder(finder_id)
         duration = finder['duration']
         offers = await flat_offers_manager.get_active_offers()
         for offer in offers:
@@ -174,7 +173,7 @@ class FinderManager:
             logging.info("Distance information retrieved")
             finder['parsed_offers'].append(offer['data_id'])
             self.update_finder(finder_id, finder)
-            if distance['routes'][0]['legs'][0]['distance']['value'] < int(duration):
+            if distance['routes'][0]['legs'][0]['distance']['value'] < int(duration) and offer['offer_type_id'] == finder['offer_type_id']:
                 finder['offers'].append(offer['data_id'])
                 self.update_finder(finder_id, finder)
                 logging.info(f"Offer added for: {duration}, offer ID: {offer['data_id']}")

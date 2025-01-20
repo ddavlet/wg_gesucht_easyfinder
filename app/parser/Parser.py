@@ -21,6 +21,7 @@ class Parser:
         }
         self.unselect_list_option('dropdown-menu inner')
         self.type = switch[type]
+        self.offer_type_id = type
         self.select_list_option('dropdown-menu inner', type)
         self.fill_input('form-control autocomplete wgg_input city_loader_bar', 'Munchen')
         self.driver.ele('tag:input@id:search_button').click()

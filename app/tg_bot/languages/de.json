@@ -198,6 +198,7 @@
             "link": "🔗 Link"
         },
         "object_details": "🏠 <b>Objektdetails:</b>",
-        "object_details_translation": "🔄 <b>Details Übersetzung:</b> "
+        "object_details_translation": "🔄 <b>Details Übersetzung:</b>",
+        "text_more": "🔄 <b>Mehr...</b>"
     }
 }

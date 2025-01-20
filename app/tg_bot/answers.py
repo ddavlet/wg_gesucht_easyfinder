@@ -273,6 +273,7 @@ async def stop_bot(user_data):
     return text_lang['stop_bot']['text'], None
 
 async def offer_details(user_data, offer_id):
+    logging.info(f"Offer details command received for chat ID: {user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     translator = eval(f"{user_data['language']}_translator")
     offer = await flat_offers_manager.get_offer(offer_id)
@@ -281,7 +282,7 @@ async def offer_details(user_data, offer_id):
     finder_text: str = ""
     for finder in finders_with_offer:
         finder_text += "  " + text_lang['finder_data']['id'] + str(finder['finder_id']) + "\n"
-        type = text_lang['new_finder'].get('keyboard').get('finder_type_' + finder['type'])
+        type = text_lang['new_finder'].get('new_finder_travel_mode_keyboard').get('finder_type_travel_' + finder['type'])
         logging.info(f"Type found: {type} for finder type: {finder['type']}")
         finder_text += "  " + text_lang['finder_data']['type'] + type + "\n"
         offer_type = text_lang['new_finder']['new_finder_housing_type_keyboard'].get('finder_type_housing_' + finder['offer_type'])
