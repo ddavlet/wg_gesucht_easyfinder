@@ -145,7 +145,7 @@ async def get_user_data(user_data):
         response += "-----------------------------------\n"
         response += text_lang['user_data']['next_finder'] + "\n"
         response += text_lang['finder_data']['id'] + str(finder['finder_id']) + "\n"
-        response += text_lang['finder_data']['type'] + text_lang['new_finder']['new_finder_housing_type_keyboard'].get('finder_type_housing_' + finder['type']) + "\n"
+        response += text_lang['finder_data']['type'] + text_lang['new_finder']['new_finder_travel_mode_keyboard'].get('finder_type_travel_' + finder['type']) + "\n"
         response += text_lang['finder_data']['offer_type'] + text_lang['new_finder']['new_finder_housing_type_keyboard'].get('finder_type_housing_' + finder['offer_type']) + "\n"
         response += text_lang['finder_data']['duration'] + str(finder['duration']) + "\n"
 
