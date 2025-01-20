@@ -44,7 +44,7 @@
         }
     },
     "account": {
-        "start": "👋 <b>Willkommen!</b> Verwenden Sie /help, um die verfügbaren Befehle zu sehen.",
+        "start": "👋 <b>Willkommen!</b> Verwenden Sie /start, um die verfügbaren Befehle zu sehen.",
         "stopped": "⏸️ Ihr Konto wurde pausiert. Verwenden Sie /start zum Fortfahren. Verwenden Sie /delete_account, um Ihr Konto zu löschen.",
         "reactivated": "✨ <b>Willkommen zurück!</b> Ihr Konto wurde reaktiviert."
     },
@@ -78,7 +78,7 @@
         "address_set_success": "✅ <b>Adresse erfolgreich gespeichert:</b>",
         "distance_set": {
             "title": "📏 <b>Ihre Suchdistanz wurde eingestellt auf:</b>",
-            "commands": "💡 Um alle verfügbaren Befehle zu sehen, geben Sie /help ein"
+            "commands": "💡 Um alle verfügbaren Befehle zu sehen, geben Sie /start ein"
         },
         "notifications_set": {
             "enabled": "🔔 Benachrichtigungen wurden aktiviert.",
@@ -91,7 +91,7 @@
         "wrong_address": "❌ Adresse kann nicht validiert werden."
     },
     "errors": {
-        "unknown_command": "❓ Entschuldigung, ich verstehe diesen Befehl nicht. Verwenden Sie /help, um die verfügbaren Befehle zu sehen.",
+        "unknown_command": "❓ Entschuldigung, ich verstehe diesen Befehl nicht. Verwenden Sie /start, um die verfügbaren Befehle zu sehen.",
         "invalid_address": "⚠️ Adresse ist ungültig, überprüfen Sie:",
         "wrong_address": "❌ Adresse kann nicht validiert werden.",
         "invalid_distance": "⚠️ Bitte geben Sie eine gültige Entfernung ein (1-100 km).",
@@ -195,7 +195,8 @@
         "link": "<b>🔗 Link:</b> ",
         "translation": "🔄 <b>Übersetzung:</b> ",
         "keyboard": {
-            "link": "🔗 Link"
+            "link": "🔗 Link",
+            "language_original": "🔗 Original anzeigen"
         },
         "object_details": "🏠 <b>Objektdetails:</b>",
         "object_details_translation": "🔄 <b>Details Übersetzung:</b>",

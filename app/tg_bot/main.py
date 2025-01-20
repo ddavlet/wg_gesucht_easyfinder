@@ -1,6 +1,7 @@
 import json
 import os
 import logging
+from datetime import datetime
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Bot
 from telegram.ext import (
     ApplicationBuilder,
@@ -259,11 +260,14 @@ async def handle_other_messages(update: Update, context: ContextTypes.DEFAULT_TY
             finder_data = await finder_manager.get_finder(user_data['finder_id'])
             finder_data['duration'] = duration * 60  # convert to seconds
             await finder_manager.save_finder(chat_id, user_data['finder_id'], finder_data)
+            user_data['finder_id'] = None
+            await user_manager.save_user(chat_id, user_data)
             await send_message_with_keyboard(context.bot, update, user_data, 'new_finder_success', modify_message=True)
             logging.info(f"Finder duration set to {duration} minutes for user {chat_id}.")
         except Exception as e:
             logging.error(f"Error setting duration: {e}")
             await finder_manager.delete_finder(user_data['finder_id'])
+            user_data['finder_id'] = None
             await context.bot.send_message(chat_id=chat_id, text=text_lang['errors']['wrong_duration'])
         user_data['state'] = 'main'
         user_data['finder_id'] = None
@@ -315,7 +319,9 @@ async def return_to_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
         logging.warning(f"No user data found for chat ID: {update.effective_chat.id}")
         return
     user_data['state'] = 'main'
-    user_data['finder_id'] = None
+    if user_data['finder_id']:
+        await finder_manager.delete_finder(user_data['finder_id'])
+        user_data['finder_id'] = None
     await user_manager.save_user(update.effective_chat.id, user_data)
     text_lang = eval(f"{user_data['language']}_texts")
     text = text_lang['main']['text']
@@ -453,6 +459,24 @@ async def delete_account_callback_handler(update: Update, context: ContextTypes.
         await send_message(context.bot, update, user_data, 'delete_account_cancel')
     await send_message_with_keyboard(context.bot, update, user_data, modify_message=False)
 
+async def offer_original_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logging.info("Callback handler triggered.")
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    offer_id = query.data.split('_')[2]
+    user_data = await user_manager.get_user(chat_id)
+    if not user_data:
+        logging.warning(f"No user data found for chat ID: {chat_id}")
+        return
+    text = await original_offer_details(user_data, offer_id)
+    if len(text) > 4000:
+        for i in range(0, len(text) - 4000, 4000):
+            await context.bot.send_message(chat_id=chat_id, text=text[i:i+4000], parse_mode='HTML')
+        await context.bot.send_message(chat_id=chat_id, text=text[i+4000:], parse_mode='HTML')
+        await send_message_with_keyboard(context.bot, update, user_data, modify_message=False)
+    else:
+        await context.bot.edit_message_text(chat_id=chat_id, message_id=query.message.message_id, text=text, parse_mode='HTML')
+
 async def offer_details_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info("Callback handler triggered.")
     query = update.callback_query
@@ -467,9 +491,9 @@ async def offer_details_callback_handler(update: Update, context: ContextTypes.D
     await query.answer()
     offer_id = query.data.split('_')[2]
     text_lang = eval(f"{user_data['language']}_texts")
-    text, link = await offer_details(user_data, offer_id)
+    text = await offer_details(user_data, offer_id)
     logging.info(f"Offer details text and link formed")
-    keyboard: list[list[InlineKeyboardButton]] = [[InlineKeyboardButton(text_lang['offer_details']['keyboard']['language_original'], url=link)]]
+    keyboard: list[list[InlineKeyboardButton]] = [[InlineKeyboardButton(text_lang['offer_details']['keyboard']['language_original'], callback_data=f"offer_original_{offer_id}")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     if len(text) > 4000:
         for i in range(0, len(text) - 4000, 4000):
@@ -478,6 +502,11 @@ async def offer_details_callback_handler(update: Update, context: ContextTypes.D
         await send_message_with_keyboard(context.bot, update, user_data, modify_message=False)
     else:
         await context.bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
+
+
+async def clean_database(context: ContextTypes.DEFAULT_TYPE):
+    await finder_manager.delete_incomplete_finders()
+
 
 # Initialize bot with application builder
 application = ApplicationBuilder().token(TOKEN).build()
@@ -506,6 +535,7 @@ application.add_handler(CallbackQueryHandler(delete_finder_callback_handler, pat
 application.add_handler(CallbackQueryHandler(delete_account_callback_handler, pattern='^delete_account_'))
 application.add_handler(CallbackQueryHandler(return_to_main_menu, pattern='main'))
 application.add_handler(CallbackQueryHandler(offer_details_callback_handler, pattern='^offer_details_'))
+application.add_handler(CallbackQueryHandler(offer_original_callback_handler, pattern='^offer_original_'))
 # Add a handler for any other messages
 application.add_handler(MessageHandler(filters.TEXT, handle_other_messages))
 
@@ -518,6 +548,8 @@ logging.info("Bot is starting...")
 # Set up a job queue to clean the cache every 10 minutes
 job_queue = application.job_queue
 job_queue.run_repeating(clean_cache, interval=600, first=0)  # 600 seconds = 10 minutes
+job_queue.run_repeating(clean_database, interval=12*60*60, first=0)  # 12 hours
+
 
 application.run_polling(drop_pending_updates=True)
 

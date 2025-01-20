@@ -179,8 +179,13 @@ class FinderManager:
                 logging.info(f"Offer added for: {duration}, offer ID: {offer['data_id']}")
                 logging.info(f"Because duration is: {distance['routes'][0]['legs'][0]['duration']['value']}")
             else:
-                logging.info("Offer not added due to duration")
+                logging.info(f"Offer not added due to duration or type: {offer['data_id']}")
                 continue
             logging.info("____________________")
         await self.update_finder(finder_id, finder)
         logging.info(f"Finding offers for finder ID: {finder_id} at address: {address}")
+
+    async def delete_incomplete_finders(self):
+        finders = self.finders_collection.find({'is_active': True, 'duration': -1})
+        for finder in finders:
+            await self.delete_finder(finder['finder_id'])

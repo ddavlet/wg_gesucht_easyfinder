@@ -44,7 +44,7 @@
         }
     },
     "account": {
-        "start": "👋 <b>Welcome!</b> Use /help to see available commands.",
+        "start": "👋 <b>Welcome!</b> Use /start to see available commands.",
         "stopped": "⏸️ Your account has been paused. Use /start to resume. Use /delete_account to delete your account.",
         "reactivated": "✨ <b>Welcome back!</b> Your account has been reactivated."
     },
@@ -78,7 +78,7 @@
         "address_set_success": "✅ <b>Address is saved successfully:</b>",
         "distance_set": {
             "title": "📏 <b>Your search distance has been set to:</b>",
-            "commands": "💡 To see all available commands type /help"
+            "commands": "💡 To see all available commands type /start"
         },
         "notifications_set": {
             "enabled": "🔔 Notifications have been enabled.",
@@ -92,7 +92,7 @@
     },
     "errors": {
         "finder_not_found": "❌ Finder not found.",
-        "unknown_command": "❓ Sorry, I didn't understand that command. Use /help to see available commands.",
+        "unknown_command": "❓ Sorry, I didn't understand that command. Use /start to see available commands.",
         "invalid_address": "⚠️ Address is not valid, check:",
         "wrong_address": "❌ Address cannot be validated.",
         "invalid_distance": "⚠️ Please enter a valid distance (1-100 km).",
