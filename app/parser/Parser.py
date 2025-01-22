@@ -19,68 +19,93 @@ class Parser:
             2: "Wohnung",
             3: "Haus"
         }
+        logging.info(f"Initializing Parser for type: {switch[type]} (code: {type})")
+        self.accept_cookies()
         self.unselect_list_option('dropdown-menu inner')
         self.type = switch[type]
         self.offer_type_id = type
         self.select_list_option('dropdown-menu inner', type)
         self.fill_input('form-control autocomplete wgg_input city_loader_bar', 'Munchen')
+        logging.info("Clicking search button")
         self.driver.ele('tag:input@id:search_button').click()
 
-
+    def accept_cookies(self):
+        try:
+            logging.info("Accepting cookies")
+            box = self.driver.ele('tag:div@class=cmpbox cmpstyleroot cmpbox3 cmpboxWelcomeGDPR cmpBoxWelcomeOI')
+            box = box.ele('tag:div@class=cmpboxbtns')
+            box.ele('tag:a@role:button').click()
+            logging.info("Cookies consent box accepted")
+            sleep(1)
+        except Exception as e:
+            logging.info(f"No cookies consent box found: {e}")
 
     def fill_input(self, class_name: str, value: str):
-        logging.info("Filling input: %s", class_name)
+        logging.info(f"Filling input field '{class_name}' with value: {value}")
         form_element = self.driver.ele(f'tag:form@id:formPortal')
         form_element.ele(f'tag:input@class:{class_name}').input(value)
-        logging.info("Input filled")
+        logging.debug(f"Input field '{class_name}' filled successfully")
         sleep(0.01)
+        logging.info("Selecting autocomplete suggestion")
         self.driver.ele(f'tag:div@class:autocomplete-suggestion').click()
-        logging.info("Suggestion clicked")
+        logging.debug("Autocomplete suggestion selected successfully")
+
     def select_list_option(self, list_class_name: str, option_index: int):
-        logging.info("Selecting option from list: %s", list_class_name)
+        logging.info(f"Selecting option {option_index} from dropdown list '{list_class_name}'")
         form_element = self.driver.ele(f'tag:form@id:formPortal')
+        logging.debug("Opening dropdown menu")
         form_element.ele(f'tag:button@class:btn dropdown-toggle form-control wgg_select').click()
-        list_element = form_element.ele(f'tag:ul@class:{list_class_name}')  # Locate the list
-        logging.info("List element: %s", list_element)
-        options = list_element.eles('tag:li')  # Get all list items
-        logging.info("Options: %s", options)
+        list_element = form_element.ele(f'tag:ul@class:{list_class_name}')
+        options = list_element.eles('tag:li')
+        logging.debug(f"Found {len(options)} options in dropdown")
+
         if 0 <= option_index < len(options):
-            # Click the desired option
-            logging.info("Option: %s", options[option_index].html)
+            option_text = options[option_index].html
+            logging.info(f"Selecting option: {option_text}")
             if options[option_index].attr('class') != 'selected':
                 options[option_index].click()
-                logging.info("Option clicked")
+                logging.debug(f"Option {option_index} selected successfully")
+            else:
+                logging.debug(f"Option {option_index} was already selected")
         else:
-            logging.error("Option index out of range: %d", option_index)
+            logging.error(f"Invalid option index: {option_index}. Available options: 0-{len(options)-1}")
+
         form_element.ele(f'tag:button@class:btn dropdown-toggle form-control wgg_select').click()
         sleep(1)
 
     def unselect_list_option(self, list_class_name: str):
-        logging.info("Unselecting option from list: %s", list_class_name)
+        logging.info(f"Unselecting all options from list '{list_class_name}'")
         form_element = self.driver.ele(f'tag:form@id:formPortal')
         form_element.ele(f'tag:button@class:btn dropdown-toggle form-control wgg_select').click()
-        list_element = form_element.ele(f'tag:ul@class:{list_class_name}')  # Locate the list
-        options = list_element.eles('tag:li')  # Get all list items
-        for option in options:
+        list_element = form_element.ele(f'tag:ul@class:{list_class_name}')
+        options = list_element.eles('tag:li')
+        logging.debug(f"Found {len(options)} options to check for unselection")
+
+        unselected_count = 0
+        for i, option in enumerate(options):
             sleep(0.11)
             if option.attr('class') == 'selected':
                 option.click()
-                logging.info("Option unselected")
-            else:
-                logging.info("Option already unselected")
+                unselected_count += 1
+                logging.debug(f"Unselected option {i}")
+
+        logging.info(f"Unselected {unselected_count} options in total")
         form_element.ele(f'tag:button@class:btn dropdown-toggle form-control wgg_select').click()
-        sleep(0.11)
-        sleep(1)
+        sleep(1.11)
 
     def get_page(self, url):
+        logging.info(f"Navigating to URL: {url}")
         self.driver.get(url)
         return self.driver.soup
 
     def get_ads(self):
+        logging.info("Fetching advertisement listings")
         ads = self.driver.ele('@class:listenansicht1 offer_list_item')
+        logging.debug(f"Found {len(ads) if ads else 0} advertisements")
         return ads
 
     def get_ad_data(self, page: ChromiumPage):
+        logging.info(f"Extracting basic data from advertisement at URL: {page.url}")
         id = page.ele('tag:div@class:col-xs-12 col-md-6').text
         id = id.split(' ')[1]
         link = page.url
@@ -89,31 +114,33 @@ class Parser:
         offer_fields['data_id'] = id
         offer_fields['link'] = link
         offer_fields['is_active'] = True
-
+        logging.debug(f"Extracted ad data - ID: {id}, Type: {self.type}")
         return offer_fields
 
     def get_offer_details(self, page, offer_data):
+        logging.info(f"Fetching detailed offer information for ID: {offer_data['data_id']}")
         sleep(3)
         data = offer_data
-        logging.info('Fetching offer details...')
+
         main_column = page.ele('tag:div@id=main_column')
         row_main_column = main_column.ele('tag:div@class=row')
 
         # First row
-        logging.info('First row')
+        logging.info('Processing offer title and images')
         data['name'] = row_main_column.ele('tag:h1', timeout=3).text
         image_elements = row_main_column.eles('tag:img@class=sp-image')
-        for image_element in image_elements:
-            data['images'].append(image_element.attr('data-default'))
+        data['images'] = [image.attr('data-default') for image in image_elements]
+        logging.debug(f"Found {len(data['images'])} images")
 
         section_footer_dark = row_main_column.ele('tag:div@class=section_footer_dark')
         data['area'] = section_footer_dark.ele('tag:b@text():m²').text
         data['total_rent'] = section_footer_dark.ele('tag:b@text():€').text
+        logging.debug(f"Basic details - Area: {data['area']}, Total Rent: {data['total_rent']}")
 
         row_main_column = row_main_column.next()
 
         # Second row
-        logging.info('Second row')
+        logging.info('Processing cost information')
         try:
             row = row_main_column.ele('tag:div@class=row')
             rows = row.eles('tag:div@class=row')
@@ -122,94 +149,102 @@ class Parser:
             for row, key in zip(rows, keys):
                 value = row.ele('tag:span@class=section_panel_value').text
                 data['costs'][key] = value
+                logging.debug(f"Cost detail - {key}: {value}")
                 count += 1
                 if count == 5:
                     break
         except Exception as e:
-            logging.error("Error getting costs: %s", e)
-            logging.error("Error in: %s", row.html)
+            logging.error(f"Failed to extract cost information: {str(e)}")
+            logging.error(f"Problematic HTML: {row.html}")
             raise e
 
         row_main_column = row_main_column.next()
 
         # Third row
-        logging.info('Third row')
+        logging.info('Processing address and availability information')
         row = row_main_column.ele('tag:div@class=row')
         rows = row.eles('tag:div@class=row')
         data['address'] = rows[0].ele('tag:span@class=section_panel_detail').text
+        logging.debug(f"Address: {data['address']}")
         rows.pop(0)
         for row in rows:
             try:
                 name = row.ele('tag:span@class=section_panel_detail')
                 data['availability'][name.text] = row.ele('tag:span@class=section_panel_value').text
+                logging.debug(f"Availability detail - {name.text}: {data['availability'][name.text]}")
             except Exception as e:
                 try:
                     name = row.ele('tag:span@class=noprint section_panel_detail')
                     data['availability'][name.text] = row.ele('tag:b@class=noprint').text
+                    logging.debug(f"Availability detail (alternate) - {name.text}: {data['availability'][name.text]}")
                 except Exception as e:
-                    logging.error("Error getting availability: %s", e)
-                    logging.error("Error in: %s", row.html)
-                    logging.info("Continuing...")
+                    logging.warning(f"Failed to extract availability information: {str(e)}")
+                    logging.debug(f"Skipped problematic row: {row.html}")
 
         row_main_column = row_main_column.next().next()
 
         # Fifth row
-        logging.info('Fifth row')
+        logging.info('Processing object details')
         try:
             row = row_main_column.ele('tag:div@class=row')
             details = row.eles('tag:div@class=text-center')
-            for detail in details:
-                data['object_details'].append(detail.text)
+            data['object_details'] = [detail.text for detail in details]
+            logging.debug(f"Found {len(data['object_details'])} object details")
         except Exception as e:
-            logging.error("Error getting object details: %s", e)
-            logging.error("Error in: %s", row.html)
+            logging.error(f"Failed to extract object details: {str(e)}")
+            logging.error(f"Problematic HTML: {row.html}")
             raise e
 
         row_main_column = row_main_column.next().next()
 
         # Sixth row
-        logging.info('Sixth row')
+        logging.info('Processing description')
         row = row_main_column.ele('tag:div@class=row')
         descriptions = row.eles('tag:div@id:freitext_')
-        for description in descriptions:
-            data['description'].append(description.text)
+        data['description'] = [desc.text for desc in descriptions]
+        logging.debug(f"Found {len(data['description'])} description sections")
 
         # Save offer
+        logging.info(f"Saving offer with ID: {data['data_id']}")
         self.flat_offers_manager.save_offer(data)
-        logging.info("New offer saved, id: %s", data['data_id'])
+        logging.info(f"Successfully saved offer {data['data_id']} - {data['name']}")
 
     def parse_ads(self):
         for i in range(2):
+            logging.info(f"Processing page {i+1} of listings")
             sleep(5)
-            logging.info("Parsing page: %d", i)
             offers = self.driver.eles('@class:truncate_title noprint')
-            logging.info("Offers received, number of offers on page: %d", len(offers))
-            logging.info('--------------------------------')
-            for offer in offers:
+            logging.info(f"Found {len(offers)} offers on page {i+1}")
+
+            for j, offer in enumerate(offers, 1):
                 offer = offer.ele('tag:a')
-                logging.info("Offer clicked")
-                new_tab = self.driver.new_tab(offer.attr('href'))
+                offer_url = offer.attr('href')
+                logging.info(f"Processing offer {j}/{len(offers)} on page {i+1}")
+                logging.debug(f"Opening offer URL: {offer_url}")
+
+                new_tab = self.driver.new_tab(offer_url)
                 sleep(5)
                 try:
                     offer_data = self.get_ad_data(new_tab)
-                    logging.info("Offer data received")
                     sleep(3)
+
                     if not self.flat_offers_manager.get_offer(offer_data['data_id']):
-                        logging.info("Offer with id: %s does not exist", offer_data['data_id'])
+                        logging.info(f"Processing new offer with ID: {offer_data['data_id']}")
                         try:
                             self.get_offer_details(new_tab, offer_data)
-                            logging.info("Offer with id: %s created", offer_data['data_id'])
+                            logging.info(f"Successfully processed offer {offer_data['data_id']}")
                         except Exception as e:
-                            logging.error("Error getting offer details: %s", e)
-                            logging.info("Skipping offer with id: %s", offer_data['data_id'])
+                            logging.error(f"Failed to process offer {offer_data['data_id']}: {str(e)}")
                         sleep(3)
                     else:
-                        logging.info("Offer with id: %s already exists", offer_data['data_id'])
+                        logging.info(f"Skipping existing offer with ID: {offer_data['data_id']}")
                 except Exception as e:
-                    logging.error('Skipped: %s', e)
-                logging.info("New tab closing")
-                logging.info('--------------------------------')
-                new_tab.close()
+                    logging.error(f"Failed to extract offer data: {str(e)}")
 
-            logging.info(self.driver.url)
+                logging.debug("Closing offer tab")
+                new_tab.close()
+                logging.info("------------------------")
+
+            logging.info(f"Completed page {i+1}, current URL: {self.driver.url}")
+            logging.info("Navigating to next page")
             self.driver.ele('tag:a@class:page-link next').click()

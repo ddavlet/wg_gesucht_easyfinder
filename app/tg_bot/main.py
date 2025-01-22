@@ -15,7 +15,6 @@ from database.user_manager import UserManager
 from database.finder_manager import FinderManager
 from database.flat_offers_manager import FlatOffersManager
 from database.database import get_user_fields, get_finder_fields
-from validators import *
 from answers import *
 
 from dotenv import load_dotenv
@@ -30,36 +29,38 @@ LANGUAGE_FILES = {
     'ru': os.getenv('LANGUAGE_FILE_RU')
 }
 
-# Check if any language file path is None
-for lang, path in LANGUAGE_FILES.items():
-    if path is None:
-        print(f"Warning: LANGUAGE_FILE_{lang.upper()} is not set in the environment variables.")
+def init_variables():
+    # Check if any language file path is None
+    for lang, path in LANGUAGE_FILES.items():
+        if path is None:
+            print(f"Warning: LANGUAGE_FILE_{lang.upper()} is not set in the environment variables.")
 
-# Load language files
-with open(LANGUAGE_FILES['en'], 'r') as f:
-    en_texts = json.load(f)
-with open(LANGUAGE_FILES['de'], 'r') as f:
-    de_texts = json.load(f)
-with open(LANGUAGE_FILES['ru'], 'r') as f:
-    ru_texts = json.load(f)
+    # Load language files
+    with open(LANGUAGE_FILES['en'], 'r') as f:
+        en_texts = json.load(f)
+    with open(LANGUAGE_FILES['de'], 'r') as f:
+        de_texts = json.load(f)
+    with open(LANGUAGE_FILES['ru'], 'r') as f:
+        ru_texts = json.load(f)
 
-# In-memory user settings
-user_manager = UserManager()
-finder_manager = FinderManager()
-flat_offers_manager = FlatOffersManager()
+    # In-memory user settings
+    user_manager = UserManager()
+    flat_offers_manager = FlatOffersManager()
+    finder_manager = FinderManager(flat_offers_manager)
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
+    logging.getLogger("httpx").setLevel(logging.WARNING)
 
-# Add a file handler for logging
-file_handler = logging.FileHandler('bot.log')
-file_handler.setLevel(logging.ERROR)  # Set the level for the file handler
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
+    # Add a file handler for logging
+    file_handler = logging.FileHandler('bot.log')
+    file_handler.setLevel(logging.ERROR)  # Set the level for the file handler
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
 
-# Get the root logger and add the file handler
-logger = logging.getLogger()
-logger.addHandler(file_handler)
+    # Get the root logger and add the file handler
+    logger = logging.getLogger()
+    logger.addHandler(file_handler)
 
 async def create_keyboard(keys: dict):
     keyboard = []
@@ -116,23 +117,21 @@ async def send_message_with_keyboard(bot: Bot, update: Update, user_data: dict, 
     logging.info(f"Text: {text}, Keyboard texts: {keyboard_texts}")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.info("Start command received.")
     chat_id = update.effective_chat.id
-    logging.info(f"Chat ID: {chat_id}")
+    logging.info(f"Start command received from chat_id={chat_id}")
     user_data = await user_manager.get_any_user(chat_id)
     if user_data and not user_data.get('is_active', False):
         user_data['is_active'] = True
         await user_manager.save_user(chat_id, user_data)
+        logging.info(f"Reactivated user profile: chat_id={chat_id}")
         text_lang = eval(f"{user_data['language']}_texts")
-        await context.bot.send_message(chat_id=chat_id, text=text_lang['start']['text_reactivated_profile'])
+        await context.bot.send_message(chat_id=chat_id, text=text_lang['start']['text_reactivated_profile'], parse_mode='HTML')
     elif not user_data:
         name = update.effective_chat.username
         user_data = get_user_fields()
         user_data['chat_id'] = chat_id
         user_data['name'] = name
-        logging.info(f"User data: {user_data}")
-        # message = text_lang['main']['text']
-        # keyboard = text_lang['main']['keyboard']
+        logging.info(f"Creating new user profile: chat_id={chat_id}, username={name}")
         text_lang = eval(f"{user_data['language']}_texts")
         await user_manager.save_user(chat_id, user_data)
         await context.bot.send_message(chat_id=chat_id, text=text_lang['start']['text_new_profile'], parse_mode='HTML')
@@ -140,24 +139,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_data['state'] = 'main'
     await user_manager.save_user(chat_id, user_data)
     await send_message_with_keyboard(context.bot, update, user_data, 'main_menu', modify_message=False)
-    # await send_message(context.bot, update, user_data)
-
-    logging.info(f"New user data: {user_data}")
 
 async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.info("Stop command received.")
     chat_id = update.effective_chat.id
-    logging.info(f"Chat ID: {chat_id}")
+    logging.info(f"Stop command received from chat_id={chat_id}")
     user_data = await user_manager.get_user(chat_id)
-    logging.info(f"User data: {user_data}")
     if not user_data:
-        logging.warning(f"No user data found for chat ID: {chat_id}")
+        logging.warning(f"Stop command failed: User not found for chat_id={chat_id}")
         return
     text_lang = eval(f"{user_data['language']}_texts")
     user_data['state'] = 'main'
     await user_manager.save_user(chat_id, user_data)
     user_manager.deactivate_user(chat_id)
-    logging.info(f"User {chat_id} has been stopped.")
+    logging.info(f"User deactivated: chat_id={chat_id}")
     await context.bot.send_message(
         chat_id=chat_id,
         text=text_lang['account']['stopped']
@@ -234,10 +228,9 @@ async def handle_other_messages(update: Update, context: ContextTypes.DEFAULT_TY
         logging.info(f"Unknown command sent to user {chat_id}.")
     elif user_data['state'] == 'address':
         logging.info("Address validation in progress.")
-        validators = Validators(user_data)
         user_data['state'] = 'main'
         try:
-            answer, is_valid = await validators.validate_address(update.message.text)
+            answer, is_valid = await validate_address(user_data, update.message.text)
             logging.info(f"Address validation result: {answer}")
             if is_valid:
                 await send_message(context.bot, update, user_data, 'address_set_success')
@@ -252,20 +245,20 @@ async def handle_other_messages(update: Update, context: ContextTypes.DEFAULT_TY
         await user_manager.save_user(chat_id, user_data)
         await send_message_with_keyboard(context.bot, update, user_data, modify_message=False)
     elif user_data['state'] == 'new_finder_duration':
-        logging.info("New finder duration setting in progress.")
+        logging.info(f"Setting finder duration for chat_id={chat_id}")
         try:
             duration: int = int(update.message.text)
-            if duration > 300:
-                raise Exception("Duration is too long")
+            if duration < 1 or duration > 300:
+                raise ValueError("Duration must be between 1 and 300 minutes")
             finder_data = await finder_manager.get_finder(user_data['finder_id'])
             finder_data['duration'] = duration * 60  # convert to seconds
             await finder_manager.save_finder(chat_id, user_data['finder_id'], finder_data)
             user_data['finder_id'] = None
             await user_manager.save_user(chat_id, user_data)
             await send_message_with_keyboard(context.bot, update, user_data, 'new_finder_success', modify_message=True)
-            logging.info(f"Finder duration set to {duration} minutes for user {chat_id}.")
-        except Exception as e:
-            logging.error(f"Error setting duration: {e}")
+            logging.info(f"Finder duration set: chat_id={chat_id}, finder_id={user_data['finder_id']}, duration={duration}min")
+        except ValueError as e:
+            logging.error(f"Invalid duration input: chat_id={chat_id}, error={str(e)}")
             await finder_manager.delete_finder(user_data['finder_id'])
             user_data['finder_id'] = None
             await context.bot.send_message(chat_id=chat_id, text=text_lang['errors']['wrong_duration'])
@@ -274,24 +267,22 @@ async def handle_other_messages(update: Update, context: ContextTypes.DEFAULT_TY
         await user_manager.save_user(chat_id, user_data)
 
 async def clean_cache(context: ContextTypes.DEFAULT_TYPE):
-    user_manager.clean_expired_cache()
-    finder_manager.clean_expired_cache()
-    finder_manager.delete_expired_finders()
-    flat_offers_manager.clean_expired_cache()
-    flat_offers_manager.deactivate_expired_offers()
+    logging.info("Starting periodic cache cleanup")
+    await user_manager.clean_expired_cache()
+    await finder_manager.clean_expired_cache()
+    await flat_offers_manager.clean_expired_cache()
+    logging.info("Cache cleanup completed")
 
 async def main_menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.info("Callback handler triggered.")
     query = update.callback_query
     chat_id = query.message.chat_id
-    logging.info(f"Chat ID: {chat_id}, Query data: {query.data}")
+    command_type = query.data.split('_')[2]
+    logging.info(f"Main menu callback: chat_id={chat_id}, command={command_type}")
     await query.answer()
     user_data = await user_manager.get_user(chat_id)
     if not user_data:
-        logging.warning(f"No user data found for chat ID: {chat_id}")
+        logging.warning(f"Callback failed: User not found for chat_id={chat_id}")
         return
-    command_type = query.data.split('_')[2]
-    logging.info(f"Command type: {command_type}")
     if command_type == 'mydata':
         logging.info('get_my_data mathced')
         await send_message_with_keyboard(context.bot, update, user_data, 'get_user_data', modify_message=True)
@@ -329,22 +320,25 @@ async def return_to_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
     await context.bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=update.callback_query.message.message_id, text=text, reply_markup=InlineKeyboardMarkup(await create_keyboard(keyboard)), parse_mode='HTML')
 
 async def process_offers(bot, user_data):
-    bot.send_chat_action(chat_id=user_data.get('chat_id', 0), action="typing")
-    logging.info("Processing offers.")
     chat_id = user_data.get('chat_id', 0)
-    logging.info(f"Chat ID: {chat_id}")
+    logging.info(f"Processing offers for chat_id={chat_id}")
+    bot.send_chat_action(chat_id=chat_id, action="typing")
     offers = await get_my_offers(user_data)
+    bot.send_chat_action(chat_id=chat_id, action="find_location")
     text_lang = eval(f"{user_data['language']}_texts")
     if offers == None:
+        logging.info(f"No offers found for chat_id={chat_id}")
         await bot.send_message(chat_id=chat_id, text=text_lang['offer_data']['no_offers'])
     elif not isinstance(offers, list):
-        logging.info(f"Offers is not list: {offers}")
+        logging.warning(f"Invalid offers format: chat_id={chat_id}, type={type(offers)}")
         await bot.send_message(chat_id=chat_id, text=offers, parse_mode='HTML')
     else:
-        logging.info(f"Offers separate: {offers}")
+        logging.info(f"Found {len(offers)} offers for chat_id={chat_id}")
         await bot.send_message(chat_id=chat_id, text=text_lang['offer_data']['first'], parse_mode='HTML')
         for offer in offers:
-            await bot.send_message(chat_id=chat_id, text=offer.get('text'), reply_markup=InlineKeyboardMarkup(await create_keyboard({f"offer_details_{offer.get('id')}" : text_lang['offer_data']['keyboard']['offer_details']})), parse_mode='HTML')
+            keyboard = await create_keyboard({f"offer_details_{offer.get('id')}" : text_lang['offer_data']['keyboard']['offer_details']})
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            await bot.send_message(chat_id=chat_id, text=offer.get('text'), reply_markup=reply_markup, parse_mode='HTML')
     return user_data, None
 
 async def settings_menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -385,19 +379,17 @@ async def settings_menu_callback_handler(update: Update, context: ContextTypes.D
         await send_message_with_keyboard(context.bot, update, user_data, modify_message=True)
 
 async def new_finder_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.info("Callback handler triggered.")
     query = update.callback_query
     chat_id = query.message.chat_id
-    logging.info(f"Chat ID: {chat_id}, Query data: {query.data}")
+    command_type = query.data.split('_')[2]
+    data_type = query.data.split('_')[3]
+    logging.info(f"New finder callback: chat_id={chat_id}, command={command_type}, type={data_type}")
     await query.answer()
     user_data = await user_manager.get_user(chat_id)
     if not user_data:
         logging.warning(f"No user data found for chat ID: {chat_id}")
         return
     text_lang = eval(f"{user_data['language']}_texts")
-    command_type = query.data.split('_')[2]
-    logging.info(f"Command type: {command_type}")
-    data_type = query.data.split('_')[3]
     if command_type == "housing":
         new_finder = get_finder_fields()
         new_finder['offer_type'] = data_type
@@ -425,37 +417,37 @@ async def new_finder_callback_handler(update: Update, context: ContextTypes.DEFA
         text = text_lang['new_finder'].get('duration_prompt')
         await context.bot.edit_message_text(chat_id=chat_id, message_id=query.message.message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
 
-
 async def delete_finder_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.info("Callback handler triggered.")
     query = update.callback_query
     chat_id = query.message.chat_id
-    logging.info(f"Chat ID: {chat_id}, Query data: {query.data}")
+    finder_id = int(query.data.split('_')[2])
+    logging.info(f"Deleting finder: chat_id={chat_id}, finder_id={finder_id}")
     await query.answer()
     user_data = await user_manager.get_user(chat_id)
     if not user_data:
-        logging.warning(f"No user data found for chat ID: {chat_id}")
+        logging.warning(f"Delete finder failed: User not found for chat_id={chat_id}")
         return
-    finder_id = int(query.data.split('_')[2])
     await finder_manager.delete_finder(finder_id)
+    logging.info(f"Finder deleted: chat_id={chat_id}, finder_id={finder_id}")
     await send_message(context.bot, update, user_data, 'delete_finder_success')
     await send_message_with_keyboard(context.bot, update, user_data, modify_message=False)
 
 async def delete_account_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.info("Callback handler triggered.")
     query = update.callback_query
     chat_id = query.message.chat_id
-    logging.info(f"Chat ID: {chat_id}, Query data: {query.data}")
+    command_type = query.data.split('_')[2]
+    logging.info(f"Account deletion request: chat_id={chat_id}, action={command_type}")
     await query.answer()
     user_data = await user_manager.get_user(chat_id)
     if not user_data:
-        logging.warning(f"No user data found for chat ID: {chat_id}")
+        logging.warning(f"Delete account failed: User not found for chat_id={chat_id}")
         return
-    command_type = query.data.split('_')[2]
     if command_type == 'delete_account_yes':
         await delete_account(user_data)
+        logging.info(f"Account deleted: chat_id={chat_id}")
         await send_message(context.bot, update, user_data, 'delete_account_success')
     elif command_type == 'delete_account_no':
+        logging.info(f"Account deletion cancelled: chat_id={chat_id}")
         await send_message(context.bot, update, user_data, 'delete_account_cancel')
     await send_message_with_keyboard(context.bot, update, user_data, modify_message=False)
 
@@ -478,24 +470,23 @@ async def offer_original_callback_handler(update: Update, context: ContextTypes.
         await context.bot.edit_message_text(chat_id=chat_id, message_id=query.message.message_id, text=text, parse_mode='HTML')
 
 async def offer_details_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.info("Callback handler triggered.")
     query = update.callback_query
     chat_id = query.message.chat_id
     message_id = query.message.message_id
-    logging.info(f"Chat ID: {chat_id}, Query data: {query.data}")
+    offer_id = query.data.split('_')[2]
+    logging.info(f"Fetching offer details: chat_id={chat_id}, offer_id={offer_id}")
     await context.bot.send_chat_action(chat_id=chat_id, action="typing")
     user_data = await user_manager.get_user(chat_id)
     if not user_data:
-        logging.warning(f"No user data found for chat ID: {chat_id}")
+        logging.warning(f"Get offer details failed: User not found for chat_id={chat_id}")
         return
     await query.answer()
-    offer_id = query.data.split('_')[2]
     text_lang = eval(f"{user_data['language']}_texts")
     text = await offer_details(user_data, offer_id)
-    logging.info(f"Offer details text and link formed")
     keyboard: list[list[InlineKeyboardButton]] = [[InlineKeyboardButton(text_lang['offer_details']['keyboard']['language_original'], callback_data=f"offer_original_{offer_id}")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     if len(text) > 4000:
+        logging.info(f"Splitting long offer details: chat_id={chat_id}, offer_id={offer_id}, length={len(text)}")
         for i in range(0, len(text) - 4000, 4000):
             await context.bot.send_message(chat_id=user_data.get('chat_id', 0), text=f"{text[i:i+4000]}\n\n{text_lang['offer_details']['text_more']}", parse_mode='HTML')
         await context.bot.send_message(chat_id=user_data.get('chat_id', 0), text=f"{text[i+4000:]}", reply_markup=reply_markup, parse_mode='HTML')
@@ -503,53 +494,62 @@ async def offer_details_callback_handler(update: Update, context: ContextTypes.D
     else:
         await context.bot.edit_message_text(chat_id=user_data.get('chat_id', 0), message_id=message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
 
-
 async def clean_database(context: ContextTypes.DEFAULT_TYPE):
+    logging.info("Starting periodic database cleanup")
     await finder_manager.delete_incomplete_finders()
+    await finder_manager.delete_expired_finders()
+    await flat_offers_manager.deactivate_expired_offers()
+    logging.info("Database cleanup completed")
+
+async def user_data_entry_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    user_data = await user_manager.get_user(chat_id)
+    if not user_data:
+        logging.warning(f"No user data found for chat ID: {chat_id}")
+        return
+    query.answer()
+    await send_message(context.bot, update, user_data, 'user_data_entry_first')
+    await send_message_with_keyboard(context.bot, update, user_data, 'user_data_entry_name', modify_message=False)
 
 
-# Initialize bot with application builder
-application = ApplicationBuilder().token(TOKEN).build()
-# Account handlers
-application.add_handler(CommandHandler("start", start))
-application.add_handler(CommandHandler("stop", stop))
-# application.add_handler(CommandHandler("delete_account", delete_account))
+def main():
+    init_variables()
 
-# # Settings handlers
-# # application.add_handler(CommandHandler("set_language", set_language))
-# application.add_handler(CommandHandler("set_address", set_address_command))
-# application.add_handler(CommandHandler("set_new_finder", set_new_finder_command))
-# application.add_handler(CommandHandler("help", help_command))
-# application.add_handler(CommandHandler("set_notifications", set_notifications_command))
-# # application.add_handler(CommandHandler("my_data", get_user_data))
-# # application.add_handler(CommandHandler("my_offers", get_my_offers))
-# application.add_handler(CommandHandler("delete_finder", delete_finder))
+    # Initialize bot with application builder
+    application = ApplicationBuilder().token(TOKEN).build()
 
-# Callback handlers
-application.add_handler(CallbackQueryHandler(callback_handler, pattern='^lang_'))
-application.add_handler(CallbackQueryHandler(callback_handler, pattern='^offer_type_'))
-application.add_handler(CallbackQueryHandler(main_menu_callback_handler, pattern='^main_menu_'))
-application.add_handler(CallbackQueryHandler(settings_menu_callback_handler, pattern='^settings_'))
-application.add_handler(CallbackQueryHandler(new_finder_callback_handler, pattern='^finder_type_'))
-application.add_handler(CallbackQueryHandler(delete_finder_callback_handler, pattern='^finder_delete_'))
-application.add_handler(CallbackQueryHandler(delete_account_callback_handler, pattern='^delete_account_'))
-application.add_handler(CallbackQueryHandler(return_to_main_menu, pattern='main'))
-application.add_handler(CallbackQueryHandler(offer_details_callback_handler, pattern='^offer_details_'))
-application.add_handler(CallbackQueryHandler(offer_original_callback_handler, pattern='^offer_original_'))
-# Add a handler for any other messages
-application.add_handler(MessageHandler(filters.TEXT, handle_other_messages))
+    # Command handlers
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("stop", stop))
 
-# Add error handler
-application.add_error_handler(error_handler)
+    # Callback handlers
+    application.add_handler(CallbackQueryHandler(callback_handler, pattern='^lang_'))
+    application.add_handler(CallbackQueryHandler(callback_handler, pattern='^offer_type_'))
+    application.add_handler(CallbackQueryHandler(main_menu_callback_handler, pattern='^main_menu_'))
+    application.add_handler(CallbackQueryHandler(settings_menu_callback_handler, pattern='^settings_'))
+    application.add_handler(CallbackQueryHandler(new_finder_callback_handler, pattern='^finder_type_'))
+    application.add_handler(CallbackQueryHandler(delete_finder_callback_handler, pattern='^finder_delete_'))
+    application.add_handler(CallbackQueryHandler(delete_account_callback_handler, pattern='^delete_account_'))
+    application.add_handler(CallbackQueryHandler(return_to_main_menu, pattern='main'))
+    application.add_handler(CallbackQueryHandler(offer_details_callback_handler, pattern='^offer_details_'))
+    application.add_handler(CallbackQueryHandler(offer_original_callback_handler, pattern='^offer_original_'))
+    application.add_handler(CallbackQueryHandler(user_data_entry_callback_handler, pattern='^user_data_'))
+    # Add a handler for any other messages
+    application.add_handler(MessageHandler(filters.TEXT, handle_other_messages))
 
-# Start the bot
-logging.info("Bot is starting...")
+    # Add error handler
+    application.add_error_handler(error_handler)
 
-# Set up a job queue to clean the cache every 10 minutes
-job_queue = application.job_queue
-job_queue.run_repeating(clean_cache, interval=600, first=0)  # 600 seconds = 10 minutes
-job_queue.run_repeating(clean_database, interval=12*60*60, first=0)  # 12 hours
+    # Start the bot
+    logging.info("Bot is starting...")
 
+    # Set up a job queue to clean the cache every 10 minutes
+    job_queue = application.job_queue
+    job_queue.run_repeating(clean_cache, interval=600, first=0)  # 600 seconds = 10 minutes
+    job_queue.run_repeating(clean_database, interval=12*60*60, first=0)  # 12 hours
 
-application.run_polling(drop_pending_updates=True)
+    application.run_polling(drop_pending_updates=True)
 
+if __name__ == "__main__":
+    main()

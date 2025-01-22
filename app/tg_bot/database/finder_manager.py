@@ -16,13 +16,14 @@ if db is None:
     exit(1)
 
 class FinderManager:
-    def __init__(self):
+    def __init__(self, flat_offers_manager: FlatOffersManager):
         self.db = db
         self.finders_collection = self.db['finders']
         self.cached_findings: Dict[int, dict] = {}
         self.last_access: Dict[int, float] = {}
         self.cache_duration = 600  # 10 minutes in seconds
         self.life_duration = 30*24*60*60  # 30 days in seconds
+        self.flat_offers_manager = flat_offers_manager
         logging.info("FinderManager initialized")
 
     async def get_finder(self, finder_id: int) -> Optional[dict]:
@@ -159,9 +160,8 @@ class FinderManager:
 
     async def find_offers(self, finder: dict, address: str) -> None:
         finder_id = finder['finder_id']
-        flat_offers_manager = FlatOffersManager()
         duration = finder['duration']
-        offers = await flat_offers_manager.get_active_offers()
+        offers = await self.flat_offers_manager.get_active_offers()
         for offer in offers:
             if offer['data_id'] in finder['parsed_offers']:
                 logging.info("Offer already parsed")

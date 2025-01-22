@@ -5,6 +5,9 @@ from database.user_manager import UserManager
 from database.finder_manager import FinderManager
 from database.flat_offers_manager import FlatOffersManager
 from translatorapi import TranslatorAPI
+from mapsapi import MapsAPI
+
+maps_api = MapsAPI()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -20,8 +23,8 @@ logger.addHandler(file_handler)
 
 # Managers
 user_manager = UserManager()
-finder_manager = FinderManager()
 flat_offers_manager = FlatOffersManager()
+finder_manager = FinderManager(flat_offers_manager)
 
 # Load language files
 LANGUAGE_FILES = {
@@ -52,6 +55,7 @@ async def main_menu(user_data):
     return text_lang['main']['text'], text_lang['main']['keyboard']
 
 async def language_changed(user_data):
+    logging.info(f"Language changed to {user_data['language']} for chat_id={user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     return text_lang['settings']['language_changed'], None
 
@@ -60,51 +64,49 @@ async def offer_type_prompt(user_data):
     return text_lang['new_finder']['offer_type_prompt'], None
 
 async def set_language(user_data):
-    logging.info("Set language command received.")
     chat_id = user_data.get('chat_id', 0)
-    logging.info(f"Chat ID: {chat_id}")
+    logging.info(f"Language selection menu requested: chat_id={chat_id}")
     text_lang = eval(f"{user_data['language']}_texts")
     text = text_lang['language_choose_menu'].get('text')
     keyboard = text_lang['language_choose_menu'].get('keyboard')
-    logging.info("Language selection keyboard sent.")
     return text, keyboard
 
 async def get_my_offers(user_data):
-    logging.info("Get my offers command received.")
     chat_id = user_data.get('chat_id', 0)
-    logging.info(f"Chat ID: {chat_id}")
+    logging.info(f"Retrieving offers for chat_id={chat_id}")
     text_lang = eval(f"{user_data['language']}_texts")
     translator = eval(f"{user_data['language']}_translator")
     if user_data['preferences']['address'] == '':
-        logging.info("No address set, sending error message.")
+        logging.warning(f"No address set for chat_id={chat_id}")
         return text_lang['errors']['no_address_set']
-    logging.info("Retrieving offers for finders.")
-    finders = await finder_manager.get_finders_by_user(user_data.get('chat_id', 0))
+
+    finders = await finder_manager.get_finders_by_user(chat_id)
+    logging.info(f"Processing {len(finders)} finders for chat_id={chat_id}")
     for finder in finders:
         await finder_manager.find_offers(finder, user_data['preferences']['address'])
-    logging.info("Retrieving offers for user.")
-    offers_ids = await finder_manager.get_findings_by_user(user_data.get('chat_id', 0))
-    logging.info(f"Offers IDs: {offers_ids}")
+
+    offers_ids = await finder_manager.get_findings_by_user(chat_id)
     if not offers_ids:
-        logging.info(f"No offers found for user {chat_id}.")
+        logging.info(f"No offers found for chat_id={chat_id}")
         return text_lang['errors']['no_offers_found']
+
     response = []
     for offer_id in offers_ids:
         offer = await flat_offers_manager.get_offer(offer_id)
         if offer is None:
-            logging.warning(f"Offer not found for ID {offer_id}, user: {user_data.get('chat_id', 0)}")
+            logging.warning(f"Offer not found: chat_id={chat_id}, offer_id={offer_id}")
             continue
-        response.append( {
+        response.append({
             'id': offer_id,
             'text': text_lang['offer_data']['start'] + '\n' +
-            text_lang['offer_data']['title'] + offer['name'] + f' ({translator.translate(offer['name'])})' + '\n' +
+            text_lang['offer_data']['title'] + f'{translator.translate(offer["name"])}' + '\n' +
             text_lang['offer_data']['location'] + offer['address'] + '\n' +
             text_lang['offer_data']['rent'] + str(offer['total_rent']) + '\n' +
             text_lang['offer_data']['link'] + offer['link']}
         )
     if response == []:
         return None
-    # Send the response to the user
+    logging.info(f"Found {len(response)} valid offers for chat_id={chat_id}")
     return response
 
 async def settings_menu(user_data):
@@ -123,8 +125,12 @@ async def new_finder_success(user_data):
 
 async def get_user_data(user_data):
     chat_id = user_data.get('chat_id', 0)
+    logging.info(f"Retrieving user data for chat_id={chat_id}")
     text_lang = eval(f"{user_data['language']}_texts")
-    print(user_data)
+
+    finders = await finder_manager.get_finders_by_user(chat_id)
+    logging.info(f"Found {len(finders)} finders for chat_id={chat_id}")
+
     response = (
         text_lang['user_data']['start'] + "\n\n" +
         text_lang['user_data']['name'] + user_data['name'] + "\n" +
@@ -135,52 +141,50 @@ async def get_user_data(user_data):
         text_lang['user_data']['finders'] + "\n"
     )
 
-    finders = await finder_manager.get_finders_by_user(chat_id)
-    logging.info(f"Found {len(finders)} finders for user ID: {chat_id}")
     for finder in finders:
         response += "-----------------------------------\n"
         response += text_lang['user_data']['next_finder'] + "\n"
         response += text_lang['finder_data']['id'] + str(finder['finder_id']) + "\n"
         response += text_lang['finder_data']['type'] + text_lang['new_finder']['new_finder_travel_mode_keyboard'].get('finder_type_travel_' + finder['type']) + "\n"
         response += text_lang['finder_data']['offer_type'] + text_lang['new_finder']['new_finder_housing_type_keyboard'].get('finder_type_housing_' + finder['offer_type']) + "\n"
-        response += text_lang['finder_data']['duration'] + str(finder['duration'] / 60) + f' {text_lang['offer_details']['duration_param']}' + "\n"
+        response += text_lang['finder_data']['duration'] + str(finder['duration'] / 60) + f" {text_lang['offer_details']['duration_param']}" + "\n"
 
     # response += "\n\n" + text_lang['user_data']['end']
     logging.info(f"User data sent to chat ID: {chat_id}")
     return response, None
 
 async def address_set_success(user_data):
-    logging.info(f"Address set success for chat ID: {user_data.get('chat_id', 0)}")
+    logging.info(f"Address set successfully for chat_id={user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     return text_lang['settings']['address_set_success'], None
 
 async def address_set_error(user_data):
-    logging.info(f"Address set error for chat ID: {user_data.get('chat_id', 0)}")
+    logging.warning(f"Invalid address for chat_id={user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     return text_lang['errors']['invalid_address'], None
 
 async def set_address(user_data):
-    logging.info(f"Address set prompt for chat ID: {user_data.get('chat_id', 0)}")
+    logging.info(f"Address prompt for chat_id={user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     return text_lang['settings']['address_prompt'], None
 
 async def help_command(user_data):
-    logging.info(f"Help command for chat ID: {user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     return text_lang['info_messages']['help'], None
 
 async def set_new_finder(user_data):
-    logging.info(f"Set new finder command for chat ID: {user_data.get('chat_id', 0)}")
+    logging.info(f"New finder setup started for chat_id={user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     text = text_lang['new_finder'].get('new_finder_housing_type_prompt')
     keyboard = text_lang['new_finder'].get('new_finder_housing_type_keyboard')
     return text, keyboard
 
 async def new_finder_duration(user_data):
+    chat_id = user_data.get('chat_id', 0)
     finder_id = user_data.get('finder_id', 0)
     finder = await finder_manager.get_finder(finder_id)
     if not finder:
-        logging.warning(f"No finder found for ID: {finder_id}")
+        logging.warning(f"Finder not found: chat_id={chat_id}, finder_id={finder_id}")
         return
     type = finder['type']
     text_lang = eval(f"{user_data['language']}_texts")
@@ -191,19 +195,19 @@ async def new_finder_duration(user_data):
     return text, keyboard
 
 async def delete_finder(user_data):
-    logging.info(f"Delete finder command for chat ID: {user_data.get('chat_id', 0)}")
+    chat_id = user_data.get('chat_id', 0)
+    logging.info(f"Listing finders for deletion: chat_id={chat_id}")
     text_lang = eval(f"{user_data['language']}_texts")
-    finders = await finder_manager.get_finders_by_user(user_data.get('chat_id', 0))
+    finders = await finder_manager.get_finders_by_user(chat_id)
     text = text_lang['finder_data']['all'] + "\n\n"
     for finder in finders:
         text += '-----------------------------------\n'
         text += "<b>" + text_lang['finder_data']['id'] + str(finder['finder_id']) + "</b>\n"
-        type = text_lang['new_finder'].get('keyboard').get('finder_type_' + finder['type'])
-        logging.info(f"Type found: {type} for finder type: {finder['type']}")
+        type = text_lang['new_finder'].get('new_finder_travel_mode_keyboard').get('finder_type_travel_' + finder['type'])
         text += text_lang['finder_data']['type'] + type + "\n"
         offer_type = text_lang['new_finder']['new_finder_housing_type_keyboard'].get('finder_type_housing_' + finder['offer_type'])
         text += text_lang['finder_data']['offer_type'] + offer_type + "\n"
-        text += text_lang['finder_data']['duration'] + str(finder['duration']) + "\n"
+        text += text_lang['finder_data']['duration'] + str(finder['duration'] / 60) + f' {text_lang["offer_details"]["duration_param"]}' + "\n"
     text += text_lang['finder_data']['end']
     keyboard = {}
     for finder in finders:
@@ -212,24 +216,25 @@ async def delete_finder(user_data):
     return text, keyboard
 
 async def delete_finder_success(user_data):
+    logging.info(f"Finder deleted successfully for chat_id={user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     return text_lang['finder_data']['delete_success'], None
 
 async def get_my_finders(user_data):
     chat_id = user_data.get('chat_id', 0)
+    logging.info(f"Retrieving finders for chat_id={chat_id}")
     text_lang = eval(f"{user_data['language']}_texts")
     finders = await finder_manager.get_finders_by_user(chat_id)
-    logging.info(f"Found {len(finders)} finders for user ID: {user_data.get('chat_id', 0)}")
+    logging.info(f"Found {len(finders)} finders for chat_id={chat_id}")
     text = text_lang['finder_data']['all'] + "\n\n"
     for finder in finders:
         text += '-----------------------------------\n'
         text += "<b>" + text_lang['finder_data']['id'] + str(finder['finder_id']) + "</b>\n"
         type = text_lang['new_finder'].get('new_finder_travel_mode_keyboard').get('finder_type_travel_' + finder['type'])
-        logging.info(f"Type found: {type} for finder type: {finder['type']}")
         text += text_lang['finder_data']['type'] + type + "\n"
         offer_type = text_lang['new_finder']['new_finder_housing_type_keyboard'].get('finder_type_housing_' + finder['offer_type'])
         text += text_lang['finder_data']['offer_type'] + offer_type + "\n"
-        text += text_lang['finder_data']['duration'] + str(finder['duration'] / 60) + f' {text_lang['offer_details']['duration_param']}' + "\n"
+        text += text_lang['finder_data']['duration'] + str(finder['duration'] / 60) + f' {text_lang["offer_details"]["duration_param"]}' + "\n"
     return text, None
 
 async def help_menu(user_data):
@@ -237,36 +242,55 @@ async def help_menu(user_data):
     return text_lang['help_menu'].get('text'), None
 
 async def delete_account(user_data):
-    logging.info(f"Delete account command received for chat ID: {user_data.get('chat_id', 0)}")
+    chat_id = user_data.get('chat_id', 0)
+    logging.info(f"Account deletion confirmation requested: chat_id={chat_id}")
     text_lang = eval(f"{user_data['language']}_texts")
     text = text_lang['delete_account']['text']
     keyboard = text_lang['delete_account']['keyboard']
     return text, keyboard
 
 async def delete_account_success(user_data):
-    logging.info(f"Delete account success for chat ID: {user_data.get('chat_id', 0)}")
+    logging.info(f"Account deleted successfully: chat_id={user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     return text_lang['delete_account']['delete_success'], None
 
 async def delete_account_cancel(user_data):
-    logging.info(f"Delete account cancel for chat ID: {user_data.get('chat_id', 0)}")
+    logging.info(f"Account deletion cancelled: chat_id={user_data.get('chat_id', 0)}")
     text_lang = eval(f"{user_data['language']}_texts")
     return text_lang['delete_account']['delete_cancel'], None
 
 async def stop_bot(user_data):
+    chat_id = user_data.get('chat_id', 0)
+    logging.info(f"Bot stopped for chat_id={chat_id}")
     text_lang = eval(f"{user_data['language']}_texts")
     user_data['is_active'] = False
-    await user_manager.save_user(user_data.get('chat_id', 0), user_data)
-    logging.info(f"Stop bot for chat ID: {user_data.get('chat_id', 0)}")
+    await user_manager.save_user(chat_id, user_data)
     return text_lang['stop_bot']['text'], None
 
+async def validate_address(user_data, address: str):
+    result, is_valid = await maps_api.validate_address(address)
+    answer: str = ""
+    if is_valid and result:
+        user_data['preferences']['address'] = result['result']['address']['formattedAddress']
+        user_data['preferences']['address_id'] = result['result']['geocode']['placeId']
+        answer = result['result']['address']['formattedAddress']
+        return answer, True
+    elif not is_valid and result:
+        answer = result['componentName']['text']
+        return answer, False
+    else:
+        answer = "Address cannot be validated."
+        return answer, False
+
 async def offer_details(user_data, offer_id):
-    logging.info(f"Offer details command received for chat ID: {user_data.get('chat_id', 0)}")
+    chat_id = user_data.get('chat_id', 0)
+    logging.info(f"Retrieving offer details: chat_id={chat_id}, offer_id={offer_id}")
     text_lang = eval(f"{user_data['language']}_texts")
     translator = eval(f"{user_data['language']}_translator")
     offer = await flat_offers_manager.get_offer(offer_id)
-    finders = await finder_manager.get_finders_by_user(user_data.get('chat_id', 0))
+    finders = await finder_manager.get_finders_by_user(chat_id)
     finders_with_offer = [f for f in finders if offer_id in f['offers']]
+    logging.info(f"Found {len(finders_with_offer)} finders with offer {offer_id}")
     finder_text: str = ""
     for finder in finders_with_offer:
         finder_text += "  " + text_lang['finder_data']['id'] + str(finder['finder_id']) + "\n"
@@ -275,16 +299,18 @@ async def offer_details(user_data, offer_id):
         finder_text += "  " + text_lang['finder_data']['type'] + type + "\n"
         offer_type = text_lang['new_finder']['new_finder_housing_type_keyboard'].get('finder_type_housing_' + finder['offer_type'])
         finder_text += "  " + text_lang['finder_data']['offer_type'] + offer_type + "\n"
-        finder_text += "  " + text_lang['finder_data']['duration'] + text_lang['offer_details']['duration'] + str(finder['duration'] / 60) + f' {text_lang['offer_details']['duration_param']}' + "\n"
+        finder_text += "  " + text_lang['finder_data']['duration'] + text_lang['offer_details']['duration'] + str(finder['duration'] / 60) + f' {text_lang["offer_details"]["duration_param"]}' + "\n"
     text: str = ""
     logging.info(f"building text")
     full_description = ""
     for decription in offer['description']:
         full_description += decription + "\n"
+    translated_description = ""
+    for decription in offer['description']:
+        translated_description += translator.translate(decription) + "\n"
+    if len(translated_description) > 500:
+        translated_description = translated_description[:500] + "..."
     logging.info(f"full description: {full_description}")
-    # details = ""
-    # for detail in offer['object_details']:
-    #     details += f"  {detail}\n"
     translated_details = ""
     for detail in offer['object_details']:
         translated_details += f"  {translator.translate(detail)}\n"
@@ -299,21 +325,21 @@ async def offer_details(user_data, offer_id):
     "  " + text_lang['offer_details']['other_costs'] + str(offer['costs'].get('other_costs', 'N/A')) + '\n' +
     "  " + text_lang['offer_details']['deposit'] + str(offer['costs'].get('deposit', 'N/A')) + '\n' +
     "\n" +
-    # text_lang['offer_details']['object_details'] + "\n" + details + '\n' +
     text_lang['offer_details']['object_details_translation'] + "\n" + translated_details + '\n' +
-    # text_lang['offer_details']['description'] + full_description + '\n' +
-    text_lang['offer_details']['translation'] + translator.translate(full_description) + '\n' +
+    text_lang['offer_details']['translation'] + translated_description + '\n' +
     text_lang['offer_details']['link'] + offer['link'])
     logging.info(f"Offer details: {text[:100]}...")
     return text
 
 async def original_offer_details(user_data, offer_id):
-    logging.info(f"Original language offer details command received for chat ID: {user_data.get('chat_id', 0)}")
+    chat_id = user_data.get('chat_id', 0)
+    logging.info(f"Retrieving original offer details: chat_id={chat_id}, offer_id={offer_id}")
     text_lang = eval(f"{user_data['language']}_texts")
     translator = eval(f"{user_data['language']}_translator")
     offer = await flat_offers_manager.get_offer(offer_id)
-    finders = await finder_manager.get_finders_by_user(user_data.get('chat_id', 0))
+    finders = await finder_manager.get_finders_by_user(chat_id)
     finders_with_offer = [f for f in finders if offer_id in f['offers']]
+    logging.info(f"Found {len(finders_with_offer)} finders with offer {offer_id}")
     finder_text: str = ""
     for finder in finders_with_offer:
         finder_text += "  " + text_lang['finder_data']['id'] + str(finder['finder_id']) + "\n"
@@ -322,19 +348,18 @@ async def original_offer_details(user_data, offer_id):
         finder_text += "  " + text_lang['finder_data']['type'] + type + "\n"
         offer_type = text_lang['new_finder']['new_finder_housing_type_keyboard'].get('finder_type_housing_' + finder['offer_type'])
         finder_text += "  " + text_lang['finder_data']['offer_type'] + offer_type + "\n"
-        finder_text += "  " + text_lang['finder_data']['duration'] + text_lang['offer_details']['duration'] + str(finder['duration'] / 60) + f' {text_lang['offer_details']['duration_param']}' + "\n"
+        finder_text += "  " + text_lang['finder_data']['duration'] + text_lang['offer_details']['duration'] + str(finder['duration'] / 60) + f' {text_lang["offer_details"]["duration_param"]}' + "\n"
     text: str = ""
     logging.info(f"building text")
     full_description = ""
     for decription in offer['description']:
         full_description += decription + "\n"
-    logging.info(f"full description: {full_description}")
+    if len(full_description) > 500:
+        full_description = full_description[:500] + "..."
+    logging.info(f"full description: {full_description[:100]}...")
     details = ""
     for detail in offer['object_details']:
         details += f"  {detail}\n"
-    # translated_details = ""
-    # for detail in offer['object_details']:
-    #     translated_details += f"  {translator.translate(detail)}\n"
     text = (text_lang['offer_details']['text'] + '\n\n' +
     text_lang['offer_details']['title'] + offer['name'] + '\n' +
     text_lang['offer_details']['location'] + offer['address'] + '\n\n' +
@@ -347,11 +372,16 @@ async def original_offer_details(user_data, offer_id):
     "  " + text_lang['offer_details']['deposit'] + str(offer['costs'].get('deposit', 'N/A')) + '\n' +
     "\n" +
     text_lang['offer_details']['object_details'] + "\n" + details + '\n' +
-    # text_lang['offer_details']['object_details_translation'] + "\n" + translated_details + '\n' +
     text_lang['offer_details']['description'] + full_description + '\n' +
-    # text_lang['offer_details']['translation'] + translator.translate(full_description) + '\n' +
     text_lang['offer_details']['link'] + offer['link'])
     logging.info(f"Offer details: {text[:100]}...")
     return text
 
-    return text_lang['offer_details']['original_offer_details'] + offer['link'], None
+
+async def user_data_entry_first(user_data):
+    text_lang = eval(f"{user_data['language']}_texts")
+    return text_lang['user_data_entry']['first'], None
+
+async def user_data_entry_name(user_data):
+    text_lang = eval(f"{user_data['language']}_texts")
+    return text_lang['user_data_entry']['name'], None

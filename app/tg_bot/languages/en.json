@@ -99,7 +99,7 @@
         "missing_parameters": "⚠️ Missing required information. Please try again.",
         "service_unavailable": "🔧 Service temporarily unavailable. Please try again later.",
         "not_registered": "👋 Please send /start to register and use the bot.",
-        "wrong_duration": "⚠️ Please enter a valid duration (1-100 minutes).",
+        "wrong_duration": "⚠️ Please enter a valid duration (1-300 minutes).",
         "no_offer": "❌ Error finding offer.",
         "no_offers_found": "📭 No offers found.",
         "no_address_set": "📍 Please set your address in settings first."
@@ -200,5 +200,13 @@
         },
         "delete_success": "👋 Your account has been deleted. All your data has been removed.",
         "delete_cancel": "✅ Your account has not been deleted."
+    },
+    "user_data_entry": {
+        "first": "👤 <b>This data is used to create messages for accomondation owners. This data will not be shared with anyone or used out of this bot.</b>",
+        "first_name": "👤 <b>Please enter your first name:</b>",
+        "last_name": "👤 <b>Please enter your last name:</b>",
+        "phone": "📞 <b>Please enter your phone number:</b>",
+        "other": "👤 <b>Please provide any other data you want to share with accomondation owners (work place, email, age, dates of moving in and out, etc.). Please, enter with name and value separated by colon (e.g. work_place:Google):</b>",
+        "other_success": "✅ Your data has been saved successfully!"
     }
 }

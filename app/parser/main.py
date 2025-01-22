@@ -1,10 +1,24 @@
 from time import sleep
-from DrissionPage import ChromiumPage
+import logging
+from DrissionPage import ChromiumPage, ChromiumOptions
 from database.flat_offers_manager import FlatOffersManager
 from Parser import Parser
 import dotenv
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('parser.log'),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
+
 dotenv.load_dotenv()
+logger.info("Environment variables loaded")
 
 # Connect to MongoDB
 # MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://mongodb:27017')
@@ -12,31 +26,62 @@ dotenv.load_dotenv()
 # db = client[os.getenv('MONGO_DB_NAME', 'app_db')]
 
 flat_offers_manager = FlatOffersManager()
+logger.info("FlatOffersManager initialized")
 
-def get_details(offer: dict):
-    url = offer['link']
-    page = ChromiumPage()
-    page.get(url)
-    html_content = page.html
-    print(page.soup)
+def get_options():
+    logger.debug("Configuring ChromiumOptions")
+    options = ChromiumOptions()
+    options.headless()
+    options.set_argument('--no-sandbox')
+    options.set_argument('--headless=new')
+    # options.set_argument('--disable-dev-shm-usage')
+    logger.debug("ChromiumOptions configured with headless mode and no-sandbox")
+    return options
 
-def start_parser():
-    print("Starting parser")
+def start_parser(type: int):
+    logger.info("Starting parser process")
     try:
         base_url = 'https://www.wg-gesucht.de'
-        driver = ChromiumPage()
-        print("driver set")
-        driver.get(base_url)
-        sleep(5)
-        parser = Parser(driver, flat_offers_manager, 0)
-        print("parser set")
-        print("Got response")
-        parser.parse_ads()
+        logger.info(f"Initializing ChromiumPage with base URL: {base_url}")
 
+        driver = ChromiumPage()
+        logger.info("ChromiumPage driver initialized successfully")
+
+        driver.get(base_url)
+        logger.info(f"Navigated to base URL: {base_url}")
+
+        sleep(5)
+        logger.debug("Waited 5 seconds for page load")
+
+        logger.info("Initializing Parser for WG-Zimmer (type 0)")
+        parser = Parser(driver, flat_offers_manager, type)
+        logger.info("Parser initialized successfully")
+
+        try:
+            logger.info("Starting to parse advertisements")
+            parser.parse_ads()
+            logger.info("Advertisement parsing completed successfully")
+        except Exception as e:
+            logger.error(f"Error during parsing advertisements: {str(e)}", exc_info=True)
+            raise
+
+        logger.info("Closing ChromiumPage driver")
         driver.quit()
+        logger.info("Parser process completed successfully")
+
     except Exception as e:
-        print(f"Parser main error: {e}")
+        logger.error(f"Critical error in parser main process: {str(e)}", exc_info=True)
+        raise
 
 if __name__ == "__main__":
-    start_parser()
+    try:
+        user_input = int(input("Enter the type of offer to parse (0 for WG-Zimmer, 1 for 1-room-Wohnung, 2 for Wohnung, 3 for Haus, 4 for all): "))
+        if user_input == 4:
+            for i in range(4):
+                start_parser(i)
+        else:
+            start_parser(user_input)
+    except Exception as e:
+        logger.critical("Parser failed to complete", exc_info=True)
+        raise
 
