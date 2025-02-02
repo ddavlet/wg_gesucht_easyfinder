@@ -512,6 +512,14 @@ async def user_data_entry_callback_handler(update: Update, context: ContextTypes
     await send_message(context.bot, update, user_data, 'user_data_entry_first')
     await send_message_with_keyboard(context.bot, update, user_data, 'user_data_entry_name', modify_message=False)
 
+async def find_new_offers_for_users(context: ContextTypes.DEFAULT_TYPE):
+    users = user_manager.get_all_users()
+    for user in users:
+        finders = await finder_manager.get_finders_by_user(user.get('chat_id'))
+        logging.info(f"Processing {len(finders)} finders for chat_id={chat_id}")
+        for finder in finders:
+            await finder_manager.find_offers(finder, user_data['preferences']['address'])
+        # every new finder has to send notification to the user.
 
 def main():
     init_variables()

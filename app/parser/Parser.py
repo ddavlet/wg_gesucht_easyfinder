@@ -210,7 +210,7 @@ class Parser:
         logging.info(f"Successfully saved offer {data['data_id']} - {data['name']}")
 
     def parse_ads(self):
-        for i in range(2):
+        for i in range(1):
             logging.info(f"Processing page {i+1} of listings")
             sleep(5)
             offers = self.driver.eles('@class:truncate_title noprint')

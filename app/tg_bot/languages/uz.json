@@ -1,0 +1,33 @@
+{
+    "start": {
+        "text_new_profile": "✨ <b>Yangi profil yaratildi!</b>",
+        "text_reactivated_profile": "👋 <b>Qaytib kelganingiz bilan!</b> Hisobingiz qayta faollashtirildi."
+    },
+    "stop_bot": {
+        "text": "⏸️ Hisobingiz to'xtatildi. Davom etish uchun /start buyrug'ini ishlating. Barcha ma'lumotlaringizni o'chirmoqchi bo'lsangiz, sozlamalardagi hisobni o'chirish funksiyasidan foydalaning."
+    },
+    "main": {
+        "text": "🏠 <b>Munich Property Finder'ga Xush Kelibsiz!</b>Ushbu bot Myunxenda ijaraga yoki sotib olish uchun mukammal kvartira yoki uyni topishga yordam berish uchun yaratilgan. U ImmoScout24 API'sidan foydalanib, sizning qidiruv mezonlaringizga asoslangan ko'chmas mulkni qidiradi va yangi takliflar paydo bo'lganda sizga xabar beradi.📌 Turli xil ko'chmas mulk turlari yoki turli hududlar uchun bir nechta qidiruv yaratishingiz mumkin.",
+        "keyboard": {
+            "main_menu_mydata": "👤 Profil ma'lumotlarim",
+            "main_menu_myfinders": "🔍 Qidiruvlarim",
+            "main_menu_myoffers": "🏘️ Takliflarim",
+            "main_menu_settings": "⚙️ Sozlamalar",
+            "main_menu_help": "❓ Yordam",
+            "main_menu_stop": "⏹️ To'xtatish"
+        }
+    },
+    "language_choose_menu": {
+        "text": "🌍 <b>Til tanlash</b>Iltimos, o'zingizga ma'qul tilni tanlang.",
+        "keyboard": {
+            "lang_en": "🇬🇧 English",
+            "lang_ru": "🇷🇺 Русский",
+            "lang_de": "🇩🇪 Deutsch",
+            "lang_uk": "🇺🇦 Українська",
+            "lang_el": "🇬🇷 Ελληνικά",
+            "lang_tr": "🇹🇷 Türkçe",
+            "lang_uz": "🇺🇿 O'zbek",
+            "lang_tg": "🇹🇯 Тоҷикӣ"
+        }
+    }
+}

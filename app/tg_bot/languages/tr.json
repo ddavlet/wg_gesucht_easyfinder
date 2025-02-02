@@ -1,0 +1,33 @@
+{
+    "start": {
+        "text_new_profile": "✨ <b>Yeni profil oluşturuldu!</b>",
+        "text_reactivated_profile": "👋 <b>Tekrar hoş geldiniz!</b> Hesabınız yeniden aktifleştirildi."
+    },
+    "stop_bot": {
+        "text": "⏸️ Hesabınız duraklatıldı. Devam etmek için /start komutunu kullanın. Tüm verilerinizi silmek istiyorsanız ayarlardaki hesap silme seçeneğini kullanın."
+    },
+    "main": {
+        "text": "🏠 <b>Munich Property Finder'a Hoş Geldiniz!</b>Bu bot, Münih'te kiralık veya satılık mükemmel daire veya evi bulmanıza yardımcı olmak için tasarlanmıştır. ImmoScout24 API'sini kullanarak arama kriterlerinize göre mülk araması yapar ve tercihlerinize uyan yeni teklifler olduğunda size bildirim gönderir.📌 Farklı mülk türleri veya farklı bölgeler için birden fazla arama oluşturabilirsiniz.",
+        "keyboard": {
+            "main_menu_mydata": "👤 Profil bilgilerim",
+            "main_menu_myfinders": "🔍 Aramalarım",
+            "main_menu_myoffers": "🏘️ Tekliflerim",
+            "main_menu_settings": "⚙️ Ayarlar",
+            "main_menu_help": "❓ Yardım",
+            "main_menu_stop": "⏹️ Durdur"
+        }
+    },
+    "language_choose_menu": {
+        "text": "🌍 <b>Dil Seçimi</b>Lütfen tercih ettiğiniz dili seçin.",
+        "keyboard": {
+            "lang_en": "🇬🇧 English",
+            "lang_ru": "🇷🇺 Русский",
+            "lang_de": "🇩🇪 Deutsch",
+            "lang_uk": "🇺🇦 Українська",
+            "lang_el": "🇬🇷 Ελληνικά",
+            "lang_tr": "🇹🇷 Türkçe",
+            "lang_uz": "🇺🇿 O'zbek",
+            "lang_tg": "🇹🇯 Тоҷикӣ"
+        }
+    }
+}
