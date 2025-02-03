@@ -162,6 +162,7 @@ class FinderManager:
         finder_id = finder['finder_id']
         duration = finder['duration']
         offers = await self.flat_offers_manager.get_active_offers()
+        new_offers = []
         for offer in offers:
             if offer['data_id'] in finder['parsed_offers']:
                 logging.info("Offer already parsed")
@@ -175,6 +176,7 @@ class FinderManager:
             self.update_finder(finder_id, finder)
             if distance['routes'][0]['legs'][0]['distance']['value'] < int(duration) and offer['offer_type_id'] == finder['offer_type_id']:
                 finder['offers'].append(offer['data_id'])
+                new_offers.append(offer)
                 self.update_finder(finder_id, finder)
                 logging.info(f"Offer added for: {duration}, offer ID: {offer['data_id']}")
                 logging.info(f"Because duration is: {distance['routes'][0]['legs'][0]['duration']['value']}")
@@ -184,6 +186,7 @@ class FinderManager:
             logging.info("____________________")
         await self.update_finder(finder_id, finder)
         logging.info(f"Finding offers for finder ID: {finder_id} at address: {address}")
+        return new_offers
 
     async def delete_incomplete_finders(self):
         finders = self.finders_collection.find({'is_active': True, 'duration': -1})

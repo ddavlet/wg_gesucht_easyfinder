@@ -513,12 +513,28 @@ async def user_data_entry_callback_handler(update: Update, context: ContextTypes
     await send_message_with_keyboard(context.bot, update, user_data, 'user_data_entry_name', modify_message=False)
 
 async def find_new_offers_for_users(context: ContextTypes.DEFAULT_TYPE):
-    users = user_manager.get_all_users()
+    users: list[dict] = user_manager.get_all_users()
     for user in users:
-        finders = await finder_manager.get_finders_by_user(user.get('chat_id'))
+        chat_id = user.get('chat_id')
+        finders = await finder_manager.get_finders_by_user(chat_id)
         logging.info(f"Processing {len(finders)} finders for chat_id={chat_id}")
+        new_offers = []
         for finder in finders:
-            await finder_manager.find_offers(finder, user_data['preferences']['address'])
+            offers = await finder_manager.find_offers(finder, user['preferences']['address'])
+            new_offers.extend(offers)
+        text_lang = eval(f"{user['language']}_texts")
+        translator = eval(f"{user['language']}_translator")
+        for offer in offers:
+            text = (text_lang['offer_data']['start'] + '\n' +
+                text_lang['offer_data']['title'] + f'{translator.translate(offer["name"])}' + '\n' +
+                text_lang['offer_data']['location'] + offer['address'] + '\n' +
+                text_lang['offer_data']['rent'] + str(offer['total_rent']) + '\n' +
+                text_lang['offer_data']['link'] + offer['link'])
+            keyboard = await create_keyboard({f"offer_details_{offer.get('id')}" : text_lang['offer_data']['keyboard']['offer_details']})
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            await context.bot.send_message(chat_id=chat_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
+
+
         # every new finder has to send notification to the user.
 
 def main():
@@ -556,6 +572,7 @@ def main():
     job_queue = application.job_queue
     job_queue.run_repeating(clean_cache, interval=600, first=0)  # 600 seconds = 10 minutes
     job_queue.run_repeating(clean_database, interval=12*60*60, first=0)  # 12 hours
+    job_queue.run_repeating(find_new_offers_for_users, interval=1*60*60, first=0)
 
     application.run_polling(drop_pending_updates=True)
 
