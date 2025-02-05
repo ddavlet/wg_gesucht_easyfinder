@@ -21,11 +21,6 @@ I'm trying to make parser work indepedently, but I still face issues with recapc
 
 - `/start`: Start the bot and see available commands.
 - `/stop`: Pause notifications.
-- `/delete_account`: Delete your account and all associated data.
-- `/set_language`: Change the bot's language.
-- `/set_address`: Set your preferred address for property searches.
-- `/set_new_finder`: Create a new property search filter.
-- `/help`: Get help and information about the bot.
 
 ## Getting Started
 
