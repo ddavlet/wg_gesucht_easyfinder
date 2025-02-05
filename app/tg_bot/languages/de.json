@@ -40,7 +40,12 @@
         "keyboard": {
             "lang_en": "🇬🇧 English",
             "lang_ru": "🇷🇺 Русский",
-            "lang_de": "🇩🇪 Deutsch"
+            "lang_de": "🇩🇪 Deutsch",
+            "lang_uk": "🇺🇦 Українська",
+            "lang_el": "🇬🇷 Ελληνικά",
+            "lang_tr": "🇹🇷 Türkçe",
+            "lang_uz": "🇺🇿 O'zbek",
+            "lang_tg": "🇹🇯 Тоҷикӣ"
         }
     },
     "account": {

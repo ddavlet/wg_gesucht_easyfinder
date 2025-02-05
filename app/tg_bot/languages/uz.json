@@ -4,17 +4,35 @@
         "text_reactivated_profile": "👋 <b>Qaytib kelganingiz bilan!</b> Hisobingiz qayta faollashtirildi."
     },
     "stop_bot": {
-        "text": "⏸️ Hisobingiz to'xtatildi. Davom etish uchun /start buyrug'ini ishlating. Barcha ma'lumotlaringizni o'chirmoqchi bo'lsangiz, sozlamalardagi hisobni o'chirish funksiyasidan foydalaning."
+        "text": "⏸️ Hisobingiz to'xtatildi. Davom etish uchun /start ni ishlating. Barcha ma'lumotlaringizni o'chirmoqchi bo'lsangiz, sozlamalardagi hisobni o'chirish funksiyasidan foydalaning."
     },
     "main": {
-        "text": "🏠 <b>Munich Property Finder'ga Xush Kelibsiz!</b>Ushbu bot Myunxenda ijaraga yoki sotib olish uchun mukammal kvartira yoki uyni topishga yordam berish uchun yaratilgan. U ImmoScout24 API'sidan foydalanib, sizning qidiruv mezonlaringizga asoslangan ko'chmas mulkni qidiradi va yangi takliflar paydo bo'lganda sizga xabar beradi.📌 Turli xil ko'chmas mulk turlari yoki turli hududlar uchun bir nechta qidiruv yaratishingiz mumkin.",
+        "text": "🏠 <b>Munich Property Finder'ga xush kelibsiz!</b>Bu bot Myunxenda ijaraga yoki sotib olish uchun mukammal kvartira yoki uy topishga yordam berish uchun yaratilgan. U sizning mezonlaringizga mos keluvchi ko'chmas mulkni qidirish uchun ImmoScout24 API'dan foydalanadi va yangi takliflar paydo bo'lganda sizga xabar beradi.📌 Turli xil mulk turlari yoki turli hududlar uchun bir nechta qidiruv yaratishingiz mumkin.",
         "keyboard": {
-            "main_menu_mydata": "👤 Profil ma'lumotlarim",
+            "main_menu_mydata": "👤 Profil ma'lumotlari",
             "main_menu_myfinders": "🔍 Qidiruvlarim",
             "main_menu_myoffers": "🏘️ Takliflarim",
             "main_menu_settings": "⚙️ Sozlamalar",
             "main_menu_help": "❓ Yordam",
             "main_menu_stop": "⏹️ To'xtatish"
+        }
+    },
+    "my_data": {
+        "text": "👤 <b>Profil ma'lumotlari</b>Profil ma'lumotlaringizni bu yerda sozlamalarda o'zgartirishingiz mumkin.",
+        "keyboard": {
+            "main": "🏠 Asosiy menyu"
+        }
+    },
+    "settings_menu": {
+        "text": "⚙️ <b>Sozlamalar</b>Bu yerda bot sozlamalaringizni o'rnatishingiz mumkin. Manzilingiz, masofa, bildirishnomalar, til va boshqalarni o'rnatishingiz mumkin.",
+        "keyboard": {
+            "settings_setlanguage": "🌍 Tilni o'rnatish",
+            "settings_setaddress": "📍 Manzilni o'rnatish",
+            "settings_setnewfinder": "➕ Yangi qidiruv",
+            "settings_setnotifications": "🔔 Bildirishnomalar",
+            "settings_deletefinder": "🗑️ Qidiruvni o'chirish",
+            "settings_deleteaccount": "❌ Hisobni o'chirish",
+            "settings_back": "⬅️ Orqaga"
         }
     },
     "language_choose_menu": {
@@ -29,5 +47,171 @@
             "lang_uz": "🇺🇿 O'zbek",
             "lang_tg": "🇹🇯 Тоҷикӣ"
         }
+    },
+    "account": {
+        "start": "👋 <b>Xush kelibsiz!</b> Mavjud buyruqlarni ko'rish uchun /start dan foydalaning.",
+        "stopped": "⏸️ Hisobingiz to'xtatildi. Davom etish uchun /start dan foydalaning. Hisobingizni o'chirish uchun /delete_account dan foydalaning.",
+        "reactivated": "✨ <b>Qaytib kelganingiz bilan!</b> Hisobingiz qayta faollashtirildi."
+    },
+    "new_finder": {
+        "new_finder_housing_type_prompt": "🏠 <b>Uy turi</b>Qidirmoqchi bo'lgan uy turini tanlang:",
+        "new_finder_housing_type_keyboard": {
+            "finder_type_housing_shared": "Birgalikdagi kvartira",
+            "finder_type_housing_oneroom": "1 xonali kvartira",
+            "finder_type_housing_flat": "Kvartira",
+            "finder_type_housing_house": "Uy",
+            "main": "❌ Bekor qilish"
+        },
+        "new_finder_travel_mode_prompt": "🚗 <b>Sayohat usuli</b>Foydalanmoqchi bo'lgan sayohat usulini tanlang:",
+        "new_finder_travel_mode_keyboard": {
+            "finder_type_travel_walking": "🚶 Piyoda",
+            "finder_type_travel_bicycling": "🚲 Velosiped",
+            "finder_type_travel_driving": "🚗 Avtomobil",
+            "finder_type_travel_transit": "🚌 Jamoat transporti",
+            "main": "❌ Bekor qilish"
+        },
+        "duration_prompt": "⏱️ Manzilga qancha vaqtda yetib bormoqchisiz? (daqiqalarda)",
+        "new_finder_success": "✅ <b>Yangi qidiruv muvaffaqiyatli yaratildi!</b>Tez orada bildirishnomalar ola boshlaysiz.",
+        "new_finder_failure": "❌ Yangi qidiruv yaratib bo'lmadi. Iltimos, qayta urinib ko'ring.",
+        "offer_type_prompt": "🎯 Qidiruvingiz uchun tanlagan sayohat usuli: ",
+        "main_menu": {"main": "❌ Bekor qilish"}
+    },
+    "settings": {
+        "updated": "✅ Sozlamalaringiz yangilandi.",
+        "language_changed": "🌍 Tilingiz O'zbekchaga o'zgartirildi.",
+        "address_prompt": "📍 Iltimos, manzilingizni quyidagi formatda kiriting: 'Ko'cha, Uy raqami, Pochta indeksi' (faqat Myunxen shahri):",
+        "address_set_success": "✅ <b>Manzil muvaffaqiyatli saqlandi:</b>",
+        "distance_set": {
+            "title": "📏 <b>Qidiruv masofangiz quyidagicha o'rnatildi:</b>",
+            "commands": "💡 Barcha mavjud buyruqlarni ko'rish uchun /start ni kiriting"
+        },
+        "notifications_set": {
+            "enabled": "🔔 Bildirishnomalar yoqildi.",
+            "disabled": "🔕 Bildirishnomalar o'chirildi."
+        },
+        "choose_language": "🌍 Iltimos, o'zingizga ma'qul tilni tanlang:"
+    },
+    "address": {
+        "invalid_address": "⚠️ Manzil noto'g'ri, tekshiring:",
+        "wrong_address": "❌ Manzilni tekshirib bo'lmadi."
+    },
+    "errors": {
+        "finder_not_found": "❌ Qidiruv topilmadi.",
+        "unknown_command": "❓ Kechirasiz, bu buyruqni tushunmadim. Mavjud buyruqlarni ko'rish uchun /start dan foydalaning.",
+        "invalid_address": "⚠️ Manzil noto'g'ri, tekshiring:",
+        "wrong_address": "❌ Manzilni tekshirib bo'lmadi.",
+        "invalid_distance": "⚠️ Iltimos, to'g'ri masofa kiriting (1-100 km).",
+        "missing_parameters": "⚠️ Zarur ma'lumotlar yetishmayapti. Iltimos, qayta urinib ko'ring.",
+        "service_unavailable": "🔧 Xizmat vaqtincha mavjud emas. Iltimos, keyinroq qayta urinib ko'ring.",
+        "not_registered": "👋 Iltimos, botdan foydalanish uchun /start ni yuboring.",
+        "wrong_duration": "⚠️ Iltimos, to'g'ri vaqt kiriting (1-300 daqiqa).",
+        "no_offer": "❌ Taklif topishda xatolik.",
+        "no_offers_found": "📭 Takliflar topilmadi.",
+        "no_address_set": "📍 Iltimos, avval sozlamalarda manzilingizni o'rnating."
+    },
+    "proposals": {
+        "new_match": {
+            "title": "🎯 <b>Yangi mos keluvchi topildi!</b>📑 <b>Sarlavha:</b>",
+            "location": "📍 <b>Joylashuv:</b>",
+            "distance": "📏 <b>Masofa:</b>",
+            "price": "💰 <b>Narx:</b>"
+        },
+        "no_matches": "🔍 Yangi mos keluvchilar topilmadi. Biror narsa paydo bo'lganda sizga xabar beramiz!",
+        "daily_summary": {
+            "title": "📊 <b>Kunlik hisobot:</b><b>Yangi mos keluvchilar:</b>",
+            "view": "👀 Hammasini ko'rish uchun /view dan foydalaning"
+        }
+    },
+    "navigation": {
+        "next": "Keyingi ➡️",
+        "previous": "⬅️ Oldingi",
+        "back": "⬅️ Orqaga",
+        "done": "✅ Tayyor",
+        "main": {"main": "🏠 Asosiy menyu"}
+    },
+    "user_data": {
+        "start": "👤 <b>Foydalanuvchi ma'lumotlari:</b>",
+        "name": "📝 <b>Ism:</b> ",
+        "address": "📍 <b>Manzil:</b> ",
+        "distance": "📏 <b>Masofa:</b> ",
+        "notifications": "🔔 <b>Bildirishnomalar:</b> ",
+        "language": "🌍 <b>Til:</b> ",
+        "finders": "🔍 <b>Qidiruvlar:</b> ",
+        "next_finder": "🎯 <b>qidiruv:</b> ",
+        "end": "✨ Ma'lumotlar oxiri."
+    },
+    "finder_data": {
+        "all": "🔍 <b>Barcha qidiruvlar:</b>",
+        "end": "🗑️ O'chirish uchun qidiruv identifikatorini tanlang:",
+        "id": "🔢 <b>ID:</b> ",
+        "type": "🚦 <b>Tur:</b> ",
+        "offer_type": "🏠 <b>Taklif turi:</b> ",
+        "duration": "⏱️ <b>Davomiyligi:</b> ",
+        "duration_param": "daqiqa",
+        "delete_success": "✅ Qidiruv muvaffaqiyatli o'chirildi!"
+    },
+    "offer_data": {
+        "first": "🏘️ <b>Mana sizning takliflaringiz:</b>",
+        "start": "🏠 <b>Taklif topildi:</b>",
+        "title": "📑 <b>Sarlavha:</b> ",
+        "location": "📍 <b>Joylashuv:</b> ",
+        "distance": "📏 <b>Masofa:</b> ",
+        "travel_type": "🚗 <b>Sayohat turi:</b> ",
+        "rent": "💰 <b>Ijara:</b> ",
+        "link": "🔗 <b>Havola:</b> ",
+        "no_offers": "📭 Qidiruv mezonlaringizga mos takliflar topilmadi.",
+        "keyboard": {
+            "offer_details": "🏠 Taklif tafsilotlari"
+        }
+    },
+    "offer_details": {
+        "text": "🏠 <b>Taklif tafsilotlari:</b>",
+        "title": "📑 <b>Sarlavha:</b> ",
+        "location": "📍 <b>Joylashuv:</b> ",
+        "finder": "🔍 <b>Qidiruvlar:</b> ",
+        "costs": "💰 <b>Xarajatlar:</b> ",
+        "total_rent": "💰 <b>Umumiy ijara:</b> ",
+        "rent": "💰 <b>Ijara:</b> ",
+        "additional_costs": "💰 <b>Qo'shimcha xarajatlar:</b> ",
+        "other_costs": "💰 <b>Boshqa xarajatlar:</b> ",
+        "deposit": "💰 <b>Garov:</b> ",
+        "description": "📝 <b>Tavsif:</b> ",
+        "duration": "dan kam ",
+        "duration_param": "daqiqa",
+        "link": "<b>🔗 Havola:</b> ",
+        "translation": "🔄 <b>Tarjima:</b> ",
+        "keyboard": {
+            "language_original": "🔗 Aslini ko'rish"
+        },
+        "object_details": "🏠 <b>Obyekt tafsilotlari:</b>",
+        "object_details_translation": "🔄 <b>Tafsilotlar tarjimasi:</b> ",
+        "text_more": "🔄 <b>Ko'proq...</b>"
+    },
+    "info_messages": {
+        "update": "🔄 Ma'lumotlar bazasi har kuni yangilanadi.",
+        "no_offers": "📭 Qidiruv mezonlaringizga mos takliflar topilmadi."
+    },
+    "help_menu": {
+        "text": "📚 <b>Yordam qo'llanmasi</b>🏠\n\n<b>Asosiy menyu</b>\n• 👤 Ma'lumotlarim - Profil ma'lumotlarini ko'rish\n• 🔍 Qidiruvlarim - Faol qidiruv filtrlarini ko'rish\n• 🏘️ Takliflarim - Mos keluvchi kvartira takliflarini ko'rish\n• ⚙️ Sozlamalar - Parametrlarni sozlash\n\n⚙️ <b>Sozlamalar</b>\n• 🌍 Til - Bot tilini o'zgartirish\n• 📍 Manzil - Afzal joylashuvni o'rnatish\n• ➕ Yangi qidiruv - Kvartira qidiruv filtrini yaratish\n• 🔔 Bildirishnomalar - Taklif bildirishnomalarini yoqish/o'chirish\n• 🗑️ Qidiruvni o'chirish - Qidiruv filtrlarini o'chirish\n\n📱 <b>Buyruqlar</b>\n/start - Botni ishga tushirish/qayta ishga tushirish\n/stop - Bildirishnomalarni to'xtatish\n❓ Ko'proq yordam kerakmi? @support bilan bog'laning",
+        "keyboard": {
+            "main": "🏠 Asosiy menyuga qaytish"
+        }
+    },
+    "delete_account": {
+        "text": "⚠️ <b>Hisobingizni o'chirishni xohlayotganingizga ishonchingiz komilmi?</b> Bu amalni qaytarib bo'lmaydi.",
+        "keyboard": {
+            "delete_account_yes": "✅ Ha",
+            "delete_account_no": "❌ Yo'q"
+        },
+        "delete_success": "👋 Hisobingiz o'chirildi. Barcha ma'lumotlaringiz o'chirildi.",
+        "delete_cancel": "✅ Hisobingiz o'chirilmadi."
+    },
+    "user_data_entry": {
+        "first": "👤 <b>Bu ma'lumotlar mulk egalari uchun xabarlar yaratishda ishlatiladi. Bu ma'lumotlar hech kim bilan bo'lishmaydi va ushbu botdan tashqarida ishlatilmaydi.</b>",
+        "first_name": "👤 <b>Iltimos, ismingizni kiriting:</b>",
+        "last_name": "👤 <b>Iltimos, familiyangizni kiriting:</b>",
+        "phone": "📞 <b>Iltimos, telefon raqamingizni kiriting:</b>",
+        "other": "👤 <b>Iltimos, mulk egalari bilan bo'lishmoqchi bo'lgan boshqa ma'lumotlarni kiriting (ish joyi, email, yosh, ko'chib kirish va chiqish sanalari va hokazo). Iltimos, nom va qiymatni ikki nuqta bilan ajratib kiriting (masalan, ish_joyi:Google):</b>",
+        "other_success": "✅ Ma'lumotlaringiz muvaffaqiyatli saqlandi!"
     }
 }

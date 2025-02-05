@@ -34,6 +34,7 @@ def get_options():
     options.headless()
     options.set_argument('--no-sandbox')
     options.set_argument('--headless=new')
+    options.set_argument('--disable-backgrounding-occluded-windows')
     # options.set_argument('--disable-dev-shm-usage')
     logger.debug("ChromiumOptions configured with headless mode and no-sandbox")
     return options

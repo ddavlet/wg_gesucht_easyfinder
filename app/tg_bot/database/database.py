@@ -2,6 +2,9 @@ import os
 import logging
 from pymongo import MongoClient
 from typing import Dict, Any
+import dotenv
+
+dotenv.load_dotenv()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -51,9 +54,6 @@ def validate_user_data(user_data: Dict[str, Any]) -> bool:
         return False
     if not isinstance(user_data['language'], str):
         logging.error("Validation error: 'language' must be a string")
-        return False
-    if user_data['language'] not in ['en', 'de', 'ru']:
-        logging.error("Validation error: 'language' must be 'en', 'de' or 'ru'")
         return False
     return True
 

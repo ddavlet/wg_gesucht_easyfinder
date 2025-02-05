@@ -178,3 +178,7 @@ class FlatOffersManager:
             if self.last_access[data_id] + self.cache_duration < time.time():
                 del self.cached_offers[data_id]
                 del self.last_access[data_id]
+
+    async def get_all_offers(self) -> List[dict]:
+        """Get all offers"""
+        return list(self.offers_collection.find())

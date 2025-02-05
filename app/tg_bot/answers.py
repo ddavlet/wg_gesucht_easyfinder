@@ -12,14 +12,17 @@ maps_api = MapsAPI()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 # Add a file handler for logging
-file_handler = logging.FileHandler('bot.log')
+file_handler = logging.FileHandler('warning.log')
+info_handler = logging.FileHandler('info.log')
 file_handler.setLevel(logging.WARNING)  # Set the level for the file handler
+info_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
+info_handler.setFormatter(formatter)
 # Get the root logger and add the file handler
 logger = logging.getLogger()
 logger.addHandler(file_handler)
-
+logger.addHandler(info_handler)
 
 # Managers
 user_manager = UserManager()
@@ -27,11 +30,12 @@ flat_offers_manager = FlatOffersManager()
 finder_manager = FinderManager(flat_offers_manager)
 
 # Load language files
-LANGUAGE_FILES = {
-    'en': os.getenv('LANGUAGE_FILE_EN'),
-    'de': os.getenv('LANGUAGE_FILE_DE'),
-    'ru': os.getenv('LANGUAGE_FILE_RU')
-}
+LANGUAGE_FILES = {}
+language_dir = './languages'
+for filename in os.listdir(language_dir):
+    if filename.endswith('.json'):
+        lang_code = filename.split('.')[0]
+        LANGUAGE_FILES[lang_code] = os.path.join(language_dir, filename)
 
 # Check if any language file path is None
 for lang, path in LANGUAGE_FILES.items():
@@ -39,12 +43,23 @@ for lang, path in LANGUAGE_FILES.items():
         print(f"Warning: LANGUAGE_FILE_{lang.upper()} is not set in the environment variables.")
 
 # Load language files
-with open(LANGUAGE_FILES['en'], 'r') as f:
-    en_texts = json.load(f)
-with open(LANGUAGE_FILES['de'], 'r') as f:
-    de_texts = json.load(f)
-with open(LANGUAGE_FILES['ru'], 'r') as f:
-    ru_texts = json.load(f)
+# Load all language files dynamically
+language_texts = {}
+for lang, path in LANGUAGE_FILES.items():
+    if path:
+        try:
+            with open(path, 'r') as f:
+                language_texts[f"{lang}_texts"] = json.load(f)
+        except FileNotFoundError:
+            logging.error(f"Language file not found for {lang}: {path}")
+        except json.JSONDecodeError:
+            logging.error(f"Invalid JSON in language file for {lang}: {path}")
+        except Exception as e:
+            logging.error(f"Error loading language file for {lang}: {str(e)}")
+
+# Create global variables for each language
+for lang_var, texts in language_texts.items():
+    globals()[lang_var] = texts
 
 en_translator = TranslatorAPI('en')
 de_translator = TranslatorAPI('de')

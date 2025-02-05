@@ -1,13 +1,13 @@
 {
     "start": {
         "text_new_profile": "✨ <b>Yeni profil oluşturuldu!</b>",
-        "text_reactivated_profile": "👋 <b>Tekrar hoş geldiniz!</b> Hesabınız yeniden aktifleştirildi."
+        "text_reactivated_profile": "👋 <b>Tekrar hoş geldiniz!</b> Hesabınız yeniden etkinleştirildi."
     },
     "stop_bot": {
-        "text": "⏸️ Hesabınız duraklatıldı. Devam etmek için /start komutunu kullanın. Tüm verilerinizi silmek istiyorsanız ayarlardaki hesap silme seçeneğini kullanın."
+        "text": "⏸️ Hesabınız duraklatıldı. Devam etmek için /start komutunu kullanın. Tüm verilerinizi silmek istiyorsanız ayarlardaki hesabı sil seçeneğini kullanın."
     },
     "main": {
-        "text": "🏠 <b>Munich Property Finder'a Hoş Geldiniz!</b>Bu bot, Münih'te kiralık veya satılık mükemmel daire veya evi bulmanıza yardımcı olmak için tasarlanmıştır. ImmoScout24 API'sini kullanarak arama kriterlerinize göre mülk araması yapar ve tercihlerinize uyan yeni teklifler olduğunda size bildirim gönderir.📌 Farklı mülk türleri veya farklı bölgeler için birden fazla arama oluşturabilirsiniz.",
+        "text": "🏠 <b>Munich Property Finder'a hoş geldiniz!</b>Bu bot, Münih'te kiralık veya satılık mükemmel daire veya ev bulmanıza yardımcı olmak için tasarlanmıştır. Tercihlerinize uygun yeni teklifler olduğunda size bildirim göndermek için ImmoScout24 API'sini kullanır.📌 Farklı mülk türleri veya farklı bölgeler için birden fazla arama oluşturabilirsiniz.",
         "keyboard": {
             "main_menu_mydata": "👤 Profil bilgilerim",
             "main_menu_myfinders": "🔍 Aramalarım",
@@ -15,6 +15,24 @@
             "main_menu_settings": "⚙️ Ayarlar",
             "main_menu_help": "❓ Yardım",
             "main_menu_stop": "⏹️ Durdur"
+        }
+    },
+    "my_data": {
+        "text": "👤 <b>Profil Bilgileri</b>Profil bilgilerinizi burada ayarlardan değiştirebilirsiniz.",
+        "keyboard": {
+            "main": "🏠 Ana menü"
+        }
+    },
+    "settings_menu": {
+        "text": "⚙️ <b>Ayarlar</b>Burada bot tercihlerinizi ayarlayabilirsiniz. Adresinizi, mesafeyi, bildirimleri, dili ve daha fazlasını ayarlayabilirsiniz.",
+        "keyboard": {
+            "settings_setlanguage": "🌍 Dil ayarla",
+            "settings_setaddress": "📍 Adres ayarla",
+            "settings_setnewfinder": "➕ Yeni arama",
+            "settings_setnotifications": "🔔 Bildirimler",
+            "settings_deletefinder": "🗑️ Arama sil",
+            "settings_deleteaccount": "❌ Hesabı sil",
+            "settings_back": "⬅️ Geri"
         }
     },
     "language_choose_menu": {
@@ -29,5 +47,171 @@
             "lang_uz": "🇺🇿 O'zbek",
             "lang_tg": "🇹🇯 Тоҷикӣ"
         }
+    },
+    "account": {
+        "start": "👋 <b>Hoş geldiniz!</b> Mevcut komutları görmek için /start kullanın.",
+        "stopped": "⏸️ Hesabınız duraklatıldı. Devam etmek için /start kullanın. Hesabınızı silmek için /delete_account kullanın.",
+        "reactivated": "✨ <b>Tekrar hoş geldiniz!</b> Hesabınız yeniden etkinleştirildi."
+    },
+    "new_finder": {
+        "new_finder_housing_type_prompt": "🏠 <b>Konut tipi</b>Aramak istediğiniz konut tipini seçin:",
+        "new_finder_housing_type_keyboard": {
+            "finder_type_housing_shared": "Ortak daire",
+            "finder_type_housing_oneroom": "1 odalı daire",
+            "finder_type_housing_flat": "Daire",
+            "finder_type_housing_house": "Ev",
+            "main": "❌ İptal"
+        },
+        "new_finder_travel_mode_prompt": "🚗 <b>Ulaşım modu</b>Kullanmak istediğiniz ulaşım modunu seçin:",
+        "new_finder_travel_mode_keyboard": {
+            "finder_type_travel_walking": "🚶 Yürüme",
+            "finder_type_travel_bicycling": "🚲 Bisiklet",
+            "finder_type_travel_driving": "🚗 Araba",
+            "finder_type_travel_transit": "🚌 Toplu taşıma",
+            "main": "❌ İptal"
+        },
+        "duration_prompt": "⏱️ Hedefe ne kadar sürede ulaşmak istersiniz? (dakika cinsinden)",
+        "new_finder_success": "✅ <b>Yeni arama başarıyla oluşturuldu!</b>Yakında bildirimler almaya başlayacaksınız.",
+        "new_finder_failure": "❌ Yeni arama oluşturulamadı. Lütfen tekrar deneyin.",
+        "offer_type_prompt": "🎯 Aramanız için seçtiğiniz ulaşım modu: ",
+        "main_menu": {"main": "❌ İptal"}
+    },
+    "settings": {
+        "updated": "✅ Ayarlarınız güncellendi.",
+        "language_changed": "🌍 Diliniz Türkçe olarak değiştirildi.",
+        "address_prompt": "📍 Lütfen adresinizi şu formatta girin: 'Sokak, Bina No, Posta Kodu' (sadece Münih şehri):",
+        "address_set_success": "✅ <b>Adres başarıyla kaydedildi:</b>",
+        "distance_set": {
+            "title": "📏 <b>Arama mesafeniz şu şekilde ayarlandı:</b>",
+            "commands": "💡 Tüm mevcut komutları görmek için /start yazın"
+        },
+        "notifications_set": {
+            "enabled": "🔔 Bildirimler etkinleştirildi.",
+            "disabled": "🔕 Bildirimler devre dışı bırakıldı."
+        },
+        "choose_language": "🌍 Lütfen tercih ettiğiniz dili seçin:"
+    },
+    "address": {
+        "invalid_address": "⚠️ Adres geçerli değil, kontrol edin:",
+        "wrong_address": "❌ Adres doğrulanamıyor."
+    },
+    "errors": {
+        "finder_not_found": "❌ Arama bulunamadı.",
+        "unknown_command": "❓ Üzgünüm, bu komutu anlamadım. Mevcut komutları görmek için /start kullanın.",
+        "invalid_address": "⚠️ Adres geçerli değil, kontrol edin:",
+        "wrong_address": "❌ Adres doğrulanamıyor.",
+        "invalid_distance": "⚠️ Lütfen geçerli bir mesafe girin (1-100 km).",
+        "missing_parameters": "⚠️ Gerekli bilgiler eksik. Lütfen tekrar deneyin.",
+        "service_unavailable": "🔧 Servis geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
+        "not_registered": "👋 Lütfen botu kullanmak için /start gönderin.",
+        "wrong_duration": "⚠️ Lütfen geçerli bir süre girin (1-300 dakika).",
+        "no_offer": "❌ Teklif bulma hatası.",
+        "no_offers_found": "📭 Teklif bulunamadı.",
+        "no_address_set": "📍 Lütfen önce ayarlardan adresinizi belirleyin."
+    },
+    "proposals": {
+        "new_match": {
+            "title": "🎯 <b>Yeni eşleşme bulundu!</b>📑 <b>Başlık:</b>",
+            "location": "📍 <b>Konum:</b>",
+            "distance": "📏 <b>Mesafe:</b>",
+            "price": "💰 <b>Fiyat:</b>"
+        },
+        "no_matches": "🔍 Yeni eşleşme bulunamadı. Bir şey çıktığında size haber vereceğiz!",
+        "daily_summary": {
+            "title": "📊 <b>Günlük Özet:</b><b>Yeni eşleşmeler:</b>",
+            "view": "👀 Hepsini görmek için /view kullanın"
+        }
+    },
+    "navigation": {
+        "next": "İleri ➡️",
+        "previous": "⬅️ Geri",
+        "back": "⬅️ Geri",
+        "done": "✅ Tamam",
+        "main": {"main": "🏠 Ana menü"}
+    },
+    "user_data": {
+        "start": "👤 <b>Kullanıcı verileri:</b>",
+        "name": "📝 <b>Ad:</b> ",
+        "address": "📍 <b>Adres:</b> ",
+        "distance": "📏 <b>Mesafe:</b> ",
+        "notifications": "🔔 <b>Bildirimler:</b> ",
+        "language": "🌍 <b>Dil:</b> ",
+        "finders": "🔍 <b>Aramalar:</b> ",
+        "next_finder": "🎯 <b>arama:</b> ",
+        "end": "✨ Veri sonu."
+    },
+    "finder_data": {
+        "all": "🔍 <b>Tüm aramalar:</b>",
+        "end": "🗑️ Silmek için bir arama kimliği seçin:",
+        "id": "🔢 <b>ID:</b> ",
+        "type": "🚦 <b>Tip:</b> ",
+        "offer_type": "🏠 <b>Teklif tipi:</b> ",
+        "duration": "⏱️ <b>Süre:</b> ",
+        "duration_param": "dakika",
+        "delete_success": "✅ Arama başarıyla silindi!"
+    },
+    "offer_data": {
+        "first": "🏘️ <b>İşte teklifleriniz:</b>",
+        "start": "🏠 <b>Teklif bulundu:</b>",
+        "title": "📑 <b>Başlık:</b> ",
+        "location": "📍 <b>Konum:</b> ",
+        "distance": "📏 <b>Mesafe:</b> ",
+        "travel_type": "🚗 <b>Ulaşım tipi:</b> ",
+        "rent": "💰 <b>Kira:</b> ",
+        "link": "🔗 <b>Bağlantı:</b> ",
+        "no_offers": "📭 Arama kriterlerinize göre teklif bulunamadı.",
+        "keyboard": {
+            "offer_details": "🏠 Teklif detayları"
+        }
+    },
+    "offer_details": {
+        "text": "🏠 <b>Teklif detayları:</b>",
+        "title": "📑 <b>Başlık:</b> ",
+        "location": "📍 <b>Konum:</b> ",
+        "finder": "🔍 <b>Aramalar:</b> ",
+        "costs": "💰 <b>Maliyetler:</b> ",
+        "total_rent": "💰 <b>Toplam kira:</b> ",
+        "rent": "💰 <b>Kira:</b> ",
+        "additional_costs": "💰 <b>Ek maliyetler:</b> ",
+        "other_costs": "💰 <b>Diğer maliyetler:</b> ",
+        "deposit": "💰 <b>Depozito:</b> ",
+        "description": "📝 <b>Açıklama:</b> ",
+        "duration": "daha az ",
+        "duration_param": "dakika",
+        "link": "<b>🔗 Bağlantı:</b> ",
+        "translation": "🔄 <b>Çeviri:</b> ",
+        "keyboard": {
+            "language_original": "🔗 Orijinali gör"
+        },
+        "object_details": "🏠 <b>Nesne detayları:</b>",
+        "object_details_translation": "🔄 <b>Detayların çevirisi:</b> ",
+        "text_more": "🔄 <b>Daha fazla...</b>"
+    },
+    "info_messages": {
+        "update": "🔄 Veritabanı her gün güncellenir.",
+        "no_offers": "📭 Arama kriterlerinize göre teklif bulunamadı."
+    },
+    "help_menu": {
+        "text": "📚 <b>Yardım Kılavuzu</b>🏠\n\n<b>Ana Menü</b>\n• 👤 Verilerim - Profil bilgilerinizi görüntüleyin\n• 🔍 Aramalarım - Aktif arama filtrelerinizi görüntüleyin\n• 🏘️ Tekliflerim - Eşleşen daire tekliflerini görüntüleyin\n• ⚙️ Ayarlar - Tercihlerinizi ayarlayın\n\n⚙️ <b>Ayarlar</b>\n• 🌍 Dil - Bot dilini değiştirin\n• 📍 Adres - Tercih ettiğiniz konumu ayarlayın\n• ➕ Yeni Arama - Daire arama filtresi oluşturun\n• 🔔 Bildirimler - Teklif bildirimlerini açın/kapatın\n• 🗑️ Arama Sil - Arama filtrelerini kaldırın\n\n📱 <b>Komutlar</b>\n/start - Botu başlatın/yeniden başlatın\n/stop - Bildirimleri duraklatın\n❓ Daha fazla yardıma mı ihtiyacınız var? @support ile iletişime geçin",
+        "keyboard": {
+            "main": "🏠 Ana menüye dön"
+        }
+    },
+    "delete_account": {
+        "text": "⚠️ <b>Hesabınızı silmek istediğinizden emin misiniz?</b> Bu işlem geri alınamaz.",
+        "keyboard": {
+            "delete_account_yes": "✅ Evet",
+            "delete_account_no": "❌ Hayır"
+        },
+        "delete_success": "👋 Hesabınız silindi. Tüm verileriniz kaldırıldı.",
+        "delete_cancel": "✅ Hesabınız silinmedi."
+    },
+    "user_data_entry": {
+        "first": "👤 <b>Bu veriler mülk sahiplerine mesaj oluşturmak için kullanılır. Bu veriler kimseyle paylaşılmayacak ve bu bot dışında kullanılmayacaktır.</b>",
+        "first_name": "👤 <b>Lütfen adınızı girin:</b>",
+        "last_name": "👤 <b>Lütfen soyadınızı girin:</b>",
+        "phone": "📞 <b>Lütfen telefon numaranızı girin:</b>",
+        "other": "👤 <b>Lütfen mülk sahipleriyle paylaşmak istediğiniz diğer verileri girin (iş yeri, e-posta, yaş, giriş ve çıkış tarihleri vb.). Lütfen ad ve değeri iki nokta üst üste ile ayırarak girin (örn. iş_yeri:Google):</b>",
+        "other_success": "✅ Verileriniz başarıyla kaydedildi!"
     }
 }
