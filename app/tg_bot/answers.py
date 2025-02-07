@@ -303,6 +303,9 @@ async def offer_details(user_data, offer_id):
     text_lang = eval(f"{user_data['language']}_texts")
     translator = eval(f"{user_data['language']}_translator")
     offer = await flat_offers_manager.get_offer(offer_id)
+    if offer is None:
+        logging.warning(f"Offer not found: chat_id={chat_id}, offer_id={offer_id}")
+        return text_lang['errors']['offer_not_found']
     finders = await finder_manager.get_finders_by_user(chat_id)
     finders_with_offer = [f for f in finders if offer_id in f['offers']]
     logging.info(f"Found {len(finders_with_offer)} finders with offer {offer_id}")
@@ -317,12 +320,15 @@ async def offer_details(user_data, offer_id):
         finder_text += "  " + text_lang['finder_data']['duration'] + text_lang['offer_details']['duration'] + str(finder['duration'] / 60) + f' {text_lang["offer_details"]["duration_param"]}' + "\n"
     text: str = ""
     logging.info(f"building text")
+    print(offer)
     full_description = ""
-    for decription in offer['description']:
-        full_description += decription + "\n"
+    if offer.get('description'):  # Check if description exists and is not None
+        for description in offer['description']:
+            full_description += description + "\n"
     translated_description = ""
-    for decription in offer['description']:
-        translated_description += translator.translate(decription) + "\n"
+    if offer.get('description'):  # Check if description exists and is not None
+        for description in offer['description']:
+            translated_description += translator.translate(description) + "\n"
     if len(translated_description) > 500:
         translated_description = translated_description[:500] + "..."
     logging.info(f"full description: {full_description}")
@@ -367,8 +373,10 @@ async def original_offer_details(user_data, offer_id):
     text: str = ""
     logging.info(f"building text")
     full_description = ""
-    for decription in offer['description']:
-        full_description += decription + "\n"
+    if offer.get('description'):  # Check if description exists and is not None
+        for description in offer['description']:
+            full_description += description + "\n"
+
     if len(full_description) > 500:
         full_description = full_description[:500] + "..."
     logging.info(f"full description: {full_description[:100]}...")

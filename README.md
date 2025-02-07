@@ -24,8 +24,21 @@ I'm trying to make parser work indepedently, but I still face issues with recapc
 
 ## Getting Started
 
-1. **Installation**: Clone the repository and install the required dependencies.
-2. **Configuration**: Set up your environment variables for language files, API tokens, and database connection.
+*To get started you should be familiar with Docker, telegram bot (How to get token).*
+
+1. **Configuration**: Set up your environment variables for language files, API tokens, and database connection. Required environment variables are below.
+
+2. **Installation**: Clone the repository and create docker image of tg_bot app and run it.
+
+To run the telegram client:
+
+```bash
+cd app/tg_bot
+sudo docker build -t tg_bot .
+sudo docker run -d --name tg_bot tg_bot
+```
+
+Parsing part can be started only localy on PC with screen for now, because you need to solve recapcha in case in appears. Working on it. If you need access to database of offers that I parsed contact me ;) .
 
 ### Required Environment Variables
 
@@ -51,7 +64,6 @@ I'm trying to make parser work indepedently, but I still face issues with recapc
 - `MONGO_PORT`: MongoDB port
 
 #### Additional Settings
-- `PARSER_INTERVAL`: Interval for parsing property listings (in milliseconds)
 - `GOOGLE_MAPS_API_KEY`: API key for Google Maps services
 - `TRANSLATOR_API_KEY`: API key for translation services
 

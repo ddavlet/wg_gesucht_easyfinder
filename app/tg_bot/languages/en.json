@@ -96,6 +96,7 @@
         "wrong_address": "❌ Address cannot be validated."
     },
     "errors": {
+        "offer_not_found": "❌ Offer not found.",
         "finder_not_found": "❌ Finder not found.",
         "unknown_command": "❓ Sorry, I didn't understand that command. Use /start to see available commands.",
         "invalid_address": "⚠️ Address is not valid, check:",
@@ -151,6 +152,7 @@
         "delete_success": "✅ Finder deleted successfully!"
     },
     "offer_data": {
+        "processing": "🏠 <b>It may take several minutes. Please wait.\nProcessing offers...</b>",
         "first": "🏘️ <b>Here are your offers:</b>",
         "start": "🏠 <b>Offer found:</b>",
         "title": "📑 <b>Title:</b> ",

@@ -106,7 +106,8 @@
         "wrong_duration": "⚠️ Bitte geben Sie eine gültige Dauer ein (1-100 Minuten).",
         "no_offer": "❌ Fehler beim Finden des Angebots.",
         "no_offers_found": "📭 Keine Angebote gefunden.",
-        "no_address_set": "📍 Bitte legen Sie zuerst Ihre Adresse in den Einstellungen fest."
+        "no_address_set": "📍 Bitte legen Sie zuerst Ihre Adresse in den Einstellungen fest.",
+        "offer_not_found": "❌ Angebot nicht gefunden."
     },
     "proposals": {
         "new_match": {
@@ -151,6 +152,7 @@
         "no_finders": "🔍 Keine Suchen nach Ihren Kriterien gefunden."
     },
     "offer_data": {
+        "processing": "🏠 <b>Dies kann einige Minuten dauern. Bitte warten Sie.\nAngebote werden verarbeitet...</b>",
         "first": "🏘️ <b>Hier sind Ihre Angebote:</b>",
         "start": "🏠 <b>Angebot gefunden:</b>",
         "title": "📑 <b>Titel:</b> ",

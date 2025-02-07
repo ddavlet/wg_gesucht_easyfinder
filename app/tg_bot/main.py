@@ -333,11 +333,12 @@ async def return_to_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 async def process_offers(bot, user_data):
     chat_id = user_data.get('chat_id', 0)
-    logging.info(f"Processing offers for chat_id={chat_id}")
-    bot.send_chat_action(chat_id=chat_id, action="typing")
-    offers = await get_my_offers(user_data)
-    bot.send_chat_action(chat_id=chat_id, action="find_location")
     text_lang = eval(f"{user_data['language']}_texts")
+    logging.info(f"Processing offers for chat_id={chat_id}")
+    await bot.send_message(chat_id=chat_id, text=text_lang['offer_data']['processing'], parse_mode='HTML')
+    await bot.send_chat_action(chat_id=chat_id, action="typing")
+    offers = await get_my_offers(user_data)
+    await bot.send_chat_action(chat_id=chat_id, action="find_location")
     if offers == None:
         logging.info(f"No offers found for chat_id={chat_id}")
         await bot.send_message(chat_id=chat_id, text=text_lang['offer_data']['no_offers'])
@@ -486,6 +487,8 @@ async def offer_details_callback_handler(update: Update, context: ContextTypes.D
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     offer_id = query.data.split('_')[2]
+    logging.info("Callback handler triggered.")
+    logging.info(f'{query.data}')
     logging.info(f"Fetching offer details: chat_id={chat_id}, offer_id={offer_id}")
     await context.bot.send_chat_action(chat_id=chat_id, action="typing")
     user_data = await user_manager.get_user(chat_id)
@@ -525,7 +528,7 @@ async def user_data_entry_callback_handler(update: Update, context: ContextTypes
     await send_message_with_keyboard(context.bot, update, user_data, 'user_data_entry_name', modify_message=False)
 
 async def find_new_offers_for_users(context: ContextTypes.DEFAULT_TYPE):
-    users: list[dict] = user_manager.get_all_users()
+    users = await user_manager.get_all_users()
     for user in users:
         chat_id = user.get('chat_id')
         finders = await finder_manager.get_finders_by_user(chat_id)
@@ -534,9 +537,10 @@ async def find_new_offers_for_users(context: ContextTypes.DEFAULT_TYPE):
         for finder in finders:
             offers = await finder_manager.find_offers(finder, user['preferences']['address'])
             new_offers.extend(offers)
+
         text_lang = eval(f"{user['language']}_texts")
         translator = eval(f"{user['language']}_translator")
-        for offer in offers:
+        for offer in new_offers:
             text = (text_lang['offer_data']['start'] + '\n' +
                 text_lang['offer_data']['title'] + f'{translator.translate(offer["name"])}' + '\n' +
                 text_lang['offer_data']['location'] + offer['address'] + '\n' +
@@ -584,7 +588,7 @@ def main():
     job_queue = application.job_queue
     job_queue.run_repeating(clean_cache, interval=600, first=0)  # 600 seconds = 10 minutes
     job_queue.run_repeating(clean_database, interval=12*60*60, first=0)  # 12 hours
-    job_queue.run_repeating(find_new_offers_for_users, interval=1*60*60, first=0)
+    job_queue.run_repeating(find_new_offers_for_users, interval=1*60*60, first=0) # 1 hour
 
     application.run_polling(drop_pending_updates=True)
 

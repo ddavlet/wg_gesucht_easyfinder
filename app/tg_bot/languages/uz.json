@@ -107,7 +107,8 @@
         "wrong_duration": "⚠️ Iltimos, to'g'ri vaqt kiriting (1-300 daqiqa).",
         "no_offer": "❌ Taklif topishda xatolik.",
         "no_offers_found": "📭 Takliflar topilmadi.",
-        "no_address_set": "📍 Iltimos, avval sozlamalarda manzilingizni o'rnating."
+        "no_address_set": "📍 Iltimos, avval sozlamalarda manzilingizni o'rnating.",
+        "offer_not_found": "❌ Taklif topilmadi."
     },
     "proposals": {
         "new_match": {
@@ -151,6 +152,7 @@
         "delete_success": "✅ Qidiruv muvaffaqiyatli o'chirildi!"
     },
     "offer_data": {
+        "processing": "🏠 <b>Bu bir necha daqiqa vaqt olishi mumkin. Iltimos, kuting.\nTakliflar qayta ishlanmoqda...</b>",
         "first": "🏘️ <b>Mana sizning takliflaringiz:</b>",
         "start": "🏠 <b>Taklif topildi:</b>",
         "title": "📑 <b>Sarlavha:</b> ",

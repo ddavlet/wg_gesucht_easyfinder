@@ -107,7 +107,8 @@
         "wrong_duration": "⚠️ Lütfen geçerli bir süre girin (1-300 dakika).",
         "no_offer": "❌ Teklif bulma hatası.",
         "no_offers_found": "📭 Teklif bulunamadı.",
-        "no_address_set": "📍 Lütfen önce ayarlardan adresinizi belirleyin."
+        "no_address_set": "📍 Lütfen önce ayarlardan adresinizi belirleyin.",
+        "offer_not_found": "❌ Teklif bulunamadı."
     },
     "proposals": {
         "new_match": {
@@ -151,6 +152,7 @@
         "delete_success": "✅ Arama başarıyla silindi!"
     },
     "offer_data": {
+        "processing": "🏠 <b>Bu birkaç dakika sürebilir. Lütfen bekleyin.\nTeklifler işleniyor...</b>",
         "first": "🏘️ <b>İşte teklifleriniz:</b>",
         "start": "🏠 <b>Teklif bulundu:</b>",
         "title": "📑 <b>Başlık:</b> ",

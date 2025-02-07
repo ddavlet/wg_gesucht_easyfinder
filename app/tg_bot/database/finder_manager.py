@@ -9,6 +9,16 @@ import logging
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+info_handler = logging.FileHandler('info.log')
+info_handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+info_handler.setFormatter(formatter)
+logging.getLogger().addHandler(info_handler)
+warning_handler = logging.FileHandler('warning.log')
+warning_handler.setLevel(logging.WARNING)
+warning_handler.setFormatter(formatter)
+logging.getLogger().addHandler(warning_handler)
+
 db = create_database()
 
 if db is None:
@@ -171,10 +181,13 @@ class FinderManager:
             if distance is None:
                 logging.warning("Distance is None, skipping offer")
                 continue
+            print('--------------------------------')
+            print(distance)
+            print('--------------------------------')
             logging.info("Distance information retrieved")
             finder['parsed_offers'].append(offer['data_id'])
             self.update_finder(finder_id, finder)
-            if distance['routes'][0]['legs'][0]['distance']['value'] < int(duration) and offer['offer_type_id'] == finder['offer_type_id']:
+            if int(distance['routes'][0]['legs'][0]['duration']['value']) < int(duration) and offer['offer_type_id'] == finder['offer_type_id']:
                 finder['offers'].append(offer['data_id'])
                 new_offers.append(offer)
                 self.update_finder(finder_id, finder)
@@ -182,6 +195,7 @@ class FinderManager:
                 logging.info(f"Because duration is: {distance['routes'][0]['legs'][0]['duration']['value']}")
             else:
                 logging.info(f"Offer not added due to duration or type: {offer['data_id']}")
+                logging.info(f"Duration: {distance['routes'][0]['legs'][0]['duration']['value']/60}, offer type ID: {offer['offer_type_id']}, while finder type ID is: {finder['offer_type_id']} and duration is: {duration/ 60}")
                 continue
             logging.info("____________________")
         await self.update_finder(finder_id, finder)
