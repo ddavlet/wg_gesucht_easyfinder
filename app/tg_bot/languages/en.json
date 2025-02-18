@@ -62,6 +62,12 @@
             "finder_type_housing_house": "House",
             "main": "❌ Cancel"
         },
+        "new_finder_city_prompt": "📍 <b>City</b>Choose the city you want to search in:",
+        "new_finder_city_keyboard": {
+            "finder_type_city_0": "🍺 Munich",
+            "finder_type_city_1": "❤️ Berlin",
+            "main": "❌ Cancel"
+        },
         "new_finder_travel_mode_prompt": "🚗 <b>Travel Mode</b>Choose the type of travel you want to use:",
         "new_finder_travel_mode_keyboard": {
             "finder_type_travel_walking": "🚶 Walking",
@@ -79,7 +85,7 @@
     "settings": {
         "updated": "✅ Your settings have been updated.",
         "language_changed": "🌍 Your language has been changed to English.",
-        "address_prompt": "📍 Please enter your address in the format: 'Street, House Number, Postal Code' (Munich city only):",
+        "address_prompt": "📍 Please enter your address in the format: 'Street, House number, Postal code':",
         "address_set_success": "✅ <b>Address is saved successfully:</b>",
         "distance_set": {
             "title": "📏 <b>Your search distance has been set to:</b>",

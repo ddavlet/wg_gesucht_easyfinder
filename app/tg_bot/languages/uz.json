@@ -70,6 +70,12 @@
             "finder_type_travel_transit": "🚌 Jamoat transporti",
             "main": "❌ Bekor qilish"
         },
+        "new_finder_city_prompt": "📍 <b>Shahar</b>\n\nQidirishni xohlagan shaharni tanlang:",
+        "new_finder_city_keyboard": {
+            "finder_type_city_0": "🍺 Myunxen",
+            "finder_type_city_1": "❤️ Berlin",
+            "main": "❌ Bekor qilish"
+        },
         "duration_prompt": "⏱️ Manzilga qancha vaqtda yetib bormoqchisiz? (daqiqalarda)",
         "new_finder_success": "✅ <b>Yangi qidiruv muvaffaqiyatli yaratildi!</b>Tez orada bildirishnomalar ola boshlaysiz.",
         "new_finder_failure": "❌ Yangi qidiruv yaratib bo'lmadi. Iltimos, qayta urinib ko'ring.",
@@ -79,7 +85,7 @@
     "settings": {
         "updated": "✅ Sozlamalaringiz yangilandi.",
         "language_changed": "🌍 Tilingiz O'zbekchaga o'zgartirildi.",
-        "address_prompt": "📍 Iltimos, manzilingizni quyidagi formatda kiriting: 'Ko'cha, Uy raqami, Pochta indeksi' (faqat Myunxen shahri):",
+        "address_prompt": "📍 Iltimos, manzilingizni quyidagi formatda kiriting: 'Ko'cha, Uy raqami, Pochta indeksi':",
         "address_set_success": "✅ <b>Manzil muvaffaqiyatli saqlandi:</b>",
         "distance_set": {
             "title": "📏 <b>Qidiruv masofangiz quyidagicha o'rnatildi:</b>",

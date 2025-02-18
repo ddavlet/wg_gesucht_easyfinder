@@ -70,6 +70,12 @@
             "finder_type_travel_transit": "🚌 Toplu taşıma",
             "main": "❌ İptal"
         },
+        "new_finder_city_prompt": "📍 <b>Şehir</b>\n\nAramak istediğiniz şehri seçin:",
+        "new_finder_city_keyboard": {
+            "finder_type_city_0": "🍺 Münih",
+            "finder_type_city_1": "❤️ Berlin",
+            "main": "❌ İptal"
+        },
         "duration_prompt": "⏱️ Hedefe ne kadar sürede ulaşmak istersiniz? (dakika cinsinden)",
         "new_finder_success": "✅ <b>Yeni arama başarıyla oluşturuldu!</b>Yakında bildirimler almaya başlayacaksınız.",
         "new_finder_failure": "❌ Yeni arama oluşturulamadı. Lütfen tekrar deneyin.",
@@ -79,7 +85,7 @@
     "settings": {
         "updated": "✅ Ayarlarınız güncellendi.",
         "language_changed": "🌍 Diliniz Türkçe olarak değiştirildi.",
-        "address_prompt": "📍 Lütfen adresinizi şu formatta girin: 'Sokak, Bina No, Posta Kodu' (sadece Münih şehri):",
+        "address_prompt": "📍 Lütfen adresinizi şu formatta girin: 'Sokak, Bina No, Posta Kodu':",
         "address_set_success": "✅ <b>Adres başarıyla kaydedildi:</b>",
         "distance_set": {
             "title": "📏 <b>Arama mesafeniz şu şekilde ayarlandı:</b>",

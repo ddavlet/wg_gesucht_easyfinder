@@ -24,7 +24,6 @@ class MapsAPI:
         address_data = {
             "address": {
                 "regionCode": "DE",
-                "locality": "Munich",
                 "addressLines": [address]
             }
         }

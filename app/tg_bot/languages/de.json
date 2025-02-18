@@ -70,6 +70,12 @@
             "finder_type_travel_transit": "🚌 Öffentliche Verkehrsmittel",
             "main": "❌ Abbrechen"
         },
+        "new_finder_city_prompt": "📍 <b>Stadt</b>\n\nWählen Sie die Stadt, in der Sie suchen möchten:",
+        "new_finder_city_keyboard": {
+            "finder_type_city_0": "🍺 München",
+            "finder_type_city_1": "❤️ Berlin",
+            "main": "❌ Abbrechen"
+        },
         "duration_prompt": "⏱️ Wie lange möchten Sie zum Ziel unterwegs sein? (in Minuten)",
         "new_finder_success": "✅ <b>Neue Suche erfolgreich erstellt!</b>\nSie werden bald Benachrichtigungen erhalten.",
         "new_finder_failure": "❌ Neue Suche konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
@@ -79,7 +85,7 @@
     "settings": {
         "updated": "✅ Ihre Einstellungen wurden aktualisiert.",
         "language_changed": "🌍 Ihre Sprache wurde auf Deutsch geändert.",
-        "address_prompt": "📍 Bitte geben Sie Ihre Adresse im Format ein: 'Straße, Hausnummer, Postleitzahl' (nur Stadt München):",
+        "address_prompt": "📍 Bitte geben Sie Ihre Adresse im Format ein: 'Straße, Hausnummer, Postleitzahl':",
         "address_set_success": "✅ <b>Adresse erfolgreich gespeichert:</b>",
         "distance_set": {
             "title": "📏 <b>Ihre Suchdistanz wurde eingestellt auf:</b>",

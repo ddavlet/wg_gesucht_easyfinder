@@ -39,7 +39,7 @@ def get_options():
     logger.debug("ChromiumOptions configured with headless mode and no-sandbox")
     return options
 
-def start_parser(type: int):
+def start_parser(type: int, city: int):
     logger.info("Starting parser process")
     try:
         base_url = 'https://www.wg-gesucht.de'
@@ -51,11 +51,14 @@ def start_parser(type: int):
         driver.get(base_url)
         logger.info(f"Navigated to base URL: {base_url}")
 
-        sleep(5)
-        logger.debug("Waited 5 seconds for page load")
+        sleep(1)
+        logger.debug("Waited 1 second for page load")
 
         logger.info("Initializing Parser for WG-Zimmer (type 0)")
-        parser = Parser(driver, flat_offers_manager, type)
+
+        # types: 0 - WG-Zimmer, 1 - 1-Zimmer-Wohnung, 2 - Wohnung, 3 - Haus
+        # cities: 0 - München, 1 - Berlin
+        parser = Parser(driver, flat_offers_manager, type, city)
         logger.info("Parser initialized successfully")
 
         try:
@@ -77,11 +80,12 @@ def start_parser(type: int):
 if __name__ == "__main__":
     try:
         user_input = int(input("Enter the type of offer to parse (0 for WG-Zimmer, 1 for 1-room-Wohnung, 2 for Wohnung, 3 for Haus, 4 for all): "))
+        city = int(input("Enter the city to parse (0 for München, 1 for Berlin): "))
         if user_input == 4:
             for i in range(4):
-                start_parser(i)
+                start_parser(i, city)
         else:
-            start_parser(user_input)
+            start_parser(user_input, city)
     except Exception as e:
         logger.critical("Parser failed to complete", exc_info=True)
         raise

@@ -174,6 +174,9 @@ class FinderManager:
         offers = await self.flat_offers_manager.get_active_offers()
         new_offers = []
         for offer in offers:
+            if offer['offer_type_id'] != finder['offer_type_id'] or offer['city_id'] != finder['city_id']:
+                logging.info(f"Offer not added due to type or city: {offer['data_id']}")
+                continue
             if offer['data_id'] in finder['parsed_offers']:
                 logging.info("Offer already parsed")
                 continue
@@ -186,11 +189,14 @@ class FinderManager:
             print('--------------------------------')
             logging.info("Distance information retrieved")
             finder['parsed_offers'].append(offer['data_id'])
-            self.update_finder(finder_id, finder)
-            if int(distance['routes'][0]['legs'][0]['duration']['value']) < int(duration) and offer['offer_type_id'] == finder['offer_type_id']:
+            await self.update_finder(finder_id, finder)
+            print(offer)
+            print(finder)
+            print('--------------------------------')
+            if int(distance['routes'][0]['legs'][0]['duration']['value']) < int(duration):
                 finder['offers'].append(offer['data_id'])
                 new_offers.append(offer)
-                self.update_finder(finder_id, finder)
+                await self.update_finder(finder_id, finder)
                 logging.info(f"Offer added for: {duration}, offer ID: {offer['data_id']}")
                 logging.info(f"Because duration is: {distance['routes'][0]['legs'][0]['duration']['value']}")
             else:

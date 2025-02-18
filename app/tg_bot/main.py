@@ -415,10 +415,20 @@ async def new_finder_callback_handler(update: Update, context: ContextTypes.DEFA
         await finder_manager.save_finder(chat_id, new_finder['finder_id'], new_finder)
         user_data['finder_id'] = new_finder['finder_id']
         await user_manager.save_user(chat_id, user_data)
+        keyboard = await create_keyboard(text_lang['new_finder'].get('new_finder_city_keyboard'))
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        text = text_lang['new_finder'].get('new_finder_city_prompt')
+        await context.bot.edit_message_text(chat_id=chat_id, message_id=query.message.message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
+
+    elif command_type == 'city':
+        finder = await finder_manager.get_finder(user_data['finder_id'])
+        finder['city_id'] = int(data_type)
+        await finder_manager.save_finder(chat_id, user_data['finder_id'], finder)
         keyboard = await create_keyboard(text_lang['new_finder'].get('new_finder_travel_mode_keyboard'))
         reply_markup = InlineKeyboardMarkup(keyboard)
         text = text_lang['new_finder'].get('new_finder_travel_mode_prompt')
         await context.bot.edit_message_text(chat_id=chat_id, message_id=query.message.message_id, text=text, reply_markup=reply_markup, parse_mode='HTML')
+
     elif command_type == "travel":
         finder = await finder_manager.get_finder(user_data['finder_id'])
         finder['type'] = data_type

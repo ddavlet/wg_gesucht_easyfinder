@@ -93,7 +93,9 @@ def get_user_fields() -> Dict[str, Any]:
         },
         'premium_subscription': False,
         'language': 'en',
-        'state': 'main'
+        'state': 'main',
+        'city_id': -1,
+        'type': -1
     }
 
 def get_finder_fields() -> Dict[str, Any]:

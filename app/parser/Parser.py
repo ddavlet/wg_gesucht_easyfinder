@@ -9,23 +9,29 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Parser:
-    def __init__(self, driver: ChromiumPage, flat_offers_manager: FlatOffersManager, type: int):
+    def __init__(self, driver: ChromiumPage, flat_offers_manager: FlatOffersManager, type: int, city: int):
         self.driver = driver
         self.flat_offers_manager = flat_offers_manager
         self.type_code = type
-        switch = {
+        offer_type_dict = {
             0: "WG-Zimmer",
             1: "1-Zimmer-Wohnung",
             2: "Wohnung",
             3: "Haus"
         }
-        logging.info(f"Initializing Parser for type: {switch[type]} (code: {type})")
+        city_dict = {
+            0: "Munchen",
+            1: "Berlin"
+        }
+        logging.info(f"Initializing Parser for type: {offer_type_dict[type]} (code: {type})")
         self.accept_cookies()
         self.unselect_list_option('dropdown-menu inner')
-        self.type = switch[type]
+        self.type = offer_type_dict[type]
         self.offer_type_id = type
+        self.city_id = city
+        self.city = city_dict[city]
         self.select_list_option('dropdown-menu inner', type)
-        self.fill_input('form-control autocomplete wgg_input city_loader_bar', 'Munchen')
+        self.fill_input('form-control autocomplete wgg_input city_loader_bar', city_dict[city])
         logging.info("Clicking search button")
         self.driver.ele('tag:input@id:search_button').click()
 
@@ -43,6 +49,7 @@ class Parser:
     def fill_input(self, class_name: str, value: str):
         logging.info(f"Filling input field '{class_name}' with value: {value}")
         form_element = self.driver.ele(f'tag:form@id:formPortal')
+        form_element.ele(f'tag:input@class:{class_name}').clear()
         form_element.ele(f'tag:input@class:{class_name}').input(value)
         logging.debug(f"Input field '{class_name}' filled successfully")
         sleep(0.01)
@@ -91,7 +98,7 @@ class Parser:
 
         logging.info(f"Unselected {unselected_count} options in total")
         form_element.ele(f'tag:button@class:btn dropdown-toggle form-control wgg_select').click()
-        sleep(1.11)
+        sleep(1)
 
     def get_page(self, url):
         logging.info(f"Navigating to URL: {url}")
@@ -114,6 +121,10 @@ class Parser:
         offer_fields['data_id'] = id
         offer_fields['link'] = link
         offer_fields['is_active'] = True
+        offer_fields['offer_type_id'] = self.offer_type_id
+        offer_fields['city_id'] = self.city_id
+        offer_fields['city'] = self.city
+        offer_fields['offer_type'] = self.type
         logging.debug(f"Extracted ad data - ID: {id}, Type: {self.type}")
         return offer_fields
 
